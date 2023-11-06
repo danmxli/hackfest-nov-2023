@@ -1,14 +1,14 @@
-import Image from 'next/image'
+import UserPortal from "@/components/UserPortal"
 
-export default function Home() {
+export default function Landing() {
   return (
     <div className="min-h-screen grid grid-cols-8">
-      <div className='bg-teal-950 h-screen col-span-3'>
-        
+      <div className='bg-teal-900 h-screen col-span-3 flex items-center justify-center'>
+        <UserPortal />
       </div>
 
       <div className='h-screen col-span-5 flex items-center justify-center'>
-        <div className='p-8 bg-teal-50/60 rounded-3xl shadow-lg m-4'>
+        <div className='p-8 bg-teal-50/60 rounded-3xl shadow-lg m-4 mr-0'>
           <h1 className='text-5xl mb-1'>Introducing <span className='text-teal-600'>see</span><span className='text-teal-800'>Pickle</span>.</h1>
           <code>your personal achievement visualization tool.</code>
         </div>
