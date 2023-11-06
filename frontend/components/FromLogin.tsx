@@ -1,6 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation';
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useState, useEffect, useRef } from 'react';
 
 interface FromLoginProps {
     children: ReactNode;
@@ -9,18 +9,25 @@ interface FromLoginProps {
 export function FromLogin({ children }: FromLoginProps) {
     const router = useRouter();
     const fetchExecuted = useRef(false)
-    const isAuthenticated = false
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
 
     useEffect(() => {
         if (!fetchExecuted.current) {
             fetchExecuted.current = true
-            console.log('hi')
-            if (!isAuthenticated) {
+
+            // get userId from localStorage
+            const userId = localStorage.getItem('userId')
+            console.log(userId)
+            if (userId == null || userId == 'null') {
+                setIsAuthenticated(false)
                 router.push('/'); // Redirect to landing page
+            }
+            else {
+                setIsAuthenticated(true)
             }
         }
 
-    }, [isAuthenticated, router]);
+    }, [router]);
 
     return isAuthenticated ? children : null;
 }

@@ -48,11 +48,11 @@ def signin():
     # find one by username
     user = UserInfo.find_one({"username": username})
     if not user:
-        return (jsonify({"user": "not_found"}))
+        return (jsonify({"username": "not_found"}))
 
     # compare password from request to decrypted password 
     if password == decrypt_password(user["password"]):
         return(user)
     else:
-        return (jsonify({"user": "not_found"}))
+        return (jsonify({"username": "not_found"}))
 
