@@ -14,6 +14,17 @@ UserInfo = db['UserInfo']
 users_blueprint = Blueprint('users', __name__)
 
 
+@users_blueprint.route('/', methods=["POST"])
+def find():
+    data = request.get_json()
+    userId = data.get("userId")
+    match = UserInfo.find_one({"_id": userId})
+    if match:
+        return (jsonify({"username": match["username"]}))
+    else:
+        return (jsonify({"username": "not found"}))
+
+
 @users_blueprint.route('/signup', methods=["POST"])
 def signup():
     data = request.get_json()
@@ -23,7 +34,7 @@ def signup():
     # find existing user
     match = UserInfo.find_one({"username": username})
     if match:
-        return (jsonify({"username": "existing"}))
+        return (jsonify({"username": "existing found"}))
 
     # insert new user doc
     doc = {
@@ -48,11 +59,10 @@ def signin():
     # find one by username
     user = UserInfo.find_one({"username": username})
     if not user:
-        return (jsonify({"username": "not_found"}))
+        return (jsonify({"username": "not found"}))
 
-    # compare password from request to decrypted password 
+    # compare password from request to decrypted password
     if password == decrypt_password(user["password"]):
-        return(user)
+        return (user)
     else:
-        return (jsonify({"username": "not_found"}))
-
+        return (jsonify({"username": "not found"}))

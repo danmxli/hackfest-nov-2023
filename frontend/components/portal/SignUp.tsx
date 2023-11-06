@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
+import CheckPasswordStrength from "./Check";
 
 interface SignUnProps {
     updatePhase: (newPhase: string) => void;
@@ -45,7 +46,7 @@ const SignUp: React.FC<SignUnProps> = ({ updatePhase }) => {
                     }
                 })
                 .then(data => {
-                    if (data['username'] === 'existing') {
+                    if (data['username'] === 'existing found') {
                         setPassword('')
                         setPwdAgain('')
                         setIsExistingUser(true)
@@ -82,12 +83,13 @@ const SignUp: React.FC<SignUnProps> = ({ updatePhase }) => {
             <div className="mt-8">
                 <div className="text-teal-600">
                     password
+                    <p className={`text-xs ${CheckPasswordStrength(password) ? '' : 'text-gray-400'}`}>at least 8 characters, case sensitive, contains at least 1 letter and special character</p>
                 </div>
                 <input
                     type="password"
                     value={password}
                     onChange={handleUpdatePassword}
-                    className="w-full bg-teal-950 text-white border-b-2 border-teal-600 focus:outline-none"
+                    className={`w-full bg-teal-950 text-white border-b-2 focus:outline-none ${CheckPasswordStrength(password) ? 'border-teal-600' : 'border-gray-400'}`}
                 />
             </div>
             <div className="mt-8">
@@ -102,11 +104,17 @@ const SignUp: React.FC<SignUnProps> = ({ updatePhase }) => {
                 />
             </div>
             <div className="inline-flex gap-3">
-                <button
-                    onClick={verifyUser}
-                    className="mt-8 bg-teal-50 border border-2 border-teal-300 p-1 pl-12 pr-12 rounded-3xl text-teal-950">
-                    Next
-                </button>
+                {CheckPasswordStrength(password) && name !== "" && password !== "" && pwdAgain === password ? (<>
+                    <button
+                        onClick={verifyUser}
+                        className="mt-8 bg-teal-50 border border-2 border-teal-300 p-1 pl-12 pr-12 rounded-3xl text-teal-950">
+                        Next
+                    </button>
+                </>) : (<>
+                    <div className="mt-8 bg-gray-400 border border-2 border-gray-300 p-1 pl-12 pr-12 rounded-3xl text-gray-600 flex items-center">
+                        Next
+                    </div>
+                </>)}
                 <button
                     onClick={() => {
                         updatePhase('SignIn')
