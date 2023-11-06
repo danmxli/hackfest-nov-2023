@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import Loading from "@/components/Loading"
+import Sidebar from "@/components/Sidebar"
 
 export default function Home() {
     const router = useRouter()
@@ -56,15 +57,8 @@ export default function Home() {
     return (
         <>
             {isAuthenticated ? (
-                <div className="h-screen">
-                    <h1>{userInfo}</h1>
-                    <button
-                        className='text-sm text-stone-600 bg-stone-100 hover:bg-stone-200 p-1 border border-stone-400 rounded'
-                        onClick={() => {
-                            localStorage.setItem('userId', JSON.stringify(null))
-                            router.push('/')
-                        }}
-                    >Sign Out</button>
+                <div className="flex-col">
+                    <Sidebar info={userInfo}/>
                 </div>
             ) : (
                 <Loading />
