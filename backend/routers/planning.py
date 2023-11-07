@@ -31,7 +31,7 @@ def create_base():
         updateBasePlan = {
             "$push": {"plans": newPlan}
         }
-        UserInfo.update_one(user, updateBasePlan)
+        # UserInfo.update_one(user, updateBasePlan)
 
         return (jsonify({
             "userId": userId,

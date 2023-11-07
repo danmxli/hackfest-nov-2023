@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-const colors = ["#34d399", "#134e4a", "#059669", "#9ca3af", "#bbf7d0"];
+const colors = ["#5eead4", "#134e4a", "#0f766e", "#99f6e4", "#14b8a6"];
 
 const containerVariants = {
     initial: {},

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import Loading from "@/components/Loading"
 import Sidebar from "@/components/Sidebar"
 import NewPlan from "@/components/playground/NewPlan"
+import LoadingPlan from "@/components/playground/LoadingPlan"
 import EditPlan from "@/components/playground/EditPlan"
 
 export default function Home() {
@@ -36,7 +37,7 @@ export default function Home() {
         const getUserInfo = async (id: string) => {
             const requestBody = {
                 userId: JSON.parse(id)
-            }     
+            }
             try {
                 const response = await fetch('http://127.0.0.1:3000/users/', {
                     method: 'POST',
@@ -79,14 +80,15 @@ export default function Home() {
     // define key value pairs of phases
     const playground: PlanPhases = {
         NewPlan: <NewPlan updatePhase={updatePhase} updatePlanPrompt={updatePlanPrompt} />,
-        EditPlan: <EditPlan planPrompt={planPrompt} />
+        LoadingPlan: <LoadingPlan updatePhase={updatePhase} planPrompt={planPrompt} />,
+        EditPlan: <EditPlan />
     }
 
     return (
         <>
             {isAuthenticated ? (
                 <div className="flex">
-                    <Sidebar info={userInfo} phase={phase} updatePhase={updatePhase}/>
+                    <Sidebar info={userInfo} phase={phase} updatePhase={updatePhase} />
                     <main className="flex-1">
                         {playground[phase]}
                     </main>

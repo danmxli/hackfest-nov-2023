@@ -1,10 +1,11 @@
 import React from "react"
 
 interface EditPlanProps {
-    planPrompt: string
+    
 }
 
-const EditPlan: React.FC<EditPlanProps> = ({planPrompt}) => {
+const EditPlan: React.FC<EditPlanProps> = () => {
+
     return (
         <div>
             in progress

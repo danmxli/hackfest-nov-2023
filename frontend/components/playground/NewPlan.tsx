@@ -15,8 +15,7 @@ const NewPlan: React.FC<NewPlanProps> = ({ updatePhase, updatePlanPrompt }) => {
 
     const userAction = () => {
         updatePlanPrompt(userInput)
-        console.log(userInput)
-        updatePhase('EditPlan')
+        updatePhase('LoadingPlan')
     }
 
     return (
