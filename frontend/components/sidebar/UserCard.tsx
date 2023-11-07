@@ -1,7 +1,9 @@
 import React from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { BsThreeDotsVertical, BsFillFilePersonFill } from "react-icons/bs"
+import { BsFillFilePersonFill } from "react-icons/bs"
+import { BiLogOut, BiSolidCoin } from "react-icons/bi"
+import { AiOutlineClear } from "react-icons/ai"
 
 interface UserCardProps {
     info: string
@@ -13,23 +15,23 @@ const UserCard: React.FC<UserCardProps> = ({ info }) => {
     return (
         <div className="relative m-1.5">
             <div className="w-full p-1.5 bg-teal-950 border border-1 border-teal-600 rounded-lg text-teal-300 items-center">
-                <div className="flex items-center gap-1 mb-6">
+                <div className="flex items-center gap-2 mb-6">
                     <BsFillFilePersonFill /> {info}
                 </div>
-                <button className="flex text-sm p-1 border border-teal-600 bg-teal-800 hover:text-white rounded">
-                    clear plan history
+                <button className="flex items-center gap-1 text-sm p-1 pl-3 pr-3 border border-teal-600 bg-teal-800 hover:text-white rounded-xl">
+                    <AiOutlineClear /> clear all plans
                 </button>
                 <button
-                    className="mt-1 flex text-sm p-1 border border-teal-600 bg-teal-800 hover:text-white rounded"
+                    className="mt-1 flex items-center gap-1 text-sm p-1 pl-3 pr-3 border border-teal-600 bg-teal-800 hover:text-white rounded-xl"
                     onClick={() => {
                         localStorage.setItem('userId', JSON.stringify(null))
                         router.push('/')
                     }}
                 >
-                    logout
+                    <BiLogOut /> logout
                 </button>
-                <button className="mt-1 flex text-sm p-1 border border-teal-600 bg-teal-800 hover:text-white rounded">
-                    purchase tokens
+                <button className="mt-1 flex items-center gap-1 text-sm p-1 pl-3 pr-3 border border-teal-600 bg-teal-800 hover:text-white rounded-xl">
+                    <BiSolidCoin /> purchase tokens
                 </button>
             </div>
 
