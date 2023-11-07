@@ -3,11 +3,11 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import CheckPasswordStrength from "./Check";
 
-interface SignUnProps {
+interface SignUpProps {
     updatePhase: (newPhase: string) => void;
 }
 
-const SignUp: React.FC<SignUnProps> = ({ updatePhase }) => {
+const SignUp: React.FC<SignUpProps> = ({ updatePhase }) => {
     const router = useRouter()
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')

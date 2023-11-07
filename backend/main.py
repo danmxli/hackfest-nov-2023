@@ -14,9 +14,16 @@ app = Flask(__name__)
 CORS(app)
 app.register_blueprint(users_blueprint, url_prefix='/users')
 
+
 @app.route('/', methods=["GET"])
 def read_root():
     return jsonify({"message": "root route reached"})
+
+
+@app.route('/dummy', methods=["GET", "POST"])
+def dummy():
+    time.sleep(5)
+    return (jsonify({}))
 
 
 if __name__ == '__main__':

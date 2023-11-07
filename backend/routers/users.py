@@ -42,7 +42,7 @@ def signup():
         "time_created": int(datetime.datetime.now().timestamp()),
         "username": username,
         "password": encrypt_password(password),
-        "plans": {}
+        "plans": []
     }
     result = UserInfo.insert_one(doc)
 

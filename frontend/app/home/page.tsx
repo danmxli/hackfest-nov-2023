@@ -13,8 +13,15 @@ export default function Home() {
     const [userInfo, setUserInfo] = useState('')
     // set initial phase to new_plan
     const [phase, setPhase] = useState('NewPlan')
+    // set initial plan prompt to empty string
+    const [planPrompt, setPlanPrompt] = useState('')
+
+    // update phase and prompt
     const updatePhase = (newPhase: string) => {
         setPhase(newPhase)
+    }
+    const updatePlanPrompt = (newPrompt: string) => {
+        setPlanPrompt(newPrompt)
     }
 
     // plan history
@@ -71,15 +78,15 @@ export default function Home() {
 
     // define key value pairs of phases
     const playground: PlanPhases = {
-        NewPlan: <NewPlan />,
-        EditPlan: <EditPlan />
+        NewPlan: <NewPlan updatePhase={updatePhase} updatePlanPrompt={updatePlanPrompt} />,
+        EditPlan: <EditPlan planPrompt={planPrompt} />
     }
 
     return (
         <>
             {isAuthenticated ? (
                 <div className="flex">
-                    <Sidebar info={userInfo} updatePhase={updatePhase}/>
+                    <Sidebar info={userInfo} phase={phase} updatePhase={updatePhase}/>
                     <main className="flex-1">
                         {playground[phase]}
                     </main>
