@@ -31,11 +31,21 @@ def create_base():
         updateBasePlan = {
             "$push": {"plans": newPlan}
         }
-        # UserInfo.update_one(user, updateBasePlan)
+        UserInfo.update_one(user, updateBasePlan)
+
+        # get updated plan history
+        history = []
+        all_plans = UserInfo.find_one({"_id": userId}).get("plans", [])
+        for plan in all_plans:
+            history.append({
+                "_id": plan["_id"],
+                "description": plan["description"]
+            })
 
         return (jsonify({
             "userId": userId,
-            "base_plan": base
+            "base_plan": base,
+            "history": history
         }))
 
     else:
@@ -53,9 +63,22 @@ def clear_all():
             "$set": {"plans": []}
         }
         UserInfo.update_one(user, clearPlans)
+
+        # get updated plan history 
+        # get updated plan history
+        history = []
+        all_plans = UserInfo.find_one({"_id": userId}).get("plans", [])
+        for plan in all_plans:
+            history.append({
+                "_id": plan["_id"],
+                "description": plan["description"]
+            })
+
         return (jsonify({
             "userId": userId,
-            "message": "Successfully cleared all plans."
+            "message": "Successfully cleared all plans.",
+            "history": history
+
         }))
 
     else:

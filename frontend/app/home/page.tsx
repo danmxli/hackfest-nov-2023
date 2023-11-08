@@ -26,7 +26,10 @@ export default function Home() {
     }
 
     // plan history
-    const [planHistory, setPlanHistory] = useState([])
+    const [planHistory, setPlanHistory] = useState(Array<{ _id: string, description: string }>)
+    const updatePlanHistory = (newHistory: Array<{ _id: string, description: string }>) => {
+        setPlanHistory(newHistory)
+    }
 
     // plan phases interface
     interface PlanPhases {
@@ -51,6 +54,7 @@ export default function Home() {
                     if (data) {
                         console.log(data)
                         setUserInfo(data["username"])
+                        setPlanHistory(data["history"])
                         setIsAuthenticated(true)
                     }
                 } else {
@@ -80,7 +84,7 @@ export default function Home() {
     // define key value pairs of phases
     const playground: PlanPhases = {
         NewPlan: <NewPlan updatePhase={updatePhase} updatePlanPrompt={updatePlanPrompt} />,
-        LoadingPlan: <LoadingPlan updatePhase={updatePhase} planPrompt={planPrompt} />,
+        LoadingPlan: <LoadingPlan updatePhase={updatePhase} planPrompt={planPrompt} updatePlanHistory={updatePlanHistory} />,
         EditPlan: <EditPlan />
     }
 
@@ -88,7 +92,7 @@ export default function Home() {
         <>
             {isAuthenticated ? (
                 <div className="flex">
-                    <Sidebar info={userInfo} phase={phase} updatePhase={updatePhase} />
+                    <Sidebar info={userInfo} history={planHistory} updatePhase={updatePhase} updatePlanHistory={updatePlanHistory} />
                     <main className="flex-1">
                         {playground[phase]}
                     </main>

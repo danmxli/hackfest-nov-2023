@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 
 interface LoadingPlanProps {
     updatePhase: (newPhase: string) => void;
-    planPrompt: string
+    planPrompt: string;
+    updatePlanHistory: (newHistory: Array<{ _id: string, description: string }>) => void;
 }
 
 const colors = ["#5eead4", "#134e4a", "#0f766e", "#99f6e4", "#14b8a6"];
@@ -31,7 +32,7 @@ const dotVariants = {
 };
 
 
-const LoadingPlan: React.FC<LoadingPlanProps> = ({ updatePhase, planPrompt }) => {
+const LoadingPlan: React.FC<LoadingPlanProps> = ({ updatePhase, planPrompt, updatePlanHistory }) => {
     const router = useRouter()
     const fetchExecuted = useRef(false)
     useEffect(() => {
@@ -53,6 +54,7 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ updatePhase, planPrompt }) =>
                     const data = await response.json();
                     if (data) {
                         console.log(data)
+                        updatePlanHistory(data["history"])
                         updatePhase('EditPlan')
                     }
                 } else {
@@ -74,7 +76,7 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ updatePhase, planPrompt }) =>
             }
 
         }
-    }, [planPrompt, updatePhase, router])
+    }, [planPrompt, updatePhase, router, updatePlanHistory])
 
 
     return (

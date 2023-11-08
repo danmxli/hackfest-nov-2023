@@ -16,11 +16,22 @@ users_blueprint = Blueprint('users', __name__)
 
 @users_blueprint.route('/', methods=["POST"])
 def find():
+    # return username and list of dict plan _id, description
+    history = []
     data = request.get_json()
     userId = data.get("userId")
     match = UserInfo.find_one({"_id": userId})
     if match:
-        return (jsonify({"username": match["username"]}))
+        all_plans = match.get("plans", [])
+        for plan in all_plans:
+            history.append({
+                "_id": plan["_id"],
+                "description": plan["description"]
+            })
+        return (jsonify({
+            "username": match["username"],
+            "history": history
+        }))
     else:
         return (jsonify({"username": "not found"}))
 
