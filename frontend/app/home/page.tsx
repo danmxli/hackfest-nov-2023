@@ -12,9 +12,8 @@ export default function Home() {
     const fetchExecuted = useRef(false)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [userInfo, setUserInfo] = useState('')
-    // set initial phase to new_plan
+    // phases for rendering components
     const [phase, setPhase] = useState('NewPlan')
-    // set initial plan prompt to empty string
     const [planPrompt, setPlanPrompt] = useState('')
 
     // update phase and prompt
@@ -92,10 +91,11 @@ export default function Home() {
 
     }, [router]);
 
-    // define key value pairs of phases
+    // define object of phases
     const playground: PlanPhases = {
         NewPlan: <NewPlan updatePhase={updatePhase} updatePlanPrompt={updatePlanPrompt} />,
         LoadingPlan: <LoadingPlan updatePhase={updatePhase} planPrompt={planPrompt} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} />,
+        RederingPlan: <></>,
         EditPlan: <EditPlan baseData={baseData} />
     }
 

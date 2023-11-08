@@ -40,6 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({ info, history, updatePhase, updatePla
                 userId: JSON.parse(userId),
                 planId: id
             }
+            updatePhase('RenderingPlan')
             try {
                 const response = await fetch('http://127.0.0.1:3000/planning/load_one', {
                     method: 'POST',
