@@ -3,10 +3,18 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
+// base data object structure
+interface Task {
+    description: string;
+    order: string;
+    sub_tasks: any[]
+}
+
 interface LoadingPlanProps {
     updatePhase: (newPhase: string) => void;
     planPrompt: string;
     updatePlanHistory: (newHistory: Array<{ _id: string, description: string }>) => void;
+    updateBaseData: (newData: Task[]) => void;
 }
 
 const colors = ["#5eead4", "#134e4a", "#0f766e", "#99f6e4", "#14b8a6"];
@@ -32,7 +40,7 @@ const dotVariants = {
 };
 
 
-const LoadingPlan: React.FC<LoadingPlanProps> = ({ updatePhase, planPrompt, updatePlanHistory }) => {
+const LoadingPlan: React.FC<LoadingPlanProps> = ({ updatePhase, planPrompt, updatePlanHistory, updateBaseData }) => {
     const router = useRouter()
     const fetchExecuted = useRef(false)
     useEffect(() => {
@@ -54,6 +62,7 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ updatePhase, planPrompt, upda
                     const data = await response.json();
                     if (data) {
                         console.log(data)
+                        updateBaseData(data["base_plan"])
                         updatePlanHistory(data["history"])
                         updatePhase('EditPlan')
                     }
@@ -76,7 +85,7 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ updatePhase, planPrompt, upda
             }
 
         }
-    }, [planPrompt, updatePhase, router, updatePlanHistory])
+    }, [planPrompt, updatePhase, router, updatePlanHistory, updateBaseData])
 
 
     return (

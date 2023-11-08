@@ -31,6 +31,17 @@ export default function Home() {
         setPlanHistory(newHistory)
     }
 
+    // base data object structure
+    interface Task {
+        description: string;
+        order: string;
+        sub_tasks: any[]
+    }
+    const [baseData, setBaseData] = useState<Task[]>([])
+    const updateBaseData = (newData: Task[]) => {
+        setBaseData(newData)
+    }
+
     // plan phases interface
     interface PlanPhases {
         [key: string]: React.ReactNode;
@@ -84,8 +95,8 @@ export default function Home() {
     // define key value pairs of phases
     const playground: PlanPhases = {
         NewPlan: <NewPlan updatePhase={updatePhase} updatePlanPrompt={updatePlanPrompt} />,
-        LoadingPlan: <LoadingPlan updatePhase={updatePhase} planPrompt={planPrompt} updatePlanHistory={updatePlanHistory} />,
-        EditPlan: <EditPlan />
+        LoadingPlan: <LoadingPlan updatePhase={updatePhase} planPrompt={planPrompt} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} />,
+        EditPlan: <EditPlan baseData={baseData} />
     }
 
     return (
