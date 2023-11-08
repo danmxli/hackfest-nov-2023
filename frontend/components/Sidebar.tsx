@@ -22,11 +22,11 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ info, history, updatePhase, updatePlanHistory, updateBaseData }) => {
     const router = useRouter()
     const fetchExecuted = useRef(false)
+    const [currItem, setCurrItem] = useState('')
 
     useEffect(() => {
         if (!fetchExecuted.current) {
             fetchExecuted.current = true
-            // if phase is newPlan, fetch all existing plans
         }
     })
 
@@ -53,6 +53,7 @@ const Sidebar: React.FC<SidebarProps> = ({ info, history, updatePhase, updatePla
                     if (data) {
                         console.log(data["match"]["base_tasks"])
                         updateBaseData(data["match"]["base_tasks"])
+                        setCurrItem(id)
                         updatePhase('EditPlan')
                     }
                 } else {
@@ -69,6 +70,7 @@ const Sidebar: React.FC<SidebarProps> = ({ info, history, updatePhase, updatePla
             <button
                 className="m-1.5 mb-0 p-1.5 bg-teal-950 border border-1 border-teal-600 rounded-lg text-teal-300 hover:bg-teal-700 flex items-center gap-2"
                 onClick={() => {
+                    setCurrItem('')
                     updatePhase('NewPlan')
                 }}
             >
@@ -84,7 +86,7 @@ const Sidebar: React.FC<SidebarProps> = ({ info, history, updatePhase, updatePla
                             onClick={() => (
                                 loadOne(item._id)
                             )}
-                            className="flex gap-2 items-center w-full h-8 p-2 hover:bg-teal-700 rounded-lg text-white cursor-pointer overflow-hidden whitespace-nowrap">
+                            className={`flex gap-2 items-center w-full h-8 p-2 hover:bg-teal-700 rounded-lg text-white cursor-pointer overflow-hidden whitespace-nowrap ${currItem === item._id ? "bg-teal-700" : ""}`}>
                             <div>
                                 <AiOutlineNodeIndex />
                             </div>
