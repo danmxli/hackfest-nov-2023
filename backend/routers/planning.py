@@ -52,6 +52,33 @@ def create_base():
         return (jsonify({"userId": "not found"}))
 
 
+@planning_blueprint.route('/load_one', methods=["POST"])
+def load_one():
+    # endpoint to get base_plan details for userId and plan _id
+    data = request.get_json()
+    userId = data.get("userId")
+    planId = data.get("planId")
+
+    user = UserInfo.find_one({"_id": userId})
+    if user:
+        all_plans = user.get("plans", [])
+
+        # find matching plan for planId
+        res = next((plan for plan in all_plans if plan['_id'] == planId), None)
+        if res is None:
+            return (jsonify({
+                "userId": userId,
+                "match": "not found"
+            }))
+        return (jsonify({
+            "userId": userId,
+            "match": res
+        }))
+
+    else:
+        return (jsonify({"userId": "not found"}))
+
+
 @planning_blueprint.route('/clear', methods=['POST'])
 def clear_all():
     data = request.get_json()
@@ -64,7 +91,6 @@ def clear_all():
         }
         UserInfo.update_one(user, clearPlans)
 
-        # get updated plan history 
         # get updated plan history
         history = []
         all_plans = UserInfo.find_one({"_id": userId}).get("plans", [])
