@@ -61,7 +61,7 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ updatePhase, planPrompt, upda
                 if (response.ok) {
                     const data = await response.json();
                     if (data) {
-                        console.log(data)
+                        // console.log(data)
                         updateBaseData(data["base_plan"])
                         updatePlanHistory(data["history"])
                         updatePhase('EditPlan')

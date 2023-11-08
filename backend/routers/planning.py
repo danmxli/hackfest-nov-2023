@@ -25,7 +25,7 @@ def create_base():
         # create dict to store the new plan
         newPlan = {
             "_id": str(uuid4()),
-            "description": "testing",
+            "description": prompt,
             "base_tasks": base
         }
         updateBasePlan = {
