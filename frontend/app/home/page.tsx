@@ -96,7 +96,7 @@ export default function Home() {
         NewPlan: <NewPlan updatePhase={updatePhase} updatePlanPrompt={updatePlanPrompt} />,
         LoadingPlan: <LoadingPlan updatePhase={updatePhase} planPrompt={planPrompt} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} />,
         RederingPlan: <></>,
-        EditPlan: <EditPlan baseData={baseData} />
+        EditPlan: <EditPlan baseData={baseData} updateBaseData={updateBaseData} />
     }
 
     return (

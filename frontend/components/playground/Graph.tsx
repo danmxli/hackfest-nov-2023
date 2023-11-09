@@ -19,6 +19,7 @@ interface Task {
 
 interface GraphProps {
     baseData: Task[];
+    updateOpenEditor: (isOpen: boolean) => void;
 }
 
 const initialNodes: Node<CustomNodeData>[] = [];
@@ -28,7 +29,7 @@ const nodeTypes = {
     custom: CustomNode
 }
 
-const buildInitialNodesAndEdges = (baseData: Task[]) => {
+const Graph: React.FC<GraphProps> = ({ baseData, updateOpenEditor }) => {
     // Clear the initialNodes and initialEdges arrays
     initialNodes.length = 0;
     initialEdges.length = 0;
@@ -39,7 +40,9 @@ const buildInitialNodesAndEdges = (baseData: Task[]) => {
             id: task.order,
             data: {
                 label: task.description,
-                subtask: undefined
+                // todo
+                subtask: undefined,
+                btnAction: updateOpenEditor
             },
             position: { x: 450 * coeff, y: 100 },
             type: 'custom'
@@ -54,13 +57,6 @@ const buildInitialNodesAndEdges = (baseData: Task[]) => {
             });
         }
     });
-};
-
-const Graph: React.FC<GraphProps> = ({ baseData }) => {
-    // Create the initialNodes and initialEdges arrays once
-    useMemo(() => {
-        buildInitialNodesAndEdges(baseData);
-    }, [baseData]);
 
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
