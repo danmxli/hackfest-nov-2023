@@ -2,12 +2,14 @@ import React, { useCallback, useMemo } from "react";
 import ReactFlow, {
     Controls,
     addEdge,
-    Background,
     useNodesState,
-    useEdgesState
+    useEdgesState,
+    Node,
+    Edge
 } from "reactflow";
 
 import "reactflow/dist/style.css";
+import CustomNode, { CustomNodeData } from "./custom/CustomNode";
 
 interface Task {
     description: string;
@@ -19,8 +21,12 @@ interface GraphProps {
     baseData: Task[];
 }
 
-const initialNodes: any[] = [];
+const initialNodes: Node<CustomNodeData>[] = [];
 const initialEdges: any[] = [];
+
+const nodeTypes = {
+    custom: CustomNode
+}
 
 const buildInitialNodesAndEdges = (baseData: Task[]) => {
     // Clear the initialNodes and initialEdges arrays
@@ -31,8 +37,12 @@ const buildInitialNodesAndEdges = (baseData: Task[]) => {
         let coeff = parseInt(task.order);
         initialNodes.push({
             id: task.order,
-            data: { label: task.description },
-            position: { x: 200 * coeff, y: 100 },
+            data: {
+                label: task.description,
+                subtask: undefined
+            },
+            position: { x: 450 * coeff, y: 100 },
+            type: 'custom'
         });
 
         let position = parseInt(task.order);
@@ -63,6 +73,7 @@ const Graph: React.FC<GraphProps> = ({ baseData }) => {
     return (
         <div className="h-full w-full">
             <ReactFlow
+                nodeTypes={nodeTypes}
                 nodes={nodes}
                 edges={edges}
                 onNodesChange={onNodesChange}
@@ -70,8 +81,7 @@ const Graph: React.FC<GraphProps> = ({ baseData }) => {
                 onConnect={onConnect}
                 fitView
             >
-                <Background />
-                <Controls />
+                <Controls showInteractive={false} />
             </ReactFlow>
         </div>
     );
