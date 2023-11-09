@@ -19,7 +19,7 @@ interface Task {
 
 interface GraphProps {
     baseData: Task[];
-    updateOpenEditor: (isOpen: boolean) => void;
+    updateOpenEditor: (isOpen: boolean, newData: any) => void;
 }
 
 const initialNodes: Node<CustomNodeData>[] = [];

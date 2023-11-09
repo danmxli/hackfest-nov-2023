@@ -4,13 +4,13 @@ import { Handle, NodeProps, Position } from 'reactflow';
 export type CustomNodeData = {
     label: string
     subtask: ReactNode
-    btnAction: (isOpen: boolean) => void;
+    btnAction: (isOpen: boolean, newData: any) => void;
 }
 
 const CustomNode = memo(({ data }: NodeProps<CustomNodeData>) => {
     // set editor to open state
     const handleButtonClick: MouseEventHandler<HTMLButtonElement> = () => {
-        data.btnAction(true);
+        data.btnAction(true, data.label);
     };
 
     return (
@@ -22,7 +22,7 @@ const CustomNode = memo(({ data }: NodeProps<CustomNodeData>) => {
             </div>
             <button
                 onClick={handleButtonClick}
-                className="mt-4 p-4 border border-2 border-teal-600 bg-teal-800 hover:bg-teal-700 text-teal-200 rounded-3xl">
+                className="mt-4 p-4 bg-teal-800 hover:bg-teal-700 text-teal-200 rounded-3xl">
                 Add subtasks
             </button>
         </div>
