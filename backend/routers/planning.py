@@ -143,10 +143,19 @@ def edit_subtask():
             result = UserInfo.update_one(
                 filter, removeSubtask, array_filters=array_filters)
             if result.modified_count > 0:
+                # get updated subtasks
+                updated_user = UserInfo.find_one({"_id": userId})
+                updated_plans = updated_user.get("plans", [])
+                target_plan = next(
+                    (plan for plan in updated_plans if plan['_id'] == planId))
+                updated_base_task = next(
+                    (task for task in target_plan["base_tasks"] if task["description"] == taskDescription))
+
                 return (jsonify({
                     "userId": userId,
                     "message": "successfully removed",
-                    "subtaskId": subtaskId
+                    "subtaskId": subtaskId,
+                    "subtasks": updated_base_task['sub_tasks']
                 }))
             else:
                 return (jsonify({

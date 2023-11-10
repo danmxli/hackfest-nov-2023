@@ -20,7 +20,7 @@ interface SideEditorProps {
         _id: string;
         description: string;
     }[]
-    
+
 }
 
 const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openEditor, updateOpenEditor, planId, subtasklist }) => {
@@ -30,6 +30,13 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
         // update localSubtasks when subtasklist change
         setLocalSubtasks([...subtasklist]);
     }, [subtasklist]);
+
+    const updateLocalSubtasks = (newLocalSubtask: {
+        _id: string;
+        description: string;
+    }[]) => {
+        setLocalSubtasks(newLocalSubtask)
+    }
 
     // sideEditor phases interface
     interface sideEditorPhases {
@@ -47,7 +54,7 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
     // define object of phases
     const options: sideEditorPhases = {
         AddSubtask: <UserInput planId={planId} nodeData={nodeData} />,
-        ViewSubtask: <DisplaySubtasks subtaskItems={localSubtasks} />
+        ViewSubtask: <DisplaySubtasks subtaskItems={localSubtasks} planId={planId} nodeData={nodeData} updateLocalSubtasks={updateLocalSubtasks} />
     }
 
     // handle view subtask
