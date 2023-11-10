@@ -52,6 +52,74 @@ def create_base():
         return (jsonify({"userId": "not found"}))
 
 
+@planning_blueprint.route('/add_subtask', methods=["POST"])
+def add_subtask():
+    # endpoint to add a subtask to a base task
+    subtaskId = ""
+    data = request.get_json()
+    userId = data.get("userId")
+    planId = data.get('planId')
+    taskDescription = data.get('taskDescription')
+    subtask = data.get('subtask')
+
+    user = UserInfo.find_one({"_id": userId})
+    if user:
+        all_plans = user.get("plans", [])
+
+        # find matching plan for planId
+        res = next((plan for plan in all_plans if plan['_id'] == planId), None)
+        if res is None:
+            return (jsonify({
+                "userId": userId,
+                "message": "not found"
+            }))
+
+        # find matching base task
+        base_task = next(
+            (task for task in res["base_tasks"] if task["description"] == taskDescription))
+        if base_task is None:
+            return (jsonify({
+                "userId": userId,
+                "message": "not found"
+            }))
+
+        subtaskId = str(uuid4())
+        # filter to identify the document
+        filter = {
+            "_id": userId,
+            "plans._id": planId,
+            "plans.base_tasks.description": taskDescription
+        }
+        addSubtask = {
+            "$push": {
+                "plans.$.base_tasks.$[task].sub_tasks": {
+                    "_id": subtaskId,
+                    "description": subtask
+                }
+            }
+        }
+        # Array filter to identify the specific base_task
+        array_filters = [{"task.description": taskDescription}]
+
+        # update_one
+        result = UserInfo.update_one(
+            filter, addSubtask, array_filters=array_filters)
+        if result.modified_count > 0:
+            return (jsonify({
+                "userId": userId,
+                "message": "successfully inserted",
+                "subtaskId": subtaskId
+            }))
+        else:
+            return (jsonify({
+                "userId": userId,
+                "message": "error updating"
+            }))
+
+    else:
+        return (jsonify({}))
+
+
 @planning_blueprint.route('/load_one', methods=["POST"])
 def load_one():
     # endpoint to get base_plan details for userId and plan _id
