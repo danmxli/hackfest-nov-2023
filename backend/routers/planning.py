@@ -166,43 +166,43 @@ def edit_subtask():
                     }))
 
 
-# @planning_blueprint.route("/all_subtasks", methods=["POST"])
-# def all_subtasks():
-#     # endpoint to retrieve all subtask as a list
-#     data = request.get_json()
-#     userId = data.get("userId")
-#     planId = data.get("planId")
-#     taskDescription = data.get('taskDescription')
+@planning_blueprint.route("/all_subtasks", methods=["POST"])
+def all_subtasks():
+    # endpoint to retrieve all subtask as a list
+    data = request.get_json()
+    userId = data.get("userId")
+    planId = data.get("planId")
+    taskDescription = data.get('taskDescription')
 
-#     user = UserInfo.find_one({"_id": userId})
-#     if user:
-#         all_plans = user.get("plans", [])
+    user = UserInfo.find_one({"_id": userId})
+    if user:
+        all_plans = user.get("plans", [])
 
-#         # find matching plan for planId
-#         res = next((plan for plan in all_plans if plan['_id'] == planId), None)
-#         if res is None:
-#             return (jsonify({
-#                 "userId": userId,
-#                 "message": "not found"
-#             }))
-#         base = next(
-#             (item for item in res['base_tasks'] if item['description'] == taskDescription), None)
-#         if base is None:
-#             return (jsonify({
-#                 "userId": userId,
-#                 "message": "base task not found"
-#             }))
+        # find matching plan for planId
+        res = next((plan for plan in all_plans if plan['_id'] == planId), None)
+        if res is None:
+            return (jsonify({
+                "userId": userId,
+                "message": "not found"
+            }))
+        base = next(
+            (item for item in res['base_tasks'] if item['description'] == taskDescription), None)
+        if base is None:
+            return (jsonify({
+                "userId": userId,
+                "message": "base task not found"
+            }))
         
-#         return (jsonify({
-#                 "userId": userId,
-#                 "message": "subtasks retrieved",
-#                 "subtasks": base["sub_tasks"]
-#                 }))
-#     else:
-#         return (jsonify({
-#             "userId": userId,
-#             "message": "user not found"
-#         }))
+        return (jsonify({
+                "userId": userId,
+                "message": "subtasks retrieved",
+                "subtasks": base["sub_tasks"]
+                }))
+    else:
+        return (jsonify({
+            "userId": userId,
+            "message": "user not found"
+        }))
 
 
 @planning_blueprint.route('/load_one', methods=["POST"])

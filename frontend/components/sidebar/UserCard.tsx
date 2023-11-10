@@ -2,7 +2,7 @@ import React from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { BsFillFilePersonFill } from "react-icons/bs"
-import { BiLogOut, BiSolidCoin } from "react-icons/bi"
+import { BiLogOut, BiCodeAlt } from "react-icons/bi"
 import { AiOutlineClear } from "react-icons/ai"
 
 interface UserCardProps {
@@ -68,12 +68,8 @@ const UserCard: React.FC<UserCardProps> = ({ info, updatePlanHistory, updatePhas
                     <BiLogOut /> logout
                 </button>
                 <button className="w-full mt-1 flex items-center gap-1 text-sm p-1 pl-3 pr-3 border border-teal-600 bg-teal-900/30 hover:text-white rounded-lg">
-                    <BiSolidCoin /> purchase tokens
+                    <BiCodeAlt /> updates
                 </button>
-            </div>
-
-            <div className="text-xs mt-1.5 w-full p-1.5 bg-teal-950 border border-1 border-teal-600 rounded-lg text-teal-300 items-center">
-                tokens used: 1/1000
             </div>
         </div>
     )
