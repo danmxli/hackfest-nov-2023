@@ -1,7 +1,8 @@
 import { useRouter } from "next/navigation";
 import React, { useState, MouseEventHandler } from "react";
 import { FaUserAstronaut } from 'react-icons/fa'
-import { AiFillCodeSandboxCircle } from 'react-icons/ai'
+import UserInput from "./UserInput";
+import DisplaySubtasks from "./DisplaySubtasks";
 
 interface Task {
     description: string;
@@ -13,13 +14,24 @@ interface SideEditorProps {
     nodeData: any
     updateBaseData: (newData: Task[]) => void;
     openEditor: boolean
-    updateOpenEditor: (isOpen: boolean, newData: any) => void;
+    updateOpenEditor: (isOpen: boolean, newData: any, newSubtasks: any) => void;
     planId: string
+    subtasklist: {
+        _id: string;
+        description: string;
+    }[]
 }
 
-const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openEditor, updateOpenEditor, planId }) => {
+const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openEditor, updateOpenEditor, planId, subtasklist }) => {
     const router = useRouter()
-    const [editorPhase, setEditorPhase] = useState('')
+
+    // sideEditor phases interface
+    interface sideEditorPhases {
+        [key: string]: React.ReactNode;
+    }
+
+    // phases are 'Fetching' 'ViewSubtask'
+    const [editorPhase, setEditorPhase] = useState('ViewSubtask')
 
     // update user input
     const [userInput, setUserInput] = useState('')
@@ -28,8 +40,14 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
     };
 
     const handleButtonClick: MouseEventHandler<HTMLButtonElement> = () => {
-        updateOpenEditor(false, null)
+        updateOpenEditor(false, null, null)
     };
+
+    // define object of phases
+    const options: sideEditorPhases = {
+        Fetching: <UserInput editorPhase={editorPhase} userInput={userInput} handleUserInput={handleUserInput} />,
+        ViewSubtask: <DisplaySubtasks subtaskItems={subtasklist} />
+    }
 
     // handle adding subtask
     const addSubtask = async () => {
@@ -46,31 +64,44 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
                 subtask: userInput
             }
             console.log(requestBody)
-            setEditorPhase('fetching')
-            try {
-                const response = await fetch('http://127.0.0.1:3000/planning/edit_subtask', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestBody),
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data) {
-                        console.log(data)
-                        setEditorPhase('')
-                        setUserInput('Subtask successfully added! You can clear this text.')
-                    }
-                } else {
-                    console.error('Request failed with status:', response.status);
-                }
-            } catch (error) {
-                console.error('Fetch request error:', error);
-            } 
+            setEditorPhase('Fetching')
+            // try {
+            //     const response = await fetch('http://127.0.0.1:3000/planning/edit_subtask', {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //         },
+            //         body: JSON.stringify(requestBody),
+            //     });
+            //     if (response.ok) {
+            //         const data = await response.json();
+            //         if (data) {
+            //             console.log(data)
+            //             setEditorPhase('Default')
+            //             setUserInput('Subtask successfully added! You can clear this text.')
+            //         }
+            //     } else {
+            //         console.error('Request failed with status:', response.status);
+            //     }
+            // } catch (error) {
+            //     console.error('Fetch request error:', error);
+            // } 
         }
+    }
 
+    // handle view subtask
+    const viewSubtask = async () => {
+        const userId = localStorage.getItem('userId')
+        if (userId === null || userId === 'null') {
+            router.push('/')
+        }
+        else {
+            const requestBody = {
 
+            }
+            setUserInput('')
+            setEditorPhase('ViewSubtask')
+        }
     }
 
     return (
@@ -91,28 +122,19 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
                             <FaUserAstronaut />Generate subtask with AI
                         </button>
                     </div>
-
-                    {editorPhase === 'fetching' ? (<>
-                        <div className="mt-2 h-52 w-full border border-gray-300 rounded-lg text-3xl flex items-center justify-center text-teal-600">
-                            <div className="flex items-center justify-center gap-2 p-12 border border-2 border-gray-300 rounded-3xl">
-                                <AiFillCodeSandboxCircle className="animate-spin" /> <span className="animate-pulse">loading...</span>
-                            </div>
-                        </div>
-                    </>) : (<>
-                        <textarea
-                            className="mt-2 p-2 h-52 w-full text-sm rounded-lg border border-gray-300 focus:outline-none scrollbar-hide"
-                            placeholder="Or add your description here..."
-                            value={userInput}
-                            onChange={handleUserInput}
-                        ></textarea>
-                    </>)}
-
                     <button
                         className="mt-2 p-2 pl-4 pr-4 border border-teal-600 rounded-xl text-sm"
+                        onClick={viewSubtask}
+                    >
+                        All subtasks
+                    </button>
+                    <button
+                        className="mt-2 ml-2 p-2 pl-4 pr-4 border border-teal-600 rounded-xl text-sm"
                         onClick={addSubtask}
                     >
                         Add subtask
                     </button>
+                    {options[editorPhase]}
                 </div>
             </>) : (
                 <h1 className="p-4 border border-2 border-teal-600 text-teal-600 rounded-3xl inline-flex">Select a node to add a subtask to.</h1>

@@ -19,7 +19,7 @@ interface Task {
 
 interface GraphProps {
     baseData: Task[];
-    updateOpenEditor: (isOpen: boolean, newData: any) => void;
+    updateOpenEditor: (isOpen: boolean, newData: any, newSubtasks: any) => void;
 }
 
 const initialNodes: Node<CustomNodeData>[] = [];
@@ -41,7 +41,7 @@ const Graph: React.FC<GraphProps> = ({ baseData, updateOpenEditor }) => {
             data: {
                 label: task.description,
                 // todo
-                subtask: undefined,
+                subtask: task.sub_tasks,
                 btnAction: updateOpenEditor
             },
             position: { x: 450 * coeff, y: 100 },
