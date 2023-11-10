@@ -51,16 +51,20 @@ def create_base():
     else:
         return (jsonify({"userId": "not found"}))
 
-
-@planning_blueprint.route('/add_subtask', methods=["POST"])
-def add_subtask():
-    # endpoint to add a subtask to a base task
+"""
+for "action": "add" specify "subtask": "example string"
+for "action": "remove" specify "subtaskId": "example-id-21331"
+"""
+@planning_blueprint.route('/edit_subtask', methods=["POST"])
+def edit_subtask():
+    # endpoint to add or remove a subtask to a base task
     subtaskId = ""
     data = request.get_json()
+    # base request args
     userId = data.get("userId")
     planId = data.get('planId')
     taskDescription = data.get('taskDescription')
-    subtask = data.get('subtask')
+    action = data.get("action")
 
     user = UserInfo.find_one({"_id": userId})
     if user:
@@ -83,41 +87,80 @@ def add_subtask():
                 "message": "not found"
             }))
 
-        subtaskId = str(uuid4())
         # filter to identify the document
         filter = {
             "_id": userId,
             "plans._id": planId,
             "plans.base_tasks.description": taskDescription
         }
-        addSubtask = {
-            "$push": {
-                "plans.$.base_tasks.$[task].sub_tasks": {
-                    "_id": subtaskId,
-                    "description": subtask
-                }
-            }
-        }
         # Array filter to identify the specific base_task
         array_filters = [{"task.description": taskDescription}]
 
-        # update_one
-        result = UserInfo.update_one(
-            filter, addSubtask, array_filters=array_filters)
-        if result.modified_count > 0:
-            return (jsonify({
-                "userId": userId,
-                "message": "successfully inserted",
-                "subtaskId": subtaskId
-            }))
+        # action to add subtask
+        if action == 'add':
+            subtask = data.get('subtask')
+            subtaskId = str(uuid4())
+            
+            addSubtask = {
+                "$push": {
+                    "plans.$.base_tasks.$[task].sub_tasks": {
+                        "_id": subtaskId,
+                        "description": subtask
+                    }
+                }
+            }
+
+            # update_one
+            result = UserInfo.update_one(
+                filter, addSubtask, array_filters=array_filters)
+            if result.modified_count > 0:
+                return (jsonify({
+                    "userId": userId,
+                    "message": "successfully inserted",
+                    "subtaskId": subtaskId
+                }))
+            else:
+                return (jsonify({
+                    "userId": userId,
+                    "message": "error updating"
+                }))
+
+        # action to remove subtask by subtaskId
+        elif action == 'remove':
+            subtaskId = data.get("subtaskId")
+
+            removeSubtask = {
+                "$pull": {
+                    "plans.$.base_tasks.$[task].sub_tasks": {
+                        "_id": subtaskId,
+                    }
+                }
+            }
+            # update_one
+            result = UserInfo.update_one(
+                filter, removeSubtask, array_filters=array_filters)
+            if result.modified_count > 0:
+                return (jsonify({
+                    "userId": userId,
+                    "message": "successfully removed",
+                    "subtaskId": subtaskId
+                }))
+            else:
+                return (jsonify({
+                    "userId": userId,
+                    "message": "error updating"
+                }))
+
         else:
             return (jsonify({
-                "userId": userId,
-                "message": "error updating"
-            }))
+                    "userId": userId,
+                    "message": "unknown action"
+                    }))
 
-    else:
-        return (jsonify({}))
+    return (jsonify({
+                    "userId": userId,
+                    "message": "user not found"
+                    }))
 
 
 @planning_blueprint.route('/load_one', methods=["POST"])
