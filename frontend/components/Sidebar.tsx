@@ -15,11 +15,12 @@ interface SidebarProps {
     info: string
     history: Array<{ _id: string, description: string }>;
     updatePhase: (newPhase: string) => void;
+    updatePlanId: (newId: string) => void;
     updatePlanHistory: (newHistory: Array<{ _id: string, description: string }>) => void;
     updateBaseData: (newData: Task[]) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ info, history, updatePhase, updatePlanHistory, updateBaseData }) => {
+const Sidebar: React.FC<SidebarProps> = ({ info, history, updatePhase, updatePlanId, updatePlanHistory, updateBaseData }) => {
     const router = useRouter()
     const fetchExecuted = useRef(false)
     const [currItem, setCurrItem] = useState('')
@@ -32,7 +33,7 @@ const Sidebar: React.FC<SidebarProps> = ({ info, history, updatePhase, updatePla
 
     const loadOne = async (id: string): Promise<void> => {
         const userId = localStorage.getItem('userId')
-        if (userId == null || userId == 'null') {
+        if (userId === null || userId === 'null') {
             console.error('null userId')
         }
         else {
@@ -52,8 +53,10 @@ const Sidebar: React.FC<SidebarProps> = ({ info, history, updatePhase, updatePla
                 if (response.ok) {
                     const data = await response.json();
                     if (data) {
+                        console.log(data["match"]["_id"])
                         console.log(data["match"]["base_tasks"])
                         updateBaseData(data["match"]["base_tasks"])
+                        updatePlanId(data["match"]["_id"])
                         setCurrItem(id)
                         updatePhase('EditPlan')
                     }

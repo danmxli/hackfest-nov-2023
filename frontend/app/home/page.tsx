@@ -15,13 +15,17 @@ export default function Home() {
     // phases for rendering components
     const [phase, setPhase] = useState('NewPlan')
     const [planPrompt, setPlanPrompt] = useState('')
+    const [planId, setPlanId] = useState('')
 
-    // update phase and prompt
+    // update phase and prompt and planId
     const updatePhase = (newPhase: string) => {
         setPhase(newPhase)
     }
     const updatePlanPrompt = (newPrompt: string) => {
         setPlanPrompt(newPrompt)
+    }
+    const updatePlanId = (newId: string) => {
+        setPlanId(newId)
     }
 
     // plan history
@@ -80,7 +84,7 @@ export default function Home() {
 
             // get userId from localStorage
             const userId = localStorage.getItem('userId')
-            if (userId == null || userId == 'null') {
+            if (userId === null || userId === 'null') {
                 setIsAuthenticated(false)
                 router.push('/'); // Redirect to landing page
             }
@@ -96,14 +100,14 @@ export default function Home() {
         NewPlan: <NewPlan updatePhase={updatePhase} updatePlanPrompt={updatePlanPrompt} />,
         LoadingPlan: <LoadingPlan updatePhase={updatePhase} planPrompt={planPrompt} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} />,
         RederingPlan: <></>,
-        EditPlan: <EditPlan baseData={baseData} updateBaseData={updateBaseData} />
+        EditPlan: <EditPlan baseData={baseData} updateBaseData={updateBaseData} planId={planId} />
     }
 
     return (
         <>
             {isAuthenticated ? (
                 <div className="flex">
-                    <Sidebar info={userInfo} history={planHistory} updatePhase={updatePhase} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} />
+                    <Sidebar info={userInfo} history={planHistory} updatePhase={updatePhase} updatePlanId={updatePlanId} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} />
                     <main className="flex-1">
                         {playground[phase]}
                     </main>

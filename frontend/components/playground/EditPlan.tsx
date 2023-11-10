@@ -11,9 +11,10 @@ interface Task {
 interface EditPlanProps {
     baseData: Task[]
     updateBaseData: (newData: Task[]) => void;
+    planId: string
 }
 
-const EditPlan: React.FC<EditPlanProps> = ({ baseData, updateBaseData }) => {
+const EditPlan: React.FC<EditPlanProps> = ({ baseData, updateBaseData, planId }) => {
     // editor open state
     const [openEditor, setOpenEditor] = useState(false)
     const [nodeData, setNodeData] = useState('')
@@ -27,7 +28,7 @@ const EditPlan: React.FC<EditPlanProps> = ({ baseData, updateBaseData }) => {
     return (
         <div className="h-screen overflow-scroll scrollbar-hide flex flex-col items-center">
             <Graph baseData={baseData} updateOpenEditor={updateOpenEditor} />
-            <SideEditor nodeData={nodeData} updateBaseData={updateBaseData} openEditor={openEditor} updateOpenEditor={updateOpenEditor} />
+            <SideEditor nodeData={nodeData} updateBaseData={updateBaseData} openEditor={openEditor} updateOpenEditor={updateOpenEditor} planId={planId} />
         </div>
     )
 }

@@ -55,7 +55,7 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ updatePhase, planPrompt, upda
         if (!fetchExecuted.current) {
             fetchExecuted.current = true
             const userId = localStorage.getItem('userId')
-            if (userId == null || userId == 'null') {
+            if (userId === null || userId === 'null') {
                 router.push('/'); // Redirect to landing page
             }
             else {

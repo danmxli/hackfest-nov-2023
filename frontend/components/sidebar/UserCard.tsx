@@ -16,7 +16,7 @@ const UserCard: React.FC<UserCardProps> = ({ info, updatePlanHistory, updatePhas
 
     const actionClear = async () => {
         const userId = localStorage.getItem('userId')
-        if (userId == null || userId == 'null') {
+        if (userId === null || userId === 'null') {
             console.error('null userId')
         }
         else {
