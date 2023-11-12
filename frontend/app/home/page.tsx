@@ -98,7 +98,7 @@ export default function Home() {
     // define object of phases
     const playground: PlanPhases = {
         NewPlan: <NewPlan updatePhase={updatePhase} updatePlanPrompt={updatePlanPrompt} />,
-        LoadingPlan: <LoadingPlan updatePhase={updatePhase} planPrompt={planPrompt} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} />,
+        LoadingPlan: <LoadingPlan updatePhase={updatePhase} planPrompt={planPrompt} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} />,
         RederingPlan: <></>,
         EditPlan: <EditPlan baseData={baseData} updateBaseData={updateBaseData} planId={planId} />
     }

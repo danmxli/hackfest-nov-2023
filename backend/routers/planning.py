@@ -15,6 +15,7 @@ planning_blueprint = Blueprint('planning', __name__)
 
 @planning_blueprint.route('/base', methods=["POST"])
 def create_base():
+    base_id = ''
     data = request.get_json()
     userId = data.get("userId")
     prompt = data.get("prompt")
@@ -23,8 +24,9 @@ def create_base():
     if user:
         base = base_plan(prompt)
         # create dict to store the new plan
+        base_id = str(uuid4())
         newPlan = {
-            "_id": str(uuid4()),
+            "_id": base_id,
             "description": prompt,
             "base_tasks": base
         }
@@ -45,6 +47,7 @@ def create_base():
         return (jsonify({
             "userId": userId,
             "base_plan": base,
+            "base_id": base_id,
             "history": history
         }))
 

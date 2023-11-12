@@ -7,7 +7,7 @@ import Loading from "../Loading";
 interface Task {
     description: string;
     order: string;
-    sub_tasks: any[]
+    sub_tasks: any[];
 }
 
 interface LoadingPlanProps {
@@ -15,10 +15,11 @@ interface LoadingPlanProps {
     planPrompt: string;
     updatePlanHistory: (newHistory: Array<{ _id: string, description: string }>) => void;
     updateBaseData: (newData: Task[]) => void;
+    updatePlanId: (newId: string) => void;
 }
 
 
-const LoadingPlan: React.FC<LoadingPlanProps> = ({ updatePhase, planPrompt, updatePlanHistory, updateBaseData }) => {
+const LoadingPlan: React.FC<LoadingPlanProps> = ({ updatePhase, planPrompt, updatePlanHistory, updateBaseData, updatePlanId }) => {
     const router = useRouter()
     const fetchExecuted = useRef(false)
     useEffect(() => {
@@ -39,8 +40,9 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ updatePhase, planPrompt, upda
                 if (response.ok) {
                     const data = await response.json();
                     if (data) {
-                        // console.log(data)
+                        console.log(data)
                         updateBaseData(data["base_plan"])
+                        updatePlanId(data["base_id"])
                         updatePlanHistory(data["history"])
                         updatePhase('EditPlan')
                     }
@@ -63,7 +65,7 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ updatePhase, planPrompt, upda
             }
 
         }
-    }, [planPrompt, updatePhase, router, updatePlanHistory, updateBaseData])
+    }, [planPrompt, updatePhase, router, updatePlanHistory, updateBaseData, updatePlanId])
 
 
     return (
