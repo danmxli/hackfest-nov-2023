@@ -107,7 +107,7 @@ export default function Home() {
         <>
             {isAuthenticated ? (
                 <div className="flex">
-                    <Sidebar info={userInfo} history={planHistory} updatePhase={updatePhase} updatePlanId={updatePlanId} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} />
+                    <Sidebar info={userInfo} history={planHistory} updatePhase={updatePhase} updatePlanId={updatePlanId} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} planId={planId} />
                     <main className="flex-1">
                         {playground[phase]}
                     </main>

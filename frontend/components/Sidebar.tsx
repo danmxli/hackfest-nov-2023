@@ -18,18 +18,17 @@ interface SidebarProps {
     updatePlanId: (newId: string) => void;
     updatePlanHistory: (newHistory: Array<{ _id: string, description: string }>) => void;
     updateBaseData: (newData: Task[]) => void;
+    planId: string
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ info, history, updatePhase, updatePlanId, updatePlanHistory, updateBaseData }) => {
+const Sidebar: React.FC<SidebarProps> = ({ info, history, updatePhase, updatePlanId, updatePlanHistory, updateBaseData, planId }) => {
     const router = useRouter()
     const fetchExecuted = useRef(false)
     const [currItem, setCurrItem] = useState('')
 
     useEffect(() => {
-        if (!fetchExecuted.current) {
-            fetchExecuted.current = true
-        }
-    })
+        setCurrItem(planId)
+    }, [planId])
 
     const loadOne = async (id: string): Promise<void> => {
         const userId = localStorage.getItem('userId')
