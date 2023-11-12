@@ -100,7 +100,10 @@ def edit_subtask():
             "plans.base_tasks.description": taskDescription
         }
         # Array filter to identify the specific base_task
-        array_filters = [{"task.description": taskDescription}]
+        array_filters = [
+            {"plan._id": planId},
+            {"task.description": taskDescription}
+        ]
 
         # action to add subtask
         if action == 'add':
@@ -109,7 +112,7 @@ def edit_subtask():
 
             addSubtask = {
                 "$push": {
-                    "plans.$.base_tasks.$[task].sub_tasks": {
+                    "plans.$[plan].base_tasks.$[task].sub_tasks": {
                         "_id": subtaskId,
                         "description": subtask
                     }
@@ -137,7 +140,7 @@ def edit_subtask():
 
             removeSubtask = {
                 "$pull": {
-                    "plans.$.base_tasks.$[task].sub_tasks": {
+                    "plans.$[plan].base_tasks.$[task].sub_tasks": {
                         "_id": subtaskId,
                     }
                 }
@@ -204,7 +207,7 @@ def all_subtasks():
                 "userId": userId,
                 "message": "base task not found"
             }))
-        
+
         return (jsonify({
                 "userId": userId,
                 "message": "subtasks retrieved",
