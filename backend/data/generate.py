@@ -33,7 +33,7 @@ def base_plan(userPrompt):
 
     return base_plan_list
 
-def generate_subtask(prompt):
+def base_chat_generate(prompt):
     # response = co.chat(
     #     model='command-nightly',
     #     message=f"here is my main task: {prompt}. Generate one subtask.",

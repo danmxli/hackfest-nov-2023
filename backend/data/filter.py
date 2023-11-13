@@ -11,7 +11,8 @@ def filter_base(text):
         plans.append({
             "order": step[0],
             "description": step[1],
-            "sub_tasks": []
+            "sub_tasks": [],
+            "chat_history": []
         })
 
     return plans
