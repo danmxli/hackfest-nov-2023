@@ -53,13 +53,13 @@ const UserCard: React.FC<UserCardProps> = ({ info, updatePlanHistory, updatePhas
                     <BsFillFilePersonFill /> {info}
                 </div>
                 <button
-                    className="w-full flex items-center gap-1 text-sm p-1 pl-3 pr-3 border border-teal-600 bg-teal-900/30 hover:text-white rounded-lg"
+                    className="w-full flex items-center gap-1 text-sm p-1 pl-3 pr-3 bg-teal-900/75 hover:text-white rounded-lg"
                     onClick={actionClear}
                 >
                     <AiOutlineClear /> clear all plans
                 </button>
                 <button
-                    className="w-full mt-1 flex items-center gap-1 text-sm p-1 pl-3 pr-3 border border-teal-600 bg-teal-900/30 hover:text-white rounded-lg"
+                    className="w-full mt-1 flex items-center gap-1 text-sm p-1 pl-3 pr-3 bg-teal-900/75 hover:text-white rounded-lg"
                     onClick={() => {
                         localStorage.setItem('userId', JSON.stringify(null))
                         router.push('/')
@@ -67,7 +67,7 @@ const UserCard: React.FC<UserCardProps> = ({ info, updatePlanHistory, updatePhas
                 >
                     <BiLogOut /> logout
                 </button>
-                <button className="w-full mt-1 flex items-center gap-1 text-sm p-1 pl-3 pr-3 border border-teal-600 bg-teal-900/30 hover:text-white rounded-lg">
+                <button className="w-full mt-1 flex items-center gap-1 text-sm p-1 pl-3 pr-3 bg-teal-900/75 hover:text-white rounded-lg">
                     <BiCodeAlt /> updates
                 </button>
             </div>
