@@ -110,7 +110,7 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
                             {nodeData}
                         </div>
                         <button className="m-2 p-2 pl-4 pr-4 bg-teal-800 text-teal-200 rounded-xl flex items-center gap-2">
-                            <FaUserAstronaut />Generate subtask with AI
+                            <FaUserAstronaut />AI help and insights
                         </button>
                     </div>
                     <button
