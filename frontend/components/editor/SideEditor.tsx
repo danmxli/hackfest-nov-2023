@@ -52,6 +52,9 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
     const updateChatView = (isOpen: boolean) => {
         setOpenChatView(isOpen)
     }
+    useEffect(() => {
+        updateChatView(false)
+    }, [nodeData])
 
     // close the editor
     const handleCloseEditor: MouseEventHandler<HTMLButtonElement> = () => {
