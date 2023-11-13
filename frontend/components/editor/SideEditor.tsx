@@ -3,6 +3,7 @@ import React, { useState, useEffect, MouseEventHandler } from "react";
 import { FaUserAstronaut } from 'react-icons/fa'
 import UserInput from "./UserInput";
 import DisplaySubtasks from "./DisplaySubtasks";
+import ChatView from "../playground/ChatView";
 
 interface Task {
     description: string;
@@ -46,10 +47,22 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
     // phases are 'Fetching' 'ViewSubtask'
     const [editorPhase, setEditorPhase] = useState('ViewSubtask')
 
+    // chat view update state function
+    const [openChatView, setOpenChatView] = useState(false)
+    const updateChatView = (isOpen: boolean) => {
+        setOpenChatView(isOpen)
+    }
+
     // close the editor
-    const handleButtonClick: MouseEventHandler<HTMLButtonElement> = () => {
+    const handleCloseEditor: MouseEventHandler<HTMLButtonElement> = () => {
+        updateChatView(false)
         updateOpenEditor(false, null, null)
     };
+
+    // open chat view
+    const handleOpenChat: MouseEventHandler<HTMLButtonElement> = () => {
+        updateChatView(true)
+    }
 
     // define object of phases
     const options: sideEditorPhases = {
@@ -100,7 +113,7 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
             {openEditor ? (<>
                 <button
                     className="p-1 pl-8 pr-8 border border-2 border-teal-600 text-teal-600 rounded-2xl"
-                    onClick={handleButtonClick}
+                    onClick={handleCloseEditor}
                 >
                     close
                 </button>
@@ -109,9 +122,19 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
                         <div className="p-4 max-h-52 font-light overflow-scroll scrollbar-hide">
                             {nodeData}
                         </div>
-                        <button className="m-2 p-2 pl-4 pr-4 bg-teal-800 text-teal-200 rounded-xl flex items-center gap-2">
-                            <FaUserAstronaut />AI help and insights
-                        </button>
+                        {openChatView ? (
+                            <div className="m-2 p-2 pl-4 pr-4 inline-flex bg-teal-600 text-teal-200 rounded-xl flex items-center gap-2">
+                                <FaUserAstronaut />AI help and insights
+                            </div>
+                        ) : (
+                            <button
+                                className="m-2 p-2 pl-4 pr-4 bg-teal-800 text-teal-200 rounded-xl flex items-center gap-2"
+                                onClick={handleOpenChat}
+                            >
+                                <FaUserAstronaut />AI help and insights
+                            </button>
+                        )}
+
                     </div>
                     <button
                         className="mt-2 p-2 pl-4 pr-4 border border-teal-600 rounded-xl text-sm"
@@ -129,6 +152,7 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
                     </button>
                     {options[editorPhase]}
                 </div>
+                <ChatView openChatView={openChatView} updateChatView={updateChatView} />
             </>) : (
                 <h1 className="p-4 border border-2 border-teal-600 text-teal-600 rounded-3xl inline-flex">Select a node to add a subtask to.</h1>
             )}
