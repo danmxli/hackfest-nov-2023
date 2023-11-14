@@ -31,7 +31,7 @@ def create_subtask():
         if res is None:
             return (jsonify({
                 "userId": userId,
-                "message": "not found"
+                "chat_logs": "not found"
             }))
 
         # find matching base task
@@ -40,7 +40,7 @@ def create_subtask():
         if base_task is None:
             return (jsonify({
                 "userId": userId,
-                "message": "not found"
+                "chat_logs": "not found"
             }))
 
         # filter to identify the document
@@ -59,16 +59,18 @@ def create_subtask():
 
         updateChatHistory = {
             "$push": {
-                "plans.$[plan].base_tasks.$[task].chat_history": [
-                    {
-                        "role": "user",
-                        "message": prompt
-                    },
-                    {
-                        "role": "bot",
-                        "message": response
-                    }
-                ]
+                "plans.$[plan].base_tasks.$[task].chat_history": {
+                    "$each": [
+                        {
+                            "role": "user",
+                            "message": prompt
+                        },
+                        {
+                            "role": "bot",
+                            "message": response
+                        }
+                    ]
+                }
             }
         }
 
@@ -98,3 +100,42 @@ def create_subtask():
             "userId": userId,
             "chat_logs": "not found"
         }))
+
+
+@chat_blueprint.route("/history", methods=["POST"])
+def chat_history():
+    data = request.get_json()
+    userId = data.get("userId")
+    planId = data.get('planId')
+    taskDescription = data.get('taskDescription')
+
+    user = UserInfo.find_one({"_id": userId})
+    if user:
+        all_plans = user.get("plans", [])
+
+        # find matching plan for planId
+        res = next((plan for plan in all_plans if plan['_id'] == planId), None)
+        if res is None:
+            return (jsonify({
+                "userId": userId,
+                "history": "not found"
+            }))
+
+        # find matching base task
+        base_task = next(
+            (task for task in res["base_tasks"] if task["description"] == taskDescription))
+        if base_task is None:
+            return (jsonify({
+                "userId": userId,
+                "history": "not found"
+            }))
+
+        return (jsonify({
+                "userId": userId,
+                "history": base_task["chat_history"]
+                }))
+
+    return jsonify({
+        "userId": userId,
+        "history": "not found"
+    })

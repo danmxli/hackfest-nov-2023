@@ -1,52 +1,47 @@
-import React, { useState, ChangeEvent, KeyboardEvent } from 'react';
-import { AiOutlineSend } from 'react-icons/ai'
+import React, { useState, ChangeEvent, MouseEventHandler } from 'react';
+import { AiOutlineSend, AiOutlineLoading3Quarters } from 'react-icons/ai'
 
 interface ChatInputProps {
-    onSendMessage: (message: string) => void;
+    inputValue: string
+    updateInputValue: (newValue: string) => void
+    fetchResponse: (userInput: string) => void
+    isLoading: boolean
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage }) => {
-    const [inputValue, setInputValue] = useState<string>('');
+const ChatInput: React.FC<ChatInputProps> = ({ inputValue, updateInputValue, fetchResponse, isLoading }) => {
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setInputValue(event.target.value);
+        updateInputValue(event.target.value);
     };
 
-    const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
-            sendMessage();
-        }
-    };
-
-    const sendMessage = () => {
-        if (inputValue.trim() !== '') {
-            onSendMessage(inputValue);
-            setInputValue('');
-        }
-    };
+    const handleFetchResponse: MouseEventHandler<HTMLButtonElement> = () => {
+        fetchResponse(inputValue)
+    }
 
     return (
-        <div className="grid grid-cols-12 items-center p-2 bg-gray-200 rounded-2xl w-full">
+        <div className="grid grid-cols-12 gap-2 items-center p-2 bg-teal-100 rounded-2xl w-full">
             <div className='col-span-10'>
                 <input
                     type="text"
                     placeholder="Type your message..."
                     value={inputValue}
                     onChange={handleChange}
-                    onKeyPress={handleKeyPress}
-                    className="w-full p-2 bg-white border border-gray-300 rounded-md focus:outline-none"
+                    className="w-full p-2 bg-white border border-teal-500 rounded-md focus:outline-none"
                 />
             </div>
 
-            <div className='col-span-2 flex justify-center'>
+            {isLoading ? (
+                <div className="col-span-2 flex justify-center p-2 bg-teal-500 text-white rounded-md hover:bg-teal-600 focus:outline-none">
+                    <AiOutlineLoading3Quarters className="animate-spin" />
+                </div>
+            ) : (
                 <button
-                    onClick={sendMessage}
-                    className="p-2 bg-teal-500 text-white rounded-md hover:bg-teal-600 focus:outline-none"
+                    onClick={handleFetchResponse}
+                    className="col-span-2 flex justify-center p-2 bg-teal-500 text-white rounded-md hover:bg-teal-600 focus:outline-none"
                 >
-                    <AiOutlineSend/>
+                    <AiOutlineSend />
                 </button>
-            </div>
-
+            )}
 
         </div>
     );

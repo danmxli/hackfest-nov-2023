@@ -77,7 +77,7 @@ const DisplaySubtasks: React.FC<DisplaySubtasksProps> = ({ subtaskItems, planId,
                     </div>
                 ))}
             </>) : (<>
-                <div className="p-2 border border-gray-300 rounded-xl text-gray-400 text-xl flex items-center justify-center gap-2">
+                <div className="p-2 border border-gray-300 rounded-xl text-gray-400 text-sm flex items-center justify-center gap-2">
                     <RiNodeTree />Add subtasks to this node
                 </div>
             </>)}
