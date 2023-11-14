@@ -2,7 +2,7 @@ import React from "react"
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import UserCard from "./sidebar/UserCard"
-import { BsNodePlusFill } from "react-icons/bs"
+import { BsNodePlusFill, BsLayoutSidebarInset } from "react-icons/bs"
 import { AiOutlineNodeIndex } from "react-icons/ai"
 
 interface Task {
@@ -25,6 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({ info, history, updatePhase, updatePla
     const router = useRouter()
     const fetchExecuted = useRef(false)
     const [currItem, setCurrItem] = useState('')
+    const [isOpen, setIsOpen] = useState(true)
 
     useEffect(() => {
         setCurrItem(planId)
@@ -69,41 +70,71 @@ const Sidebar: React.FC<SidebarProps> = ({ info, history, updatePhase, updatePla
     }
 
     return (
-        <div className="flex flex-col h-screen bg-teal-900 w-48">
-            <button
-                className="m-1.5 mb-0 p-1.5 bg-teal-950 border border-1 border-teal-600 rounded-lg text-teal-300 hover:bg-teal-700 flex items-center gap-2"
-                onClick={() => {
-                    setCurrItem('')
-                    updatePhase('NewPlan')
-                }}
-            >
-                <BsNodePlusFill />New plan
-            </button>
-            <div className="flex-grow max-h-fit overflow-scroll scrollbar-hide">
-                {history.map((item, index) => (
-                    <div
-                        key={item._id}
-                        className="m-1.5"
-                    >
+        <>
+            {isOpen ? (
+                <div className="flex flex-col h-screen bg-teal-900 w-48">
+                    <div className="grid grid-cols-4">
                         <button
-                            onClick={() => (
-                                loadOne(item._id)
-                            )}
-                            className={`flex gap-2 items-center w-full h-8 p-2 hover:bg-teal-700 rounded-lg text-white cursor-pointer overflow-hidden whitespace-nowrap ${currItem === item._id ? "bg-teal-700" : ""}`}>
-                            <div>
-                                <AiOutlineNodeIndex />
-                            </div>
-                            <span className="truncate text-xs">
-                                {item.description}
-                            </span>
-
+                            className="col-span-3 mt-1.5 ml-1.5 mb-0 p-1.5 bg-teal-950 border border-1 border-teal-600 rounded-lg text-teal-300 hover:bg-teal-700 flex items-center gap-2"
+                            onClick={() => {
+                                setCurrItem('')
+                                updatePhase('NewPlan')
+                            }}
+                        >
+                            <BsNodePlusFill />New plan
                         </button>
-
+                        <button
+                            className="col-span-1 m-1.5 mb-0 p-1.5 bg-teal-950 border border-1 border-teal-600 rounded-lg text-teal-300 hover:bg-teal-700 flex items-center justify-center"
+                            onClick={() => {
+                                setIsOpen(!isOpen)
+                            }}
+                        >
+                            <BsLayoutSidebarInset />
+                        </button>
                     </div>
-                ))}
-            </div>
-            <UserCard info={info} updatePlanHistory={updatePlanHistory} updatePhase={updatePhase} />
-        </div>
+
+                    <div className="flex-grow max-h-fit overflow-scroll scrollbar-hide">
+                        {history.map((item, index) => (
+                            <div
+                                key={item._id}
+                                className="m-1.5"
+                            >
+                                <button
+                                    onClick={() => (
+                                        loadOne(item._id)
+                                    )}
+                                    className={`flex gap-2 items-center w-full h-8 p-2 hover:bg-teal-700 rounded-lg text-white cursor-pointer overflow-hidden whitespace-nowrap ${currItem === item._id ? "bg-teal-700" : ""}`}>
+                                    <div>
+                                        <AiOutlineNodeIndex />
+                                    </div>
+                                    <span className="truncate text-xs">
+                                        {item.description}
+                                    </span>
+
+                                </button>
+
+                            </div>
+                        ))}
+                    </div>
+                    <UserCard info={info} updatePlanHistory={updatePlanHistory} updatePhase={updatePhase} />
+                </div>
+            ) : (
+                <>
+                    <div className="flex flex-col h-screen bg-teal-900">
+                        <button
+                            className="col-span-1 m-1.5 mb-0 p-2.5 bg-teal-950 border border-1 border-teal-600 rounded-lg text-teal-300 hover:bg-teal-700 flex items-center justify-center"
+                            onClick={() => {
+                                setIsOpen(!isOpen)
+                            }}
+                        >
+                            <BsLayoutSidebarInset />
+                        </button>
+                    </div>
+
+                </>
+            )}
+        </>
+
     )
 }
 

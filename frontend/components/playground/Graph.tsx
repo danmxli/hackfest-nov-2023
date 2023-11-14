@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from "react";
 import ReactFlow, {
-    Controls,
     addEdge,
     useNodesState,
     useEdgesState,
@@ -77,7 +76,6 @@ const Graph: React.FC<GraphProps> = ({ baseData, updateOpenEditor }) => {
                 onConnect={onConnect}
                 fitView
             >
-                <Controls showInteractive={false} />
             </ReactFlow>
         </div>
     );
