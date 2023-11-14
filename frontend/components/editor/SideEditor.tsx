@@ -83,6 +83,9 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
     const addMessage = (newMessage: Message) => {
         setChatHistory((prevChatHistory) => [...prevChatHistory, newMessage]);
     };
+    const clearChatHistory = () => {
+        setChatHistory([])
+    }
 
     // handle view subtask
     const viewSubtask = async () => {
@@ -132,7 +135,8 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
             const requestBody = {
                 userId: JSON.parse(userId),
                 planId: planId,
-                taskDescription: nodeData
+                taskDescription: nodeData,
+                action: "view"
             }
             try {
                 const response = await fetch('http://127.0.0.1:3000/chat/history', {
@@ -202,7 +206,7 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
                     </button>
                     {options[editorPhase]}
                 </div>
-                <ChatView openChatView={openChatView} updateChatView={updateChatView} chatHistory={chatHistory} addMessage={addMessage} />
+                <ChatView openChatView={openChatView} updateChatView={updateChatView} chatHistory={chatHistory} addMessage={addMessage} planId={planId} taskDescription={nodeData} clearChatHistory={clearChatHistory} />
             </>) : (
                 <h1 className="p-4 border border-2 border-teal-600 text-teal-600 rounded-3xl inline-flex">Select a node to add a subtask to.</h1>
             )}

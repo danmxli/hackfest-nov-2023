@@ -1,3 +1,4 @@
+from crypt import methods
 from dotenv import load_dotenv
 from pymongo.mongo_client import MongoClient
 import os
@@ -102,12 +103,19 @@ def create_subtask():
         }))
 
 
+"""
+view action: return chat_history list
+clear action: set chat_history list to []    
+"""
+
+
 @chat_blueprint.route("/history", methods=["POST"])
 def chat_history():
     data = request.get_json()
     userId = data.get("userId")
     planId = data.get('planId')
     taskDescription = data.get('taskDescription')
+    action = data.get('action')
 
     user = UserInfo.find_one({"_id": userId})
     if user:
@@ -130,10 +138,44 @@ def chat_history():
                 "history": "not found"
             }))
 
-        return (jsonify({
+        if action == "view":
+            # return chat_history list
+            return (jsonify({
                 "userId": userId,
                 "history": base_task["chat_history"]
-                }))
+            }))
+        elif action == "clear":
+            ...
+            # filter to identify the document
+            filter = {
+                "_id": userId,
+                "plans._id": planId,
+                "plans.base_tasks.description": taskDescription
+            }
+            # Array filter to identify the specific base_task
+            array_filters = [
+                {"plan._id": planId},
+                {"task.description": taskDescription}
+            ]
+
+            clearChatHistory = {
+                "$set": {
+                    "plans.$[plan].base_tasks.$[task].chat_history": []
+                }
+            }
+
+            result = UserInfo.update_one(
+                filter, clearChatHistory, array_filters=array_filters)
+            return (jsonify({
+                "userId": userId,
+                "history": []
+            }))
+
+        else:
+            return (jsonify({
+                "userId": userId,
+                "history": "unknown action"
+            }))
 
     return jsonify({
         "userId": userId,

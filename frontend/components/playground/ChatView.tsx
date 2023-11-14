@@ -1,5 +1,6 @@
-import React, { MouseEventHandler, useState } from "react"
+import React, { MouseEventHandler, useState, useEffect } from "react"
 import ChatInput from "./chat/ChatInput"
+import { useRouter } from "next/navigation"
 
 interface Message {
     message: string
@@ -11,9 +12,21 @@ interface ChatViewProps {
     updateChatView: (isOpen: boolean) => void
     chatHistory: Message[]
     addMessage: (newMessage: Message) => void
+    planId: string
+    taskDescription: string
+    clearChatHistory: () => void
 }
 
-const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatHistory, addMessage }) => {
+const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatHistory, addMessage, planId, taskDescription, clearChatHistory }) => {
+
+    const router = useRouter()
+
+    // local copy of chat history
+    const [historyCopy, setHistoryCopy] = useState<Message[]>([])
+
+    useEffect(() => {
+        setHistoryCopy([...chatHistory])
+    }, [chatHistory])
 
     const handleCloseChat: MouseEventHandler<HTMLButtonElement> = () => {
         updateChatView(false)
@@ -27,9 +40,76 @@ const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatH
     }
 
     const fetchResponse = async (userInput: string) => {
-        console.log(userInput)
         updateInputValue('')
-        setIsLoading(true)
+        // setIsLoading(true) 
+
+        const userId = localStorage.getItem('userId')
+        if (userId === null || userId === 'null') {
+            router.push('/'); // Redirect to landing page
+        }
+        else {
+            const requestBody = {
+                userId: JSON.parse(userId),
+                planId: planId,
+                taskDescription: taskDescription,
+                prompt: userInput
+            }
+            addMessage({ message: userInput, role: 'user' })
+            try {
+                const response = await fetch('http://127.0.0.1:3000/chat/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody),
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data) {
+                        console.log(data["chat_logs"])
+                        addMessage(data["chat_logs"][1])
+                    }
+                } else {
+                    console.error('Request failed with status:', response.status);
+                }
+            } catch (error) {
+                console.error('Fetch request error:', error);
+            }
+        }
+    }
+
+    const handleClearHistory: MouseEventHandler<HTMLButtonElement> = async () => {
+        const userId = localStorage.getItem('userId')
+        if (userId === null || userId === 'null') {
+            router.push('/'); // Redirect to landing page
+        }
+        else {
+            const requestBody = {
+                userId: JSON.parse(userId),
+                planId: planId,
+                taskDescription: taskDescription,
+                action: "clear"
+            }
+            try {
+                const response = await fetch('http://127.0.0.1:3000/chat/history', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody),
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data) {
+                        clearChatHistory()
+                    }
+                } else {
+                    console.error('Request failed with status:', response.status);
+                }
+            } catch (error) {
+                console.error('Fetch request error:', error);
+            }
+        }
     }
 
     return (
@@ -38,7 +118,7 @@ const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatH
                 <div className="fixed bottom-0 right-1/3 w-1/4 h-5/6 p-2 bg-white border-l-2 border-t-2 rounded-tl-3xl border-teal-400">
                     <div className="h-full grid grid-rows-6">
                         <div className="row-span-5 overflow-scroll scrollbar-hide">
-                            {chatHistory.map((message, index) => (
+                            {historyCopy.map((message, index) => (
                                 <div
                                     key={index}
                                     className={`${message.role === 'user' ? 'justify-end' : 'justify-start'
@@ -62,15 +142,15 @@ const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatH
                         <div className="flex items-center justify-center gap-2">
                             <button
                                 className="p-1 pl-8 pr-8 border border-2 border-teal-400 bg-white text-teal-600 rounded-2xl text-xs"
-                                onClick={handleCloseChat}
+                                onClick={handleClearHistory}
                             >
-                                exit chat
+                                clear chat
                             </button>
                             <button
                                 className="p-1 pl-8 pr-8 border border-2 border-teal-400 bg-white text-teal-600 rounded-2xl text-xs"
                                 onClick={handleCloseChat}
                             >
-                                clear chat
+                                exit chat
                             </button>
                         </div>
                     </div>
