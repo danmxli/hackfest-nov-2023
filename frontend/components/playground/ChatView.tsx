@@ -1,7 +1,7 @@
 import React, { MouseEventHandler, useState, useEffect } from "react"
 import ChatInput from "./chat/ChatInput"
 import { useRouter } from "next/navigation"
-import { FaUserAstronaut } from "react-icons/fa"
+import StarterExamples from "./chat/StarterExamples"
 
 interface Message {
     message: string
@@ -35,6 +35,10 @@ const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatH
 
     // chat input value and loading states
     const [isLoading, setIsLoading] = useState(false)
+    const updateLoadingState = (newState: boolean) => {
+        setIsLoading(newState)
+    }
+
     const [inputValue, setInputValue] = useState('')
     const updateInputValue = (newValue: string) => {
         setInputValue(newValue)
@@ -117,7 +121,7 @@ const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatH
     return (
         <>
             {openChatView ? (
-                <div className="fixed bottom-0 right-1/3 w-1/4 h-5/6 p-2 bg-white border-l-2 border-t-2 rounded-tl-3xl border-teal-400">
+                <div className="fixed bottom-0 right-1/3 w-1/4 h-5/6 p-2 bg-white border-l-2 border-t-2 rounded-tl-3xl border-teal-800">
                     <div className="h-full grid grid-rows-6">
                         <div className="row-span-5 overflow-scroll scrollbar-hide">
                             {historyCopy.length > 0 ? (<>
@@ -137,39 +141,7 @@ const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatH
                                     </div>
                                 ))}
                             </>) : (<>
-                                <div className="flex items-center justify-center gap-2 text-xl text-gray-400">
-                                    <FaUserAstronaut />
-                                    Examples to get started:
-                                </div>
-                                <div className="mt-2 grid grid-cols-3 gap-2 text-xs">
-                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
-                                        Create a list of subtasks I can feasibly accomplish.
-                                    </div>
-                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
-                                        How can I divide and conquer to complete the base task?
-                                    </div>
-                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
-                                        Tell me the most difficult aspect of the base task.
-                                    </div>
-                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
-                                        What is special about this base task?
-                                    </div>
-                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
-                                        How can completing this task make me stronger?
-                                    </div>
-                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
-                                        How can I overcome common obstacles?
-                                    </div>
-                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
-                                        How much time and effort should I spend on this?
-                                    </div>
-                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
-                                        In doing this task, do I have to spend money?
-                                    </div>
-                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
-                                        What makes a successful individual?
-                                    </div>
-                                </div>
+                                <StarterExamples planId={planId} taskDescription={taskDescription} addMessage={addMessage} updateLoadingState={updateLoadingState} />
                             </>)}
 
                         </div>
@@ -180,13 +152,13 @@ const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatH
                         </div>
                         <div className="flex items-center justify-center gap-2">
                             <button
-                                className="p-1 pl-8 pr-8 border border-2 border-teal-400 bg-white text-teal-600 rounded-2xl text-xs"
+                                className="p-1 pl-8 pr-8 border border-2 border-teal-600 bg-white text-teal-600 rounded-2xl text-xs"
                                 onClick={handleClearHistory}
                             >
                                 clear chat
                             </button>
                             <button
-                                className="p-1 pl-8 pr-8 border border-2 border-teal-400 bg-white text-teal-600 rounded-2xl text-xs"
+                                className="p-1 pl-8 pr-8 border border-2 border-teal-600 bg-white text-teal-600 rounded-2xl text-xs"
                                 onClick={handleCloseChat}
                             >
                                 exit chat
