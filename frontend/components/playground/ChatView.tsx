@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useState, useEffect } from "react"
+import React, { MouseEventHandler, useState, useEffect, useRef } from "react"
 import ChatInput from "./chat/ChatInput"
 import { useRouter } from "next/navigation"
 import StarterExamples from "./chat/StarterExamples"
@@ -28,6 +28,14 @@ const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatH
     useEffect(() => {
         setHistoryCopy([...chatHistory])
     }, [chatHistory])
+
+    // ref to scroll to bottom whenever historyCopy value updates
+    const chatContainerRef = useRef<HTMLDivElement | null>(null);
+    useEffect(() => {
+        if (chatContainerRef.current) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+    }, [historyCopy]);
 
     const handleCloseChat: MouseEventHandler<HTMLButtonElement> = () => {
         updateChatView(false)
@@ -123,7 +131,7 @@ const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatH
             {openChatView ? (
                 <div className="fixed bottom-0 right-1/3 w-1/4 h-5/6 p-2 bg-white border-l-2 border-t-2 rounded-tl-3xl border-teal-800">
                     <div className="h-full grid grid-rows-6">
-                        <div className="row-span-5 overflow-scroll scrollbar-hide">
+                        <div ref={chatContainerRef} className="row-span-5 overflow-scroll scrollbar-hide">
                             {historyCopy.length > 0 ? (<>
                                 {historyCopy.map((message, index) => (
                                     <div
@@ -141,7 +149,7 @@ const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatH
                                     </div>
                                 ))}
                             </>) : (<>
-                                <StarterExamples planId={planId} taskDescription={taskDescription} addMessage={addMessage} updateLoadingState={updateLoadingState} />
+                                <StarterExamples fetchResponse={fetchResponse} />
                             </>)}
 
                         </div>

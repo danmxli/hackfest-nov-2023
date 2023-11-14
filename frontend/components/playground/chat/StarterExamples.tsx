@@ -1,20 +1,12 @@
-import React, { MouseEventHandler } from "react"
+import React from "react"
 import { useRouter } from "next/navigation"
 import { FaUserAstronaut } from "react-icons/fa"
 
-interface Message {
-    message: string
-    role: string
-}
-
 interface StarterExamplesProps {
-    planId: string
-    taskDescription: string
-    addMessage: (newMessage: Message) => void
-    updateLoadingState: (newState: boolean) => void
+    fetchResponse: (userInput: string) => Promise<void>
 }
 
-const StarterExamples: React.FC<StarterExamplesProps> = ({ planId, taskDescription, addMessage, updateLoadingState }) => {
+const StarterExamples: React.FC<StarterExamplesProps> = ({ fetchResponse }) => {
 
     const router = useRouter()
 
@@ -29,45 +21,6 @@ const StarterExamples: React.FC<StarterExamplesProps> = ({ planId, taskDescripti
         { id: 8, label: "In doing this task, do I have to spend money?" },
         { id: 9, label: "What makes a successful individual?" }
     ]
-
-    const fetchResponse = async (userInput: string) => {
-
-        const userId = localStorage.getItem('userId')
-        if (userId === null || userId === 'null') {
-            router.push('/'); // Redirect to landing page
-        }
-        else {
-            const requestBody = {
-                userId: JSON.parse(userId),
-                planId: planId,
-                taskDescription: taskDescription,
-                prompt: userInput
-            }
-            addMessage({ message: userInput, role: 'user' })
-            updateLoadingState(true)
-            try {
-                const response = await fetch('http://127.0.0.1:3000/chat/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestBody),
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data) {
-                        console.log(data["chat_logs"])
-                        addMessage(data["chat_logs"][1])
-                        updateLoadingState(false)
-                    }
-                } else {
-                    console.error('Request failed with status:', response.status);
-                }
-            } catch (error) {
-                console.error('Fetch request error:', error);
-            }
-        }
-    }
 
     return (
         <>
