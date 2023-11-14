@@ -1,6 +1,7 @@
 import React, { MouseEventHandler, useState, useEffect } from "react"
 import ChatInput from "./chat/ChatInput"
 import { useRouter } from "next/navigation"
+import { FaUserAstronaut } from "react-icons/fa"
 
 interface Message {
     message: string
@@ -41,7 +42,6 @@ const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatH
 
     const fetchResponse = async (userInput: string) => {
         updateInputValue('')
-        // setIsLoading(true) 
 
         const userId = localStorage.getItem('userId')
         if (userId === null || userId === 'null') {
@@ -55,6 +55,7 @@ const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatH
                 prompt: userInput
             }
             addMessage({ message: userInput, role: 'user' })
+            setIsLoading(true)
             try {
                 const response = await fetch('http://127.0.0.1:3000/chat/', {
                     method: 'POST',
@@ -68,6 +69,7 @@ const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatH
                     if (data) {
                         console.log(data["chat_logs"])
                         addMessage(data["chat_logs"][1])
+                        setIsLoading(false)
                     }
                 } else {
                     console.error('Request failed with status:', response.status);
@@ -118,21 +120,58 @@ const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatH
                 <div className="fixed bottom-0 right-1/3 w-1/4 h-5/6 p-2 bg-white border-l-2 border-t-2 rounded-tl-3xl border-teal-400">
                     <div className="h-full grid grid-rows-6">
                         <div className="row-span-5 overflow-scroll scrollbar-hide">
-                            {historyCopy.map((message, index) => (
-                                <div
-                                    key={index}
-                                    className={`${message.role === 'user' ? 'justify-end' : 'justify-start'
-                                        } flex mb-1`
-                                    }
-                                >
+                            {historyCopy.length > 0 ? (<>
+                                {historyCopy.map((message, index) => (
                                     <div
-                                        className={`border ${message.role === 'user' ? 'bg-teal-100 border-teal-300' : 'bg-gray-50/50 border-gray-300'
-                                            } rounded-2xl max-w-3/4 p-3`}
+                                        key={index}
+                                        className={`${message.role === 'user' ? 'justify-end' : 'justify-start'
+                                            } flex mb-1`
+                                        }
                                     >
-                                        <p className="text-sm font-light">{message.message}</p>
+                                        <div
+                                            className={`border ${message.role === 'user' ? 'bg-teal-100 border-teal-300' : 'bg-gray-50/50 border-gray-300'
+                                                } rounded-2xl max-w-3/4 p-3`}
+                                        >
+                                            <p className="text-sm font-light">{message.message}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </>) : (<>
+                                <div className="flex items-center justify-center gap-2 text-xl text-gray-400">
+                                    <FaUserAstronaut />
+                                    Examples to get started:
+                                </div>
+                                <div className="mt-2 grid grid-cols-3 gap-2 text-xs">
+                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
+                                        Create a list of subtasks I can feasibly accomplish.
+                                    </div>
+                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
+                                        How can I divide and conquer to complete the base task?
+                                    </div>
+                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
+                                        Tell me the most difficult aspect of the base task.
+                                    </div>
+                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
+                                        What is special about this base task?
+                                    </div>
+                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
+                                        How can completing this task make me stronger?
+                                    </div>
+                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
+                                        How can I overcome common obstacles?
+                                    </div>
+                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
+                                        How much time and effort should I spend on this?
+                                    </div>
+                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
+                                        In doing this task, do I have to spend money?
+                                    </div>
+                                    <div className="border border-2 p-2 rounded-xl text-center text-gray-400 flex items-center justify-center">
+                                        What makes a successful individual?
                                     </div>
                                 </div>
-                            ))}
+                            </>)}
+
                         </div>
                         <div className="text-xs flex items-center justify-center">
 
