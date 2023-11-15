@@ -13,7 +13,9 @@ export default withPageAuthRequired(function Home({ user }) {
     const [userInfo, setUserInfo] = useState('')
     // phases for rendering components
     const [phase, setPhase] = useState('NewPlan')
+    // plan prompt and prompt types prompt_quickstart, prompt_developer, prompt_academia
     const [planPrompt, setPlanPrompt] = useState('')
+    const [promptType, setPromptType] = useState('prompt_quickstart')
     const [planId, setPlanId] = useState('')
 
     // update phase and prompt and planId
@@ -22,6 +24,9 @@ export default withPageAuthRequired(function Home({ user }) {
     }
     const updatePlanPrompt = (newPrompt: string) => {
         setPlanPrompt(newPrompt)
+    }
+    const updatePromptType = (newPromptType: string) => {
+        setPromptType(newPromptType)
     }
     const updatePlanId = (newId: string) => {
         setPlanId(newId)
@@ -88,7 +93,7 @@ export default withPageAuthRequired(function Home({ user }) {
 
     // define object of phases
     const playground: PlanPhases = {
-        NewPlan: <NewPlan updatePhase={updatePhase} updatePlanPrompt={updatePlanPrompt} />,
+        NewPlan: <NewPlan updatePhase={updatePhase} updatePlanPrompt={updatePlanPrompt} promptType={promptType} updatePromptType={updatePromptType} />,
         LoadingPlan: <LoadingPlan user={user} updatePhase={updatePhase} planPrompt={planPrompt} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} />,
         RederingPlan: <></>,
         EditPlan: <EditPlan user={user} baseData={baseData} updateBaseData={updateBaseData} planId={planId} />
