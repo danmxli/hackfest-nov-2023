@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { BsFillFilePersonFill } from "react-icons/bs"
 import { BiLogOut, BiCodeAlt } from "react-icons/bi"
 import { AiOutlineClear } from "react-icons/ai"
+import Image from 'next/image';
 
 
 interface UserCardProps {
@@ -45,8 +46,25 @@ const UserCard: React.FC<UserCardProps> = ({ user, info, updatePlanHistory, upda
     return (
         <div className="relative m-1.5 mt-0">
             <div className="w-full p-1.5 bg-teal-950 border border-1 border-teal-600 rounded-lg text-teal-300 items-center">
-                <div className="flex items-center gap-2 mb-6">
-                    <BsFillFilePersonFill /> {info}
+                <div className="flex items-center mb-1.5 gap-1">
+                    {user.picture ? (
+                        <Image
+                            src={user.picture}
+                            alt='picture'
+                            width={20}
+                            height={20}
+                            className='rounded-full'
+                        />
+                    ) : (
+                        <Image
+                            src={'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'}
+                            alt='picture'
+                            width={20}
+                            height={20}
+                            className='rounded-full'
+                        />
+                    )}
+                    {info}
                 </div>
                 <button
                     className="w-full flex items-center gap-1 text-sm p-1 pl-3 pr-3 bg-teal-900/75 hover:text-white rounded-lg"
