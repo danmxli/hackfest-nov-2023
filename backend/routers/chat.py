@@ -17,13 +17,13 @@ chat_blueprint = Blueprint('chat', __name__)
 @chat_blueprint.route("/", methods=["POST"])
 def create_subtask():
     data = request.get_json()
-    userId = data.get("userId")
+    email = data.get("email")
     planId = data.get('planId')
     taskDescription = data.get('taskDescription')
     prompt = data.get("prompt")
     response = ''
 
-    user = UserInfo.find_one({"_id": userId})
+    user = UserInfo.find_one({"email": email})
     if user:
         all_plans = user.get("plans", [])
 
@@ -31,7 +31,7 @@ def create_subtask():
         res = next((plan for plan in all_plans if plan['_id'] == planId), None)
         if res is None:
             return (jsonify({
-                "userId": userId,
+                "email": email,
                 "chat_logs": "not found"
             }))
 
@@ -40,13 +40,13 @@ def create_subtask():
             (task for task in res["base_tasks"] if task["description"] == taskDescription))
         if base_task is None:
             return (jsonify({
-                "userId": userId,
+                "email": email,
                 "chat_logs": "not found"
             }))
 
         # filter to identify the document
         filter = {
-            "_id": userId,
+            "email": email,
             "plans._id": planId,
             "plans.base_tasks.description": taskDescription
         }
@@ -79,7 +79,7 @@ def create_subtask():
             filter, updateChatHistory, array_filters=array_filters)
         if result:
             return (jsonify({
-                "userId": userId,
+                "email": email,
                 "chat_logs": [
                     {
                         "role": "user",
@@ -93,12 +93,12 @@ def create_subtask():
             }))
         else:
             return (jsonify({
-                "userId": userId,
+                "email": email,
                 "chat_logs": "error updating one"
             }))
     else:
         return (jsonify({
-            "userId": userId,
+            "email": email,
             "chat_logs": "not found"
         }))
 
@@ -112,12 +112,12 @@ clear action: set chat_history list to []
 @chat_blueprint.route("/history", methods=["POST"])
 def chat_history():
     data = request.get_json()
-    userId = data.get("userId")
+    email = data.get("email")
     planId = data.get('planId')
     taskDescription = data.get('taskDescription')
     action = data.get('action')
 
-    user = UserInfo.find_one({"_id": userId})
+    user = UserInfo.find_one({"email": email})
     if user:
         all_plans = user.get("plans", [])
 
@@ -125,7 +125,7 @@ def chat_history():
         res = next((plan for plan in all_plans if plan['_id'] == planId), None)
         if res is None:
             return (jsonify({
-                "userId": userId,
+                "email": email,
                 "history": "not found"
             }))
 
@@ -134,21 +134,21 @@ def chat_history():
             (task for task in res["base_tasks"] if task["description"] == taskDescription))
         if base_task is None:
             return (jsonify({
-                "userId": userId,
+                "email": email,
                 "history": "not found"
             }))
 
         if action == "view":
             # return chat_history list
             return (jsonify({
-                "userId": userId,
+                "email": email,
                 "history": base_task["chat_history"]
             }))
         elif action == "clear":
             ...
             # filter to identify the document
             filter = {
-                "_id": userId,
+                "email": email,
                 "plans._id": planId,
                 "plans.base_tasks.description": taskDescription
             }
@@ -167,17 +167,17 @@ def chat_history():
             result = UserInfo.update_one(
                 filter, clearChatHistory, array_filters=array_filters)
             return (jsonify({
-                "userId": userId,
+                "email": email,
                 "history": []
             }))
 
         else:
             return (jsonify({
-                "userId": userId,
+                "email": email,
                 "history": "unknown action"
             }))
 
     return jsonify({
-        "userId": userId,
+        "email": email,
         "history": "not found"
     })

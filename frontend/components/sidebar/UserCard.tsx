@@ -5,44 +5,40 @@ import { BsFillFilePersonFill } from "react-icons/bs"
 import { BiLogOut, BiCodeAlt } from "react-icons/bi"
 import { AiOutlineClear } from "react-icons/ai"
 
+
 interface UserCardProps {
+    user: any
     info: string
     updatePlanHistory: (newHistory: Array<{ _id: string, description: string }>) => void;
     updatePhase: (newPhase: string) => void;
 }
 
-const UserCard: React.FC<UserCardProps> = ({ info, updatePlanHistory, updatePhase }) => {
+const UserCard: React.FC<UserCardProps> = ({ user, info, updatePlanHistory, updatePhase }) => {
     const router = useRouter()
 
     const actionClear = async () => {
-        const userId = localStorage.getItem('userId')
-        if (userId === null || userId === 'null') {
-            console.error('null userId')
+        const requestBody = {
+            email: user.email
         }
-        else {
-            const requestBody = {
-                userId: JSON.parse(userId)
-            }
-            try {
-                const response = await fetch('http://127.0.0.1:3000/planning/clear', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestBody),
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data) {
-                        updatePhase('NewPlan')
-                        updatePlanHistory(data["history"])
-                    }
-                } else {
-                    console.error('Request failed with status:', response.status);
+        try {
+            const response = await fetch('http://127.0.0.1:3000/planning/clear', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                if (data) {
+                    updatePhase('NewPlan')
+                    updatePlanHistory(data["history"])
                 }
-            } catch (error) {
-                console.error('Fetch request error:', error);
+            } else {
+                console.error('Request failed with status:', response.status);
             }
+        } catch (error) {
+            console.error('Fetch request error:', error);
         }
     }
 
@@ -58,15 +54,12 @@ const UserCard: React.FC<UserCardProps> = ({ info, updatePlanHistory, updatePhas
                 >
                     <AiOutlineClear /> clear all plans
                 </button>
-                <button
+                <a
                     className="w-full mt-1 flex items-center gap-1 text-sm p-1 pl-3 pr-3 bg-teal-900/75 hover:text-white rounded-lg"
-                    onClick={() => {
-                        localStorage.setItem('userId', JSON.stringify(null))
-                        router.push('/')
-                    }}
+                    href="/api/auth/logout"
                 >
                     <BiLogOut /> logout
-                </button>
+                </a>
                 <button className="w-full mt-1 flex items-center gap-1 text-sm p-1 pl-3 pr-3 bg-teal-900/75 hover:text-white rounded-lg">
                     <BiCodeAlt /> updates
                 </button>

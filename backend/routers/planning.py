@@ -17,10 +17,10 @@ planning_blueprint = Blueprint('planning', __name__)
 def create_base():
     base_id = ''
     data = request.get_json()
-    userId = data.get("userId")
+    email = data.get("email")
     prompt = data.get("prompt")
 
-    user = UserInfo.find_one({"_id": userId})
+    user = UserInfo.find_one({"email": email})
     if user:
         base = base_plan(prompt)
         # create dict to store the new plan
@@ -37,9 +37,9 @@ def create_base():
 
         # get updated plan history
         history = []
-        target_user = UserInfo.find_one({"_id": userId})
+        target_user = UserInfo.find_one({"email": email})
         if target_user is None:
-            return (jsonify({"userId": "not found"}))
+            return (jsonify({"email": "not found"}))
         
         all_plans = target_user.get("plans", [])
         for plan in all_plans:
@@ -49,14 +49,14 @@ def create_base():
             })
 
         return (jsonify({
-            "userId": userId,
+            "email": email,
             "base_plan": base,
             "base_id": base_id,
             "history": history
         }))
 
     else:
-        return (jsonify({"userId": "not found"}))
+        return (jsonify({"email": "not found"}))
 
 
 """
@@ -71,12 +71,12 @@ def edit_subtask():
     subtaskId = ""
     data = request.get_json()
     # base request args
-    userId = data.get("userId")
+    email = data.get("email")
     planId = data.get('planId')
     taskDescription = data.get('taskDescription')
     action = data.get("action")
 
-    user = UserInfo.find_one({"_id": userId})
+    user = UserInfo.find_one({"email": email})
     if user:
         all_plans = user.get("plans", [])
 
@@ -84,7 +84,7 @@ def edit_subtask():
         res = next((plan for plan in all_plans if plan['_id'] == planId), None)
         if res is None:
             return (jsonify({
-                "userId": userId,
+                "email": email,
                 "message": "not found"
             }))
 
@@ -93,13 +93,13 @@ def edit_subtask():
             (task for task in res["base_tasks"] if task["description"] == taskDescription))
         if base_task is None:
             return (jsonify({
-                "userId": userId,
+                "email": email,
                 "message": "not found"
             }))
 
         # filter to identify the document
         filter = {
-            "_id": userId,
+            "email": email,
             "plans._id": planId,
             "plans.base_tasks.description": taskDescription
         }
@@ -128,13 +128,13 @@ def edit_subtask():
                 filter, addSubtask, array_filters=array_filters)
             if result.modified_count > 0:
                 return (jsonify({
-                    "userId": userId,
+                    "email": email,
                     "message": "successfully inserted",
                     "subtaskId": subtaskId
                 }))
             else:
                 return (jsonify({
-                    "userId": userId,
+                    "email": email,
                     "message": "error updating"
                 }))
 
@@ -155,9 +155,9 @@ def edit_subtask():
             
             if result.modified_count > 0:
                 # get updated subtasks
-                updated_user = UserInfo.find_one({"_id": userId})
+                updated_user = UserInfo.find_one({"email": email})
                 if updated_user is None:
-                    return (jsonify({"userId": "not found"}))
+                    return (jsonify({"email": "not found"}))
 
                 updated_plans = updated_user.get("plans", [])
                 target_plan = next(
@@ -166,25 +166,25 @@ def edit_subtask():
                     (task for task in target_plan["base_tasks"] if task["description"] == taskDescription))
 
                 return (jsonify({
-                    "userId": userId,
+                    "email": email,
                     "message": "successfully removed",
                     "subtaskId": subtaskId,
                     "subtasks": updated_base_task['sub_tasks']
                 }))
             else:
                 return (jsonify({
-                    "userId": userId,
+                    "email": email,
                     "message": "error updating"
                 }))
 
         else:
             return (jsonify({
-                    "userId": userId,
+                    "email": email,
                     "message": "unknown action"
                     }))
 
     return (jsonify({
-                    "userId": userId,
+                    "email": email,
                     "message": "user not found"
                     }))
 
@@ -193,11 +193,11 @@ def edit_subtask():
 def all_subtasks():
     # endpoint to retrieve all subtask as a list
     data = request.get_json()
-    userId = data.get("userId")
+    email = data.get("email")
     planId = data.get("planId")
     taskDescription = data.get('taskDescription')
 
-    user = UserInfo.find_one({"_id": userId})
+    user = UserInfo.find_one({"email": email})
     if user:
         all_plans = user.get("plans", [])
 
@@ -205,37 +205,37 @@ def all_subtasks():
         res = next((plan for plan in all_plans if plan['_id'] == planId), None)
         if res is None:
             return (jsonify({
-                "userId": userId,
+                "email": email,
                 "message": "not found"
             }))
         base = next(
             (item for item in res['base_tasks'] if item['description'] == taskDescription), None)
         if base is None:
             return (jsonify({
-                "userId": userId,
+                "email": email,
                 "message": "base task not found"
             }))
 
         return (jsonify({
-                "userId": userId,
+                "email": email,
                 "message": "subtasks retrieved",
                 "subtasks": base["sub_tasks"]
                 }))
     else:
         return (jsonify({
-            "userId": userId,
+            "email": email,
             "message": "user not found"
         }))
 
 
 @planning_blueprint.route('/load_one', methods=["POST"])
 def load_one():
-    # endpoint to get base_plan details for userId and plan _id
+    # endpoint to get base_plan details for email and plan _id
     data = request.get_json()
-    userId = data.get("userId")
+    email = data.get("email")
     planId = data.get("planId")
 
-    user = UserInfo.find_one({"_id": userId})
+    user = UserInfo.find_one({"email": email})
     if user:
         all_plans = user.get("plans", [])
 
@@ -243,24 +243,24 @@ def load_one():
         res = next((plan for plan in all_plans if plan['_id'] == planId), None)
         if res is None:
             return (jsonify({
-                "userId": userId,
+                "email": email,
                 "match": "not found"
             }))
         return (jsonify({
-            "userId": userId,
+            "email": email,
             "match": res
         }))
 
     else:
-        return (jsonify({"userId": "not found"}))
+        return (jsonify({"email": "not found"}))
 
 
 @planning_blueprint.route('/clear', methods=['POST'])
 def clear_all():
     data = request.get_json()
-    userId = data.get("userId")
+    email = data.get("email")
 
-    user = UserInfo.find_one({"_id": userId})
+    user = UserInfo.find_one({"email": email})
     if user:
         clearPlans = {
             "$set": {"plans": []}
@@ -269,9 +269,9 @@ def clear_all():
 
         # get updated plan history
         history = []
-        target_user = UserInfo.find_one({"_id": userId})
+        target_user = UserInfo.find_one({"email": email})
         if target_user is None:
-            return (jsonify({"userId": "not found"}))
+            return (jsonify({"email": "not found"}))
         
         all_plans = target_user.get("plans", [])
         for plan in all_plans:
@@ -281,11 +281,11 @@ def clear_all():
             })
 
         return (jsonify({
-            "userId": userId,
+            "email": email,
             "message": "Successfully cleared all plans.",
             "history": history
 
         }))
 
     else:
-        return (jsonify({"userId": "not found"}))
+        return (jsonify({"email": "not found"}))

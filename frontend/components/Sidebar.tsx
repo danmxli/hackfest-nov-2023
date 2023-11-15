@@ -1,6 +1,5 @@
 import React from "react"
-import { useState, useEffect, useRef } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react"
 import UserCard from "./sidebar/UserCard"
 import { BsNodePlusFill, BsLayoutSidebarInset } from "react-icons/bs"
 import { AiOutlineNodeIndex } from "react-icons/ai"
@@ -12,6 +11,7 @@ interface Task {
 }
 
 interface SidebarProps {
+    user: any
     info: string
     history: Array<{ _id: string, description: string }>;
     updatePhase: (newPhase: string) => void;
@@ -21,9 +21,7 @@ interface SidebarProps {
     planId: string
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ info, history, updatePhase, updatePlanId, updatePlanHistory, updateBaseData, planId }) => {
-    const router = useRouter()
-    const fetchExecuted = useRef(false)
+const Sidebar: React.FC<SidebarProps> = ({ user, info, history, updatePhase, updatePlanId, updatePlanHistory, updateBaseData, planId }) => {
     const [currItem, setCurrItem] = useState('')
     const [isOpen, setIsOpen] = useState(true)
 
@@ -32,40 +30,34 @@ const Sidebar: React.FC<SidebarProps> = ({ info, history, updatePhase, updatePla
     }, [planId])
 
     const loadOne = async (id: string): Promise<void> => {
-        const userId = localStorage.getItem('userId')
-        if (userId === null || userId === 'null') {
-            console.error('null userId')
+        const requestBody = {
+            email: user.email,
+            planId: id
         }
-        else {
-            const requestBody = {
-                userId: JSON.parse(userId),
-                planId: id
-            }
-            updatePhase('RenderingPlan')
-            try {
-                const response = await fetch('http://127.0.0.1:3000/planning/load_one', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestBody),
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data) {
-                        console.log(data["match"]["_id"])
-                        console.log(data["match"]["base_tasks"])
-                        updateBaseData(data["match"]["base_tasks"])
-                        updatePlanId(data["match"]["_id"])
-                        setCurrItem(id)
-                        updatePhase('EditPlan')
-                    }
-                } else {
-                    console.error('Request failed with status:', response.status);
+        updatePhase('RenderingPlan')
+        try {
+            const response = await fetch('http://127.0.0.1:3000/planning/load_one', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                if (data) {
+                    console.log(data["match"]["_id"])
+                    console.log(data["match"]["base_tasks"])
+                    updateBaseData(data["match"]["base_tasks"])
+                    updatePlanId(data["match"]["_id"])
+                    setCurrItem(id)
+                    updatePhase('EditPlan')
                 }
-            } catch (error) {
-                console.error('Fetch request error:', error);
+            } else {
+                console.error('Request failed with status:', response.status);
             }
+        } catch (error) {
+            console.error('Fetch request error:', error);
         }
     }
 
@@ -116,7 +108,7 @@ const Sidebar: React.FC<SidebarProps> = ({ info, history, updatePhase, updatePla
                             </div>
                         ))}
                     </div>
-                    <UserCard info={info} updatePlanHistory={updatePlanHistory} updatePhase={updatePhase} />
+                    <UserCard user={user} info={info} updatePlanHistory={updatePlanHistory} updatePhase={updatePhase} />
                 </div>
             ) : (
                 <>

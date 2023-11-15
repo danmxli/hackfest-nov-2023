@@ -4,11 +4,12 @@ import { AiFillCodeSandboxCircle } from 'react-icons/ai'
 import { ImUpload } from 'react-icons/im'
 
 interface UserInputProps {
+    user: any
     planId: string,
     nodeData: any
 }
 
-const UserInput: React.FC<UserInputProps> = ({ planId, nodeData }) => {
+const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData }) => {
 
     const router = useRouter()
 
@@ -18,40 +19,34 @@ const UserInput: React.FC<UserInputProps> = ({ planId, nodeData }) => {
 
     // handle adding subtask
     const addSubtask = async () => {
-        const userId = localStorage.getItem('userId')
-        if (userId === null || userId === 'null') {
-            router.push('/')
+        const requestBody = {
+            email: user.email,
+            planId: planId,
+            taskDescription: nodeData,
+            action: "add",
+            subtask: textInput
         }
-        else {
-            const requestBody = {
-                userId: JSON.parse(userId),
-                planId: planId,
-                taskDescription: nodeData,
-                action: "add",
-                subtask: textInput
-            }
-            console.log(requestBody)
-            try {
-                const response = await fetch('http://127.0.0.1:3000/planning/edit_subtask', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestBody),
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data) {
-                        console.log(data)
-                        setTextInput('Successfully added! You can clear this text')
-                    }
-                } else {
-                    console.error('Request failed with status:', response.status);
+        console.log(requestBody)
+        try {
+            const response = await fetch('http://127.0.0.1:3000/planning/edit_subtask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                if (data) {
+                    console.log(data)
+                    setTextInput('Successfully added! You can clear this text')
                 }
-            } catch (error) {
-                console.error('Fetch request error:', error);
-            } 
-        }
+            } else {
+                console.error('Request failed with status:', response.status);
+            }
+        } catch (error) {
+            console.error('Fetch request error:', error);
+        } 
     }
 
     return (

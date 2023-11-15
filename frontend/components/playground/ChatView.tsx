@@ -9,6 +9,7 @@ interface Message {
 }
 
 interface ChatViewProps {
+    user: any
     openChatView: boolean
     updateChatView: (isOpen: boolean) => void
     chatHistory: Message[]
@@ -18,7 +19,7 @@ interface ChatViewProps {
     clearChatHistory: () => void
 }
 
-const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatHistory, addMessage, planId, taskDescription, clearChatHistory }) => {
+const ChatView: React.FC<ChatViewProps> = ({ user, openChatView, updateChatView, chatHistory, addMessage, planId, taskDescription, clearChatHistory }) => {
 
     const router = useRouter()
 
@@ -55,74 +56,62 @@ const ChatView: React.FC<ChatViewProps> = ({ openChatView, updateChatView, chatH
     const fetchResponse = async (userInput: string) => {
         updateInputValue('')
 
-        const userId = localStorage.getItem('userId')
-        if (userId === null || userId === 'null') {
-            router.push('/'); // Redirect to landing page
+        const requestBody = {
+            email: user.email,
+            planId: planId,
+            taskDescription: taskDescription,
+            prompt: userInput
         }
-        else {
-            const requestBody = {
-                userId: JSON.parse(userId),
-                planId: planId,
-                taskDescription: taskDescription,
-                prompt: userInput
-            }
-            addMessage({ message: userInput, role: 'user' })
-            setIsLoading(true)
-            try {
-                const response = await fetch('http://127.0.0.1:3000/chat/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestBody),
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data) {
-                        console.log(data["chat_logs"])
-                        addMessage(data["chat_logs"][1])
-                        setIsLoading(false)
-                    }
-                } else {
-                    console.error('Request failed with status:', response.status);
+        addMessage({ message: userInput, role: 'user' })
+        setIsLoading(true)
+        try {
+            const response = await fetch('http://127.0.0.1:3000/chat/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                if (data) {
+                    console.log(data["chat_logs"])
+                    addMessage(data["chat_logs"][1])
+                    setIsLoading(false)
                 }
-            } catch (error) {
-                console.error('Fetch request error:', error);
+            } else {
+                console.error('Request failed with status:', response.status);
             }
+        } catch (error) {
+            console.error('Fetch request error:', error);
         }
     }
 
     const handleClearHistory: MouseEventHandler<HTMLButtonElement> = async () => {
-        const userId = localStorage.getItem('userId')
-        if (userId === null || userId === 'null') {
-            router.push('/'); // Redirect to landing page
+        const requestBody = {
+            email: user.email,
+            planId: planId,
+            taskDescription: taskDescription,
+            action: "clear"
         }
-        else {
-            const requestBody = {
-                userId: JSON.parse(userId),
-                planId: planId,
-                taskDescription: taskDescription,
-                action: "clear"
-            }
-            try {
-                const response = await fetch('http://127.0.0.1:3000/chat/history', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestBody),
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data) {
-                        clearChatHistory()
-                    }
-                } else {
-                    console.error('Request failed with status:', response.status);
+        try {
+            const response = await fetch('http://127.0.0.1:3000/chat/history', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                if (data) {
+                    clearChatHistory()
                 }
-            } catch (error) {
-                console.error('Fetch request error:', error);
+            } else {
+                console.error('Request failed with status:', response.status);
             }
+        } catch (error) {
+            console.error('Fetch request error:', error);
         }
     }
 

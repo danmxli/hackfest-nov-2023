@@ -4,6 +4,7 @@ import { CgExtensionRemove } from 'react-icons/cg'
 import { RiNodeTree } from 'react-icons/ri'
 
 interface DisplaySubtasksProps {
+    user: any
     subtaskItems: {
         _id: string;
         description: string;
@@ -16,45 +17,39 @@ interface DisplaySubtasksProps {
     }[]) => void
 }
 
-const DisplaySubtasks: React.FC<DisplaySubtasksProps> = ({ subtaskItems, planId, nodeData, updateLocalSubtasks }) => {
+const DisplaySubtasks: React.FC<DisplaySubtasksProps> = ({ user, subtaskItems, planId, nodeData, updateLocalSubtasks }) => {
 
     const router = useRouter()
 
     const removeSubtask = async (id: string) => {
-        const userId = localStorage.getItem('userId')
-        if (userId === null || userId === 'null') {
-            router.push('/'); // Redirect to landing page
+        const requestBody = {
+            email: user.email,
+            planId: planId,
+            action: "remove",
+            taskDescription: nodeData,
+            subtaskId: id
         }
-        else {
-            const requestBody = {
-                userId: JSON.parse(userId),
-                planId: planId,
-                action: "remove",
-                taskDescription: nodeData,
-                subtaskId: id
-            }
-            console.log(requestBody)
+        console.log(requestBody)
 
-            try {
-                const response = await fetch('http://127.0.0.1:3000/planning/edit_subtask', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestBody),
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data) {
-                        console.log(data)
-                        updateLocalSubtasks(data["subtasks"])
-                    }
-                } else {
-                    console.error('Request failed with status:', response.status);
+        try {
+            const response = await fetch('http://127.0.0.1:3000/planning/edit_subtask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                if (data) {
+                    console.log(data)
+                    updateLocalSubtasks(data["subtasks"])
                 }
-            } catch (error) {
-                console.error('Fetch request error:', error);
+            } else {
+                console.error('Request failed with status:', response.status);
             }
+        } catch (error) {
+            console.error('Fetch request error:', error);
         }
     }
 

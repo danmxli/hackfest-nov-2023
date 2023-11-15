@@ -1,14 +1,13 @@
 'use client'
 import { useState, useEffect, useRef } from "react"
-import { useRouter } from "next/navigation"
 import Loading from "@/components/Loading"
 import Sidebar from "@/components/Sidebar"
 import NewPlan from "@/components/playground/NewPlan"
 import LoadingPlan from "@/components/playground/LoadingPlan"
 import EditPlan from "@/components/playground/EditPlan"
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
-export default function Home() {
-    const router = useRouter()
+export default withPageAuthRequired(function Home({ user }) {
     const fetchExecuted = useRef(false)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [userInfo, setUserInfo] = useState('')
@@ -51,9 +50,10 @@ export default function Home() {
     }
 
     useEffect(() => {
-        const getUserInfo = async (id: string) => {
+        const getUserInfo = async () => {
+            console.log(user)
             const requestBody = {
-                userId: JSON.parse(id)
+                email: user.email
             }
             try {
                 const response = await fetch('http://127.0.0.1:3000/users/', {
@@ -81,33 +81,24 @@ export default function Home() {
 
         if (!fetchExecuted.current) {
             fetchExecuted.current = true
-
-            // get userId from localStorage
-            const userId = localStorage.getItem('userId')
-            if (userId === null || userId === 'null') {
-                setIsAuthenticated(false)
-                router.push('/'); // Redirect to landing page
-            }
-            else {
-                getUserInfo(userId)
-            }
+            getUserInfo()
         }
 
-    }, [router]);
+    }, [user]);
 
     // define object of phases
     const playground: PlanPhases = {
         NewPlan: <NewPlan updatePhase={updatePhase} updatePlanPrompt={updatePlanPrompt} />,
-        LoadingPlan: <LoadingPlan updatePhase={updatePhase} planPrompt={planPrompt} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} />,
+        LoadingPlan: <LoadingPlan user={user} updatePhase={updatePhase} planPrompt={planPrompt} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} />,
         RederingPlan: <></>,
-        EditPlan: <EditPlan baseData={baseData} updateBaseData={updateBaseData} planId={planId} />
+        EditPlan: <EditPlan user={user} baseData={baseData} updateBaseData={updateBaseData} planId={planId} />
     }
 
     return (
         <>
             {isAuthenticated ? (
                 <div className="flex">
-                    <Sidebar info={userInfo} history={planHistory} updatePhase={updatePhase} updatePlanId={updatePlanId} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} planId={planId} />
+                    <Sidebar user={user} info={userInfo} history={planHistory} updatePhase={updatePhase} updatePlanId={updatePlanId} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} planId={planId} />
                     <main className="flex-1">
                         {playground[phase]}
                     </main>
@@ -117,4 +108,4 @@ export default function Home() {
             )}
         </>
     )
-}
+})

@@ -47,7 +47,6 @@ const SignIn: React.FC<SignInProps> = ({ updatePhase }) => {
                     }
                     else {
                         setUserNotFound(false)
-                        localStorage.setItem('userId', JSON.stringify(data["_id"]))
                         router.push('/home')
                     }
                     setIsFetchingUsers(false)

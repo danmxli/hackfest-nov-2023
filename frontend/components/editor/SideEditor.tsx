@@ -12,6 +12,7 @@ interface Task {
 }
 
 interface SideEditorProps {
+    user: any
     nodeData: any
     updateBaseData: (newData: Task[]) => void;
     openEditor: boolean
@@ -29,7 +30,7 @@ interface Message {
     role: string
 }
 
-const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openEditor, updateOpenEditor, planId, subtasklist }) => {
+const SideEditor: React.FC<SideEditorProps> = ({ user, nodeData, updateBaseData, openEditor, updateOpenEditor, planId, subtasklist }) => {
     const router = useRouter()
     const [localSubtasks, setLocalSubtasks] = useState([...subtasklist])
     useEffect(() => {
@@ -74,8 +75,8 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
 
     // define object of phases
     const options: sideEditorPhases = {
-        AddSubtask: <UserInput planId={planId} nodeData={nodeData} />,
-        ViewSubtask: <DisplaySubtasks subtaskItems={localSubtasks} planId={planId} nodeData={nodeData} updateLocalSubtasks={updateLocalSubtasks} />
+        AddSubtask: <UserInput user={user} planId={planId} nodeData={nodeData} />,
+        ViewSubtask: <DisplaySubtasks user={user} subtaskItems={localSubtasks} planId={planId} nodeData={nodeData} updateLocalSubtasks={updateLocalSubtasks} />
     }
 
     // chat history state, funct to add messages to the chat history
@@ -89,76 +90,64 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
 
     // handle view subtask
     const viewSubtask = async () => {
-        const userId = localStorage.getItem('userId')
-        if (userId === null || userId === 'null') {
-            router.push('/'); // Redirect to landing page
+        const requestBody = {
+            email: user.email,
+            planId: planId,
+            taskDescription: nodeData
         }
-        else {
-            const requestBody = {
-                userId: JSON.parse(userId),
-                planId: planId,
-                taskDescription: nodeData
-            }
-            console.log(requestBody)
+        console.log(requestBody)
 
-            try {
-                const response = await fetch('http://127.0.0.1:3000/planning/all_subtasks', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestBody),
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data) {
-                        console.log(data["subtasks"])
-                        setLocalSubtasks(data["subtasks"])
-                        setEditorPhase('ViewSubtask')
-                    }
-                } else {
-                    console.error('Request failed with status:', response.status);
+        try {
+            const response = await fetch('http://127.0.0.1:3000/planning/all_subtasks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                if (data) {
+                    console.log(data["subtasks"])
+                    setLocalSubtasks(data["subtasks"])
+                    setEditorPhase('ViewSubtask')
                 }
-            } catch (error) {
-                console.error('Fetch request error:', error);
+            } else {
+                console.error('Request failed with status:', response.status);
             }
+        } catch (error) {
+            console.error('Fetch request error:', error);
         }
     }
 
     // handle open chat view
     const fetchChatHistory = async () => {
-        const userId = localStorage.getItem('userId')
-        if (userId === null || userId === 'null') {
-            router.push('/'); // Redirect to landing page
+        const requestBody = {
+            email: user.email,
+            planId: planId,
+            taskDescription: nodeData,
+            action: "view"
         }
-        else {
-            const requestBody = {
-                userId: JSON.parse(userId),
-                planId: planId,
-                taskDescription: nodeData,
-                action: "view"
-            }
-            try {
-                const response = await fetch('http://127.0.0.1:3000/chat/history', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestBody),
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data) {
-                        console.log(data["history"])
-                        setChatHistory(data["history"])
-                        updateChatView(true)
-                    }
-                } else {
-                    console.error('Request failed with status:', response.status);
+        try {
+            const response = await fetch('http://127.0.0.1:3000/chat/history', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                if (data) {
+                    console.log(data["history"])
+                    setChatHistory(data["history"])
+                    updateChatView(true)
                 }
-            } catch (error) {
-                console.error('Fetch request error:', error);
+            } else {
+                console.error('Request failed with status:', response.status);
             }
+        } catch (error) {
+            console.error('Fetch request error:', error);
         }
     }
 
@@ -206,7 +195,7 @@ const SideEditor: React.FC<SideEditorProps> = ({ nodeData, updateBaseData, openE
                     </button>
                     {options[editorPhase]}
                 </div>
-                <ChatView openChatView={openChatView} updateChatView={updateChatView} chatHistory={chatHistory} addMessage={addMessage} planId={planId} taskDescription={nodeData} clearChatHistory={clearChatHistory} />
+                <ChatView user={user} openChatView={openChatView} updateChatView={updateChatView} chatHistory={chatHistory} addMessage={addMessage} planId={planId} taskDescription={nodeData} clearChatHistory={clearChatHistory} />
             </>) : (
                 <h1 className="p-4 border border-2 border-teal-600 text-teal-600 rounded-3xl inline-flex">Select a node to add a subtask to.</h1>
             )}

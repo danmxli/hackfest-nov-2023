@@ -53,7 +53,6 @@ const SignUp: React.FC<SignUpProps> = ({ updatePhase }) => {
                     }
                     else {
                         setIsExistingUser(false)
-                        localStorage.setItem('userId', JSON.stringify(data["_id"]))
                         router.push('/home')
                     }
                     setIsFetchingUsers(false)

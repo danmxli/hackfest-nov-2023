@@ -19,8 +19,8 @@ def find():
     # return username and list of dict plan _id, description
     history = []
     data = request.get_json()
-    userId = data.get("userId")
-    match = UserInfo.find_one({"_id": userId})
+    email = data.get("email")
+    match = UserInfo.find_one({"email": email})
     if match:
         all_plans = match.get("plans", [])
         for plan in all_plans:

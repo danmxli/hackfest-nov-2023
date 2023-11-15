@@ -11,6 +11,7 @@ interface Task {
 }
 
 interface LoadingPlanProps {
+    user: any
     updatePhase: (newPhase: string) => void;
     planPrompt: string;
     updatePlanHistory: (newHistory: Array<{ _id: string, description: string }>) => void;
@@ -19,14 +20,14 @@ interface LoadingPlanProps {
 }
 
 
-const LoadingPlan: React.FC<LoadingPlanProps> = ({ updatePhase, planPrompt, updatePlanHistory, updateBaseData, updatePlanId }) => {
+const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt, updatePlanHistory, updateBaseData, updatePlanId }) => {
     const router = useRouter()
     const fetchExecuted = useRef(false)
     useEffect(() => {
         // async function to fetch baseplan endpoint
-        const createBasePlan = async (id: string) => {
+        const createBasePlan = async () => {
             const requestBody = {
-                userId: JSON.parse(id),
+                email: user.email,
                 prompt: planPrompt
             }
             try {
@@ -56,16 +57,9 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ updatePhase, planPrompt, upda
 
         if (!fetchExecuted.current) {
             fetchExecuted.current = true
-            const userId = localStorage.getItem('userId')
-            if (userId === null || userId === 'null') {
-                router.push('/'); // Redirect to landing page
-            }
-            else {
-                createBasePlan(userId)
-            }
-
+            createBasePlan()
         }
-    }, [planPrompt, updatePhase, router, updatePlanHistory, updateBaseData, updatePlanId])
+    }, [user.email, planPrompt, updatePhase, router, updatePlanHistory, updateBaseData, updatePlanId])
 
 
     return (

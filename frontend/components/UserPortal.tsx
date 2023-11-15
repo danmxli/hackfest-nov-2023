@@ -33,7 +33,6 @@ const UserPortal = () => {
                         }
                     })
                     .then(data => {
-                        localStorage.setItem('userId', JSON.stringify(data["_id"]))
                         router.push('/home')
                     })
                     .catch(error => {
