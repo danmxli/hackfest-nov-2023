@@ -31,4 +31,8 @@ def dummy():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=os.getenv("PORT", default=3000))
+    port = int(os.getenv("PORT", default=3000))
+    if port is not None:
+        app.run(debug=True, port=port)
+    else:
+        print("Error: PORT environment variable is not set or is not a valid integer.")

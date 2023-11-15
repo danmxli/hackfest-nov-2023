@@ -29,7 +29,7 @@ def find():
                 "description": plan["description"]
             })
         return (jsonify({
-            "username": match["username"],
+            "username": match["name"],
             "history": history
         }))
     else:
@@ -59,6 +59,8 @@ def signup():
 
     if result.inserted_id:
         return (doc)
+    else:
+        return (jsonify({"username": "error"}))
 
 
 @users_blueprint.route('/signin', methods=["POST"])
@@ -75,5 +77,34 @@ def signin():
     # compare password from request to decrypted password
     if password == decrypt_password(user["password"]):
         return (user)
+    else:
+        return (jsonify({"username": "not found"}))
+
+
+@users_blueprint.route('/access', methods=["POST"])
+def access():
+    # auth0 frontend
+    data = request.get_json()
+    name = data.get("name")
+    email = data.get("email")
+
+    # find a user document
+    if UserInfo.count_documents({}) > 0:
+        match = UserInfo.find_one({"name": name, "email": email})
+        if match:
+            return (jsonify(match))
+
+    # if not found, create new document
+    doc = {
+        "_id": str(uuid4()),
+        "time_created": int(datetime.datetime.now().timestamp()),
+        "name": name,
+        "email": email,
+        "plans": []
+    }
+    result = UserInfo.insert_one(doc)
+
+    if result.inserted_id:
+        return (doc)
     else:
         return (jsonify({"username": "not found"}))

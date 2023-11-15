@@ -37,7 +37,11 @@ def create_base():
 
         # get updated plan history
         history = []
-        all_plans = UserInfo.find_one({"_id": userId}).get("plans", [])
+        target_user = UserInfo.find_one({"_id": userId})
+        if target_user is None:
+            return (jsonify({"userId": "not found"}))
+        
+        all_plans = target_user.get("plans", [])
         for plan in all_plans:
             history.append({
                 "_id": plan["_id"],
@@ -148,9 +152,13 @@ def edit_subtask():
             # update_one
             result = UserInfo.update_one(
                 filter, removeSubtask, array_filters=array_filters)
+            
             if result.modified_count > 0:
                 # get updated subtasks
                 updated_user = UserInfo.find_one({"_id": userId})
+                if updated_user is None:
+                    return (jsonify({"userId": "not found"}))
+
                 updated_plans = updated_user.get("plans", [])
                 target_plan = next(
                     (plan for plan in updated_plans if plan['_id'] == planId))
@@ -261,7 +269,11 @@ def clear_all():
 
         # get updated plan history
         history = []
-        all_plans = UserInfo.find_one({"_id": userId}).get("plans", [])
+        target_user = UserInfo.find_one({"_id": userId})
+        if target_user is None:
+            return (jsonify({"userId": "not found"}))
+        
+        all_plans = target_user.get("plans", [])
         for plan in all_plans:
             history.append({
                 "_id": plan["_id"],

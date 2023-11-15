@@ -5,7 +5,11 @@ import time
 from data.filter import filter_base
 load_dotenv('.env')
 
-co = cohere.Client(os.getenv('COHERE_KEY'))
+cohere_key = os.getenv('COHERE_KEY')
+if cohere_key is not None and cohere_key != '':
+    co = cohere.Client(cohere_key)
+else:
+    ...
 
 
 def base_plan(userPrompt):
@@ -50,5 +54,5 @@ def base_chat_generate(prompt):
     # raw_response = response.text
     raw_response = "Based on your main task, here is one subtask to consider:\n\nResearch and analyze the weather conditions for the destination you plan to bike through during your trip. Look for any upcoming changes or fluctuations in weather patterns that could potentially impact your safety and the overall feasibility of the journey. Check sources like weather websites or apps that provide accurate and detailed information about precipitation, temperature changes, and any severe weather alerts in the area. Ensure you make note of these details to help prepare for the trip. \n\nWould you like me to generate another subtask?"
     time.sleep(3)
-    
+
     return raw_response
