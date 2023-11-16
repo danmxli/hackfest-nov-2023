@@ -26,7 +26,8 @@ def find():
         for plan in all_plans:
             history.append({
                 "_id": plan["_id"],
-                "description": plan["description"]
+                "description": plan["description"],
+                "prompt_type": plan["prompt_type"]
             })
         return (jsonify({
             "username": match["name"],
