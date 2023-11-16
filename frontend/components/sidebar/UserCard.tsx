@@ -1,9 +1,8 @@
 import React from "react"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { BsFillFilePersonFill } from "react-icons/bs"
 import { BiLogOut, BiCodeAlt } from "react-icons/bi"
 import { AiOutlineClear } from "react-icons/ai"
+import { BsNodePlusFill } from "react-icons/bs"
 import Image from 'next/image';
 
 
@@ -12,10 +11,10 @@ interface UserCardProps {
     info: string
     updatePlanHistory: (newHistory: Array<{ _id: string, description: string, prompt_type: string }>) => void;
     updatePhase: (newPhase: string) => void;
+    updateCurrItem: (newItem: string) => void;
 }
 
-const UserCard: React.FC<UserCardProps> = ({ user, info, updatePlanHistory, updatePhase }) => {
-    const router = useRouter()
+const UserCard: React.FC<UserCardProps> = ({ user, info, updatePlanHistory, updatePhase, updateCurrItem }) => {
 
     const actionClear = async () => {
         const requestBody = {
@@ -44,43 +43,58 @@ const UserCard: React.FC<UserCardProps> = ({ user, info, updatePlanHistory, upda
     }
 
     return (
-        <div className="relative m-1.5 mt-0">
-            <div className="w-full p-1.5 bg-teal-950 border border-1 border-teal-600 rounded-lg text-teal-300 items-center">
-                <div className="flex items-center mb-1.5 gap-1">
+        <div className="relative">
+            <div className="w-full text-teal-200 items-center">
+                <div className="flex items-center justify-center p-4 pb-0 m-2 mb-0">
+                    
                     {user.picture ? (
                         <Image
                             src={user.picture}
                             alt='picture'
-                            width={20}
-                            height={20}
-                            className='rounded-full'
+                            width={50}
+                            height={50}
+                            className='rounded-full border border-teal-200'
                         />
                     ) : (
                         <Image
                             src={'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'}
                             alt='picture'
-                            width={20}
-                            height={20}
+                            width={50}
+                            height={50}
                             className='rounded-full'
                         />
                     )}
-                    {info}
                 </div>
-                <button
-                    className="w-full flex items-center gap-1 text-sm p-1 pl-3 pr-3 bg-teal-900/75 hover:text-white rounded-lg"
-                    onClick={actionClear}
-                >
-                    <AiOutlineClear /> clear all plans
-                </button>
-                <a
-                    className="w-full mt-1 flex items-center gap-1 text-sm p-1 pl-3 pr-3 bg-teal-900/75 hover:text-white rounded-lg"
-                    href="/api/auth/logout"
-                >
-                    <BiLogOut /> logout
-                </a>
-                <button className="w-full mt-1 flex items-center gap-1 text-sm p-1 pl-3 pr-3 bg-teal-900/75 hover:text-white rounded-lg">
-                    <BiCodeAlt /> updates
-                </button>
+                <div className="text-center mb-4">
+                    <h1 className="text-lg">{info}</h1>
+                    <h2 className="text-xs text-teal-500">{user.email}</h2>
+                </div>
+                <div className="bg-teal-950 m-2 p-3 rounded-3xl">
+                    <button
+                        className="w-full flex items-center gap-1 text-sm p-0.5 hover:text-white"
+                        onClick={actionClear}
+                    >
+                        <AiOutlineClear /> clear all plans
+                    </button>
+                    <a
+                        className="w-full mt-1 flex items-center gap-1 text-sm p-0.5 hover:text-white"
+                        href="/api/auth/logout"
+                    >
+                        <BiLogOut /> logout
+                    </a>
+                    <button className="w-full mt-1 flex items-center gap-1 text-sm p-0.5 hover:text-white">
+                        <BiCodeAlt /> info
+                    </button>
+                    <button className="w-full mt-1 flex items-center justify-center gap-1 text-sm p-1.5 bg-teal-900 rounded-xl hover:text-white"
+                    onClick={() => {
+                        updateCurrItem('')
+                        updatePhase('NewPlan')
+                    }}
+                    >
+                        <BsNodePlusFill /> new plan
+                    </button>
+                </div>
+
             </div>
         </div>
     )

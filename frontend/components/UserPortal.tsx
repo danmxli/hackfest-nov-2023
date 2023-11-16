@@ -57,14 +57,14 @@ const UserPortal = () => {
             {user ? (
                 <div className="p-8 bg-teal-950 border border-2 border-teal-600 rounded-3xl m-4 text-teal-600">
                     <div className='flex items-center justify-center mb-6'>
-                        <div className='flex items-center justify-center text-8xl text-teal-200'><GiPlantRoots /></div>
+                        <div className='flex items-center justify-center text-5xl text-teal-200'><GiPlantRoots /></div>
                         {user.picture ? (
                             <Image
                                 src={user.picture}
                                 alt='picture'
                                 width={50}
                                 height={50}
-                                className='rounded-full border border-2 border-teal-200'
+                                className='rounded-full border border border-teal-200'
                             />
                         ) : (
                             <Image

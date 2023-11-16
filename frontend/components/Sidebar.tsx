@@ -2,7 +2,6 @@ import React from "react"
 import { useState, useEffect } from "react"
 import UserCard from "./sidebar/UserCard"
 import PromptTypeIcon from "./sidebar/PromptTypeIcon"
-import { BsNodePlusFill, BsLayoutSidebarInset } from "react-icons/bs"
 
 interface Task {
     description: string;
@@ -28,7 +27,9 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ user, info, history, updatePhase, updatePlanId, updatePlanHistory, updateBaseData, planId, updateBaseResources }) => {
     const [currItem, setCurrItem] = useState('')
-    const [isOpen, setIsOpen] = useState(true)
+    const updateCurrItem = (newItem: string) => {
+        setCurrItem(newItem)
+    }
 
     useEffect(() => {
         setCurrItem(planId)
@@ -68,71 +69,33 @@ const Sidebar: React.FC<SidebarProps> = ({ user, info, history, updatePhase, upd
     }
 
     return (
-        <>
-            {isOpen ? (
-                <div className="flex flex-col h-screen bg-teal-900 w-48">
-                    <div className="grid grid-cols-4">
+        <div className="flex flex-col h-screen bg-teal-900 w-48">
+            <UserCard user={user} info={info} updatePlanHistory={updatePlanHistory} updatePhase={updatePhase} updateCurrItem={updateCurrItem} />
+            <div className="flex-grow max-h-fit overflow-scroll scrollbar-hide">
+                {history.slice().reverse().map((item, index) => (
+                    <div
+                        key={item._id}
+                        className="m-2"
+                    >
                         <button
-                            className="col-span-3 mt-1.5 ml-1.5 mb-0 p-1.5 bg-teal-950 border border-1 border-teal-600 rounded-lg text-teal-300 hover:bg-teal-700 flex items-center gap-2"
-                            onClick={() => {
-                                setCurrItem('')
-                                updatePhase('NewPlan')
-                            }}
-                        >
-                            <BsNodePlusFill />New plan
-                        </button>
-                        <button
-                            className="col-span-1 m-1.5 mb-0 p-1.5 bg-teal-950 border border-1 border-teal-600 rounded-lg text-teal-300 hover:bg-teal-700 flex items-center justify-center"
-                            onClick={() => {
-                                setIsOpen(!isOpen)
-                            }}
-                        >
-                            <BsLayoutSidebarInset />
-                        </button>
-                    </div>
-
-                    <div className="flex-grow max-h-fit overflow-scroll scrollbar-hide">
-                        {history.map((item, index) => (
-                            <div
-                                key={item._id}
-                                className="m-1.5"
-                            >
-                                <button
-                                    onClick={() => (
-                                        loadOne(item._id)
-                                    )}
-                                    className={`flex gap-2 items-center w-full h-8 p-2 hover:bg-teal-700 rounded-lg text-white cursor-pointer overflow-hidden whitespace-nowrap ${currItem === item._id ? "bg-teal-700" : ""}`}>
-                                    <div>
-                                        <PromptTypeIcon promptType={item.prompt_type} />
-                                    </div>
-                                    <span className="truncate text-xs">
-                                        {item.description}
-                                    </span>
-
-                                </button>
-
+                            onClick={() => (
+                                loadOne(item._id)
+                            )}
+                            className={`flex gap-2 items-center w-full h-8 p-2 hover:bg-teal-700 rounded-xl text-white cursor-pointer overflow-hidden whitespace-nowrap ${currItem === item._id ? "bg-teal-700" : ""}`}>
+                            <div>
+                                <PromptTypeIcon promptType={item.prompt_type} />
                             </div>
-                        ))}
-                    </div>
-                    <UserCard user={user} info={info} updatePlanHistory={updatePlanHistory} updatePhase={updatePhase} />
-                </div>
-            ) : (
-                <>
-                    <div className="flex flex-col h-screen bg-teal-900">
-                        <button
-                            className="col-span-1 m-1.5 mb-0 p-2.5 bg-teal-950 border border-1 border-teal-600 rounded-lg text-teal-300 hover:bg-teal-700 flex items-center justify-center"
-                            onClick={() => {
-                                setIsOpen(!isOpen)
-                            }}
-                        >
-                            <BsLayoutSidebarInset />
+                            <span className="truncate text-xs">
+                                {item.description}
+                            </span>
+
                         </button>
+
                     </div>
-
-                </>
-            )}
-        </>
-
+                ))}
+            </div>
+            <div className="p-3"></div>
+        </div>
     )
 }
 

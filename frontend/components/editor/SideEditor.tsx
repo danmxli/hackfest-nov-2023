@@ -166,18 +166,6 @@ const SideEditor: React.FC<SideEditorProps> = ({ user, nodeData, updateBaseData,
                             {nodeData}
                         </div>
                         <div className="flex gap-1 ml-2 mr-2 mb-2">
-                            {openChatView ? (
-                                <div className="p-2 pl-4 pr-4 inline-flex text-center bg-teal-600 text-teal-200 rounded-xl flex items-center gap-2">
-                                    <FaUserAstronaut />AI help and insights
-                                </div>
-                            ) : (
-                                <button
-                                    className="p-2 pl-4 pr-4 bg-teal-800 hover:bg-teal-600 text-teal-100 rounded-xl flex items-center gap-2"
-                                    onClick={handleOpenChat}
-                                >
-                                    <FaUserAstronaut />AI help and insights
-                                </button>
-                            )}
                             <button
                                 className="p-2 pl-4 pr-4 bg-gray-500 hover:bg-gray-400 text-gray-100 rounded-xl text-sm"
                                 onClick={viewSubtask}
@@ -192,6 +180,18 @@ const SideEditor: React.FC<SideEditorProps> = ({ user, nodeData, updateBaseData,
                             >
                                 Add subtask
                             </button>
+                            {openChatView ? (
+                                <div className="p-2 pl-4 pr-4 inline-flex text-center bg-teal-600 text-teal-200 rounded-xl flex items-center gap-2">
+                                    <FaUserAstronaut />AI help and insights
+                                </div>
+                            ) : (
+                                <button
+                                    className="p-2 pl-4 pr-4 bg-teal-800 hover:bg-teal-600 text-teal-100 rounded-xl flex items-center gap-2"
+                                    onClick={handleOpenChat}
+                                >
+                                    <FaUserAstronaut />AI help and insights
+                                </button>
+                            )}
                         </div>
                     </div>
                     {options[editorPhase]}
