@@ -14,13 +14,14 @@ interface LoadingPlanProps {
     user: any
     updatePhase: (newPhase: string) => void;
     planPrompt: string;
-    updatePlanHistory: (newHistory: Array<{ _id: string, description: string }>) => void;
+    promptType: string;
+    updatePlanHistory: (newHistory: Array<{ _id: string, description: string, prompt_type: string }>) => void;
     updateBaseData: (newData: Task[]) => void;
     updatePlanId: (newId: string) => void;
 }
 
 
-const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt, updatePlanHistory, updateBaseData, updatePlanId }) => {
+const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt, promptType, updatePlanHistory, updateBaseData, updatePlanId }) => {
     const router = useRouter()
     const fetchExecuted = useRef(false)
     useEffect(() => {
@@ -28,7 +29,8 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt
         const createBasePlan = async () => {
             const requestBody = {
                 email: user.email,
-                prompt: planPrompt
+                prompt: planPrompt,
+                prompt_type: promptType
             }
             try {
                 const response = await fetch('http://127.0.0.1:3000/planning/base', {
@@ -59,7 +61,7 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt
             fetchExecuted.current = true
             createBasePlan()
         }
-    }, [user.email, planPrompt, updatePhase, router, updatePlanHistory, updateBaseData, updatePlanId])
+    }, [user.email, planPrompt, promptType, updatePhase, router, updatePlanHistory, updateBaseData, updatePlanId])
 
 
     return (

@@ -1,8 +1,8 @@
 import React from "react"
 import { useState, useEffect } from "react"
 import UserCard from "./sidebar/UserCard"
+import PromptTypeIcon from "./sidebar/PromptTypeIcon"
 import { BsNodePlusFill, BsLayoutSidebarInset } from "react-icons/bs"
-import { AiOutlineNodeIndex } from "react-icons/ai"
 
 interface Task {
     description: string;
@@ -13,10 +13,10 @@ interface Task {
 interface SidebarProps {
     user: any
     info: string
-    history: Array<{ _id: string, description: string }>;
+    history: Array<{ _id: string, description: string, prompt_type: string }>;
     updatePhase: (newPhase: string) => void;
     updatePlanId: (newId: string) => void;
-    updatePlanHistory: (newHistory: Array<{ _id: string, description: string }>) => void;
+    updatePlanHistory: (newHistory: Array<{ _id: string, description: string, prompt_type: string }>) => void;
     updateBaseData: (newData: Task[]) => void;
     planId: string
 }
@@ -97,7 +97,7 @@ const Sidebar: React.FC<SidebarProps> = ({ user, info, history, updatePhase, upd
                                     )}
                                     className={`flex gap-2 items-center w-full h-8 p-2 hover:bg-teal-700 rounded-lg text-white cursor-pointer overflow-hidden whitespace-nowrap ${currItem === item._id ? "bg-teal-700" : ""}`}>
                                     <div>
-                                        <AiOutlineNodeIndex />
+                                        <PromptTypeIcon promptType={item.prompt_type} />
                                     </div>
                                     <span className="truncate text-xs">
                                         {item.description}

@@ -44,14 +44,14 @@ const NewPlan: React.FC<NewPlanProps> = ({ updatePhase, updatePlanPrompt, prompt
 
     return (
         <div className="h-screen flex items-center justify-center">
-            <div className="p-8 m-4 border border-2 border-teal-800 rounded-3xl max-w-4xl">
+            <div className="p-8 m-4 border border-2 border-teal-800 rounded-3xl max-w-5xl">
                 <h1 className="text-3xl">
                     What goals do <span className='text-teal-600'>you</span> want to achieve?
                 </h1>
                 <div className="mt-2 grid grid-cols-3 gap-2">
                     {promptOptions.map((option) => (
                         <button key={option.type} onClick={() => updatePromptType(option.type)}>
-                            <div className={`p-2 border rounded-lg break-words text-left ${promptType === option.type && 'border-teal-400'}`}>
+                            <div className={`p-2 border rounded-lg break-words text-left ${promptType === option.type && 'border-teal-600'}`}>
                                 <div className="flex items-center gap-1">
                                     {option.icon}{option.title}
                                 </div>
@@ -71,18 +71,6 @@ const NewPlan: React.FC<NewPlanProps> = ({ updatePhase, updatePlanPrompt, prompt
                 >
                     Generate base plan
                 </button>
-            </div>
-
-            <div className="m-4 border border-2 border-teal-300 rounded-3xl w-72 shadow-lg shadow-teal-300">
-                <div className="p-4 m-4 bg-teal-600 text-teal-100 border border-2 border-teal-500 rounded-3xl">
-                    Starter Examples:
-                </div>
-                <div className="p-4 m-4 border border-2 border-teal-500 rounded-3xl">
-                    <h1 className="italic">I have moderate biking experience. I want to bike to Niagara Falls.</h1>
-                </div>
-                <div className="p-4 m-4 border border-2 border-teal-500 rounded-3xl">
-                    <h1 className="italic">I am a university student researching neurological technologies. I want to learn python for data science.</h1>
-                </div>
             </div>
 
         </div>

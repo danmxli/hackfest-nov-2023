@@ -10,7 +10,7 @@ import Image from 'next/image';
 interface UserCardProps {
     user: any
     info: string
-    updatePlanHistory: (newHistory: Array<{ _id: string, description: string }>) => void;
+    updatePlanHistory: (newHistory: Array<{ _id: string, description: string, prompt_type: string }>) => void;
     updatePhase: (newPhase: string) => void;
 }
 

@@ -19,6 +19,7 @@ def create_base():
     data = request.get_json()
     email = data.get("email")
     prompt = data.get("prompt")
+    prompt_type = data.get("prompt_type")
 
     user = UserInfo.find_one({"email": email})
     if user:
@@ -28,6 +29,7 @@ def create_base():
         newPlan = {
             "_id": base_id,
             "description": prompt,
+            "prompt_type": prompt_type,
             "base_tasks": base
         }
         updateBasePlan = {
@@ -45,7 +47,8 @@ def create_base():
         for plan in all_plans:
             history.append({
                 "_id": plan["_id"],
-                "description": plan["description"]
+                "description": plan["description"],
+                "prompt_type": plan["prompt_type"]
             })
 
         return (jsonify({

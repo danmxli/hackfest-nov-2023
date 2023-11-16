@@ -33,8 +33,8 @@ export default withPageAuthRequired(function Home({ user }) {
     }
 
     // plan history
-    const [planHistory, setPlanHistory] = useState(Array<{ _id: string, description: string }>)
-    const updatePlanHistory = (newHistory: Array<{ _id: string, description: string }>) => {
+    const [planHistory, setPlanHistory] = useState(Array<{ _id: string, description: string, prompt_type: string }>)
+    const updatePlanHistory = (newHistory: Array<{ _id: string, description: string, prompt_type: string }>) => {
         setPlanHistory(newHistory)
     }
 
@@ -94,7 +94,7 @@ export default withPageAuthRequired(function Home({ user }) {
     // define object of phases
     const playground: PlanPhases = {
         NewPlan: <NewPlan updatePhase={updatePhase} updatePlanPrompt={updatePlanPrompt} promptType={promptType} updatePromptType={updatePromptType} />,
-        LoadingPlan: <LoadingPlan user={user} updatePhase={updatePhase} planPrompt={planPrompt} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} />,
+        LoadingPlan: <LoadingPlan user={user} updatePhase={updatePhase} planPrompt={planPrompt} promptType={promptType} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} />,
         RederingPlan: <></>,
         EditPlan: <EditPlan user={user} baseData={baseData} updateBaseData={updateBaseData} planId={planId} />
     }
