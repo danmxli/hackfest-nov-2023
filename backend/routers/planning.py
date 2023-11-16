@@ -30,7 +30,8 @@ def create_base():
             "_id": base_id,
             "description": prompt,
             "prompt_type": prompt_type,
-            "base_tasks": base
+            "base_tasks": base["task_list"],
+            "resources": base["resource_list"]
         }
         updateBasePlan = {
             "$push": {"plans": newPlan}
@@ -48,14 +49,15 @@ def create_base():
             history.append({
                 "_id": plan["_id"],
                 "description": plan["description"],
-                "prompt_type": plan["prompt_type"]
+                "prompt_type": plan["prompt_type"],
             })
 
         return (jsonify({
             "email": email,
-            "base_plan": base,
+            "base_plan": base["task_list"],
             "base_id": base_id,
-            "history": history
+            "history": history,
+            "resources": base["resource_list"]
         }))
 
     else:

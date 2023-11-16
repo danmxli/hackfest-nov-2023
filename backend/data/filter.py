@@ -1,6 +1,7 @@
 import re
 
-def filter_base(text):
+
+def filter_text(text):
     # return list of dicts. each dict contains order, base task description, and empty subtask list
     plans = []
     raw_pattern = r'(\d+)\.\s*(.*?)\s*\n'
@@ -16,3 +17,17 @@ def filter_base(text):
         })
 
     return plans
+
+
+def filter_documents(docs):
+    # return list of dict, each item has title and url of resource 
+    doc_list = []
+    for doc in docs:
+        if doc['title'] is not None and doc['url'] is not None:
+            item = {
+                'title': doc['title'],
+                'url': doc['url']
+            }
+            if item not in doc_list:
+                doc_list.append(item)
+    return (doc_list)
