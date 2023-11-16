@@ -152,52 +152,53 @@ const SideEditor: React.FC<SideEditorProps> = ({ user, nodeData, updateBaseData,
     }
 
     return (
-        <div className={`${openEditor ? 'h-screen' : 'h-fit'} overflow-scroll scrollbar-hide fixed bottom-0 right-0 p-2 bg-white border-l-2 border-t-2 rounded-tl-3xl border-teal-800 w-1/3`}>
+        <div className={`${openEditor ? 'h-screen' : 'h-fit rounded-tl-3xl border-t-2'} overflow-scroll scrollbar-hide fixed bottom-0 right-0 p-2 bg-white border-l-2 border-teal-800 w-1/3`}>
             {openEditor ? (<>
                 <button
-                    className="p-1 pl-8 pr-8 border border-2 border-teal-600 text-teal-600 rounded-2xl"
+                    className="p-2 pl-8 pr-8 bg-gray-300 hover:bg-gray-400 text-black font-semibold rounded-2xl text-xs"
                     onClick={handleCloseEditor}
                 >
                     close
                 </button>
                 <div className="mt-2">
-                    <div className="border border-teal-600 text-sm text rounded-2xl">
+                    <div className="border border-gray-300 shadow text-sm text rounded-2xl">
                         <div className="p-4 max-h-52 font-light overflow-scroll scrollbar-hide">
                             {nodeData}
                         </div>
-                        {openChatView ? (
-                            <div className="m-2 p-2 pl-4 pr-4 inline-flex bg-teal-600 text-teal-200 rounded-xl flex items-center gap-2">
-                                <FaUserAstronaut />AI help and insights
-                            </div>
-                        ) : (
+                        <div className="flex gap-1 ml-2 mr-2 mb-2">
+                            {openChatView ? (
+                                <div className="p-2 pl-4 pr-4 inline-flex text-center bg-teal-600 text-teal-200 rounded-xl flex items-center gap-2">
+                                    <FaUserAstronaut />AI help and insights
+                                </div>
+                            ) : (
+                                <button
+                                    className="p-2 pl-4 pr-4 bg-teal-800 hover:bg-teal-600 text-teal-100 rounded-xl flex items-center gap-2"
+                                    onClick={handleOpenChat}
+                                >
+                                    <FaUserAstronaut />AI help and insights
+                                </button>
+                            )}
                             <button
-                                className="m-2 p-2 pl-4 pr-4 bg-teal-800 text-teal-200 rounded-xl flex items-center gap-2"
-                                onClick={handleOpenChat}
+                                className="p-2 pl-4 pr-4 bg-gray-500 hover:bg-gray-400 text-gray-100 rounded-xl text-sm"
+                                onClick={viewSubtask}
                             >
-                                <FaUserAstronaut />AI help and insights
+                                All subtasks
                             </button>
-                        )}
-
+                            <button
+                                className="p-2 pl-4 pr-4 bg-gray-500 hover:bg-gray-400 text-gray-100 rounded-xl text-sm"
+                                onClick={() => {
+                                    setEditorPhase('AddSubtask')
+                                }}
+                            >
+                                Add subtask
+                            </button>
+                        </div>
                     </div>
-                    <button
-                        className="mt-2 p-2 pl-4 pr-4 border border-teal-600 rounded-xl text-sm"
-                        onClick={viewSubtask}
-                    >
-                        All subtasks
-                    </button>
-                    <button
-                        className="mt-2 ml-2 p-2 pl-4 pr-4 border border-teal-600 rounded-xl text-sm"
-                        onClick={() => {
-                            setEditorPhase('AddSubtask')
-                        }}
-                    >
-                        Add subtask
-                    </button>
                     {options[editorPhase]}
                 </div>
                 <ChatView user={user} openChatView={openChatView} updateChatView={updateChatView} chatHistory={chatHistory} addMessage={addMessage} planId={planId} taskDescription={nodeData} clearChatHistory={clearChatHistory} />
             </>) : (
-                <h1 className="p-4 rounded-3xl inline-flex"><code>Select a node to add a subtask to.</code></h1>
+                <h1 className="p-4 border-2 border-black bg-gray-200 rounded-3xl inline-flex"><code>Select a node to add a subtask to.</code></h1>
             )}
         </div>
     )

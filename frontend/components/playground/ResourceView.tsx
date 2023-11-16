@@ -22,7 +22,7 @@ const ResourceView: React.FC<ResourceViewProps> = ({ baseResources }) => {
             <div className={`fixed bottom-0 left-48 m-2`}>
                 {
                     openResourceView ? (
-                        <div className="h-96 w-64 p-2 border border-2 border-teal-800 rounded-3xl bg-white flex flex-col">
+                        <div className="h-96 w-64 p-2 border border-gray-400 rounded-3xl bg-white flex flex-col">
                             <div className="flex-grow max-h-fit overflow-scroll scrollbar-hide space-y-2">
                                 {baseResources.map((resource, index) => (
                                     <div key={index} >
@@ -36,7 +36,7 @@ const ResourceView: React.FC<ResourceViewProps> = ({ baseResources }) => {
                                 ))}
                             </div>
                             <div>
-                                <button className="mt-2 p-1 pl-8 pr-8 border border-2 border-teal-600 text-teal-600 rounded-2xl text-xs" onClick={toggleView}>
+                                <button className="mt-2 p-2 pl-8 pr-8 bg-gray-300 hover:bg-gray-400 text-black font-semibold rounded-2xl text-xs" onClick={toggleView}>
                                     close resources
                                 </button>
                             </div>

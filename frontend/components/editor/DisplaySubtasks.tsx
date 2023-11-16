@@ -54,7 +54,7 @@ const DisplaySubtasks: React.FC<DisplaySubtasksProps> = ({ user, subtaskItems, p
     }
 
     return (
-        <div className="mt-2 p-4 overflow-scroll scrollbar-hide border border-teal-600 rounded-2xl font-light grid gap-2">
+        <div className="mt-2 p-4 overflow-scroll scrollbar-hide border border-gray-300 shadow rounded-2xl font-light grid gap-2">
             {subtaskItems.length > 0 ? (<>
                 {subtaskItems.map(item => (
                     <div key={item._id}

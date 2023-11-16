@@ -118,7 +118,7 @@ const ChatView: React.FC<ChatViewProps> = ({ user, openChatView, updateChatView,
     return (
         <>
             {openChatView ? (
-                <div className="fixed bottom-0 right-1/3 w-1/4 h-5/6 p-2 bg-white border-l-2 border-t-2 rounded-tl-3xl border-teal-800">
+                <div className="fixed bottom-0 right-1/3 w-1/4 h-5/6 p-2 m-2 bg-white border rounded-3xl border-gray-400">
                     <div className="h-full grid grid-rows-6">
                         <div ref={chatContainerRef} className="row-span-5 overflow-scroll scrollbar-hide">
                             {historyCopy.length > 0 ? (<>
@@ -149,13 +149,13 @@ const ChatView: React.FC<ChatViewProps> = ({ user, openChatView, updateChatView,
                         </div>
                         <div className="flex items-center justify-center gap-2">
                             <button
-                                className="p-1 pl-8 pr-8 border border-2 border-teal-600 bg-white text-teal-600 rounded-2xl text-xs"
+                                className="p-2 pl-8 pr-8 bg-gray-300 hover:bg-gray-400 text-black font-semibold rounded-2xl text-xs"
                                 onClick={handleClearHistory}
                             >
                                 clear chat
                             </button>
                             <button
-                                className="p-1 pl-8 pr-8 border border-2 border-teal-600 bg-white text-teal-600 rounded-2xl text-xs"
+                                className="p-2 pl-8 pr-8 bg-gray-300 hover:bg-gray-400 text-black font-semibold rounded-2xl text-xs"
                                 onClick={handleCloseChat}
                             >
                                 exit chat

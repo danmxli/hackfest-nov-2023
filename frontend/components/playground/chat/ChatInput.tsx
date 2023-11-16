@@ -19,14 +19,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ inputValue, updateInputValue, fet
     }
 
     return (
-        <div className="grid grid-cols-12 gap-2 items-center p-2 bg-teal-100 rounded-2xl w-full">
+        <div className="grid grid-cols-12 gap-2 items-center p-2 bg-gray-100 rounded-2xl w-full">
             <div className='col-span-10'>
                 <input
                     type="text"
                     placeholder="Type your message..."
                     value={inputValue}
                     onChange={handleChange}
-                    className="w-full p-2 bg-white border border-teal-500 rounded-md focus:outline-none"
+                    className="w-full p-2 bg-white border border-gray-500 rounded-md focus:outline-none"
                 />
             </div>
 
