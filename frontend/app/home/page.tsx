@@ -49,6 +49,16 @@ export default withPageAuthRequired(function Home({ user }) {
         setBaseData(newData)
     }
 
+    // base resources object structure
+    interface Doc {
+        title: string
+        url: string
+    }
+    const [baseResources, setBaseResources] = useState<Doc[]>([])
+    const updateBaseResources = (newResource: Doc[]) => {
+        setBaseResources(newResource)
+    }
+
     // plan phases interface
     interface PlanPhases {
         [key: string]: React.ReactNode;
@@ -94,16 +104,16 @@ export default withPageAuthRequired(function Home({ user }) {
     // define object of phases
     const playground: PlanPhases = {
         NewPlan: <NewPlan updatePhase={updatePhase} updatePlanPrompt={updatePlanPrompt} promptType={promptType} updatePromptType={updatePromptType} />,
-        LoadingPlan: <LoadingPlan user={user} updatePhase={updatePhase} planPrompt={planPrompt} promptType={promptType} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} />,
+        LoadingPlan: <LoadingPlan user={user} updatePhase={updatePhase} planPrompt={planPrompt} promptType={promptType} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} updateBaseResources={updateBaseResources} />,
         RederingPlan: <></>,
-        EditPlan: <EditPlan user={user} baseData={baseData} updateBaseData={updateBaseData} planId={planId} />
+        EditPlan: <EditPlan user={user} baseData={baseData} updateBaseData={updateBaseData} planId={planId} baseResources={baseResources} />
     }
 
     return (
         <>
             {isAuthenticated ? (
                 <div className="flex">
-                    <Sidebar user={user} info={userInfo} history={planHistory} updatePhase={updatePhase} updatePlanId={updatePlanId} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} planId={planId} />
+                    <Sidebar user={user} info={userInfo} history={planHistory} updatePhase={updatePhase} updatePlanId={updatePlanId} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} planId={planId} updateBaseResources={updateBaseResources} />
                     <main className="flex-1">
                         {playground[phase]}
                     </main>

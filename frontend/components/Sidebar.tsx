@@ -9,6 +9,10 @@ interface Task {
     order: string;
     sub_tasks: any[]
 }
+interface Doc {
+    title: string
+    url: string
+}
 
 interface SidebarProps {
     user: any
@@ -18,10 +22,11 @@ interface SidebarProps {
     updatePlanId: (newId: string) => void;
     updatePlanHistory: (newHistory: Array<{ _id: string, description: string, prompt_type: string }>) => void;
     updateBaseData: (newData: Task[]) => void;
-    planId: string
+    planId: string;
+    updateBaseResources: (newResource: Doc[]) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ user, info, history, updatePhase, updatePlanId, updatePlanHistory, updateBaseData, planId }) => {
+const Sidebar: React.FC<SidebarProps> = ({ user, info, history, updatePhase, updatePlanId, updatePlanHistory, updateBaseData, planId, updateBaseResources }) => {
     const [currItem, setCurrItem] = useState('')
     const [isOpen, setIsOpen] = useState(true)
 
@@ -49,6 +54,7 @@ const Sidebar: React.FC<SidebarProps> = ({ user, info, history, updatePhase, upd
                     console.log(data["match"]["_id"])
                     console.log(data["match"]["base_tasks"])
                     updateBaseData(data["match"]["base_tasks"])
+                    updateBaseResources(data["match"]["resources"])
                     updatePlanId(data["match"]["_id"])
                     setCurrItem(id)
                     updatePhase('EditPlan')

@@ -9,6 +9,10 @@ interface Task {
     order: string;
     sub_tasks: any[];
 }
+interface Doc {
+    title: string
+    url: string
+}
 
 interface LoadingPlanProps {
     user: any
@@ -18,10 +22,11 @@ interface LoadingPlanProps {
     updatePlanHistory: (newHistory: Array<{ _id: string, description: string, prompt_type: string }>) => void;
     updateBaseData: (newData: Task[]) => void;
     updatePlanId: (newId: string) => void;
+    updateBaseResources: (newResource: Doc[]) => void;
 }
 
 
-const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt, promptType, updatePlanHistory, updateBaseData, updatePlanId }) => {
+const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt, promptType, updatePlanHistory, updateBaseData, updatePlanId, updateBaseResources }) => {
     const router = useRouter()
     const fetchExecuted = useRef(false)
     useEffect(() => {
@@ -45,6 +50,7 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt
                     if (data) {
                         console.log(data)
                         updateBaseData(data["base_plan"])
+                        updateBaseResources(data["resources"])
                         updatePlanId(data["base_id"])
                         updatePlanHistory(data["history"])
                         updatePhase('EditPlan')

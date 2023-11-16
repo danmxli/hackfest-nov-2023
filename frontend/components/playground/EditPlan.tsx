@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react"
 import Graph from "./Graph";
 import SideEditor from "../editor/SideEditor";
+import ResourceView from "./ResourceView";
 
 interface Task {
     description: string;
     order: string;
     sub_tasks: any[]
+}
+interface Doc {
+    title: string
+    url: string
 }
 
 interface EditPlanProps {
@@ -13,9 +18,10 @@ interface EditPlanProps {
     baseData: Task[]
     updateBaseData: (newData: Task[]) => void;
     planId: string
+    baseResources: Doc[]
 }
 
-const EditPlan: React.FC<EditPlanProps> = ({ user, baseData, updateBaseData, planId }) => {
+const EditPlan: React.FC<EditPlanProps> = ({ user, baseData, updateBaseData, planId, baseResources }) => {
 
     // editor open state
     const [openEditor, setOpenEditor] = useState(false)
@@ -64,6 +70,7 @@ const EditPlan: React.FC<EditPlanProps> = ({ user, baseData, updateBaseData, pla
     return (
         <div className="h-screen overflow-scroll scrollbar-hide flex flex-col items-center">
             <Graph baseData={baseData} updateOpenEditor={updateOpenEditor} />
+            <ResourceView baseResources={baseResources} />
             <SideEditor user={user} nodeData={nodeData} updateBaseData={updateBaseData} openEditor={openEditor} updateOpenEditor={updateOpenEditor} planId={planId} subtasklist={subtasks} />
         </div>
     )

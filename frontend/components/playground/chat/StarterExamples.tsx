@@ -32,7 +32,7 @@ const StarterExamples: React.FC<StarterExamplesProps> = ({ fetchResponse }) => {
                 {exampleList.map((item) => (
                     <button
                         key={item.id}
-                        className="border border-2 p-2 rounded-xl text-center text-gray-500 hover:border-teal-400 flex items-center justify-center"
+                        className="border p-2 rounded-xl text-center text-gray-500 hover:border-teal-400 hover:text-black flex items-center justify-center"
                         onClick={() => { fetchResponse(item.label) }}
                     >
                         {item.label}
