@@ -67,7 +67,7 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt
             fetchExecuted.current = true
             createBasePlan()
         }
-    }, [user.email, planPrompt, promptType, updatePhase, router, updatePlanHistory, updateBaseData, updatePlanId])
+    }, [user.email, planPrompt, promptType, updatePhase, router, updatePlanHistory, updateBaseData, updateBaseResources, updatePlanId])
 
 
     return (

@@ -12,6 +12,12 @@ UserInfo = db['UserInfo']
 
 planning_blueprint = Blueprint('planning', __name__)
 
+"""
+prompt_quickstart empty resource_list
+prompt_developer populate resource_list
+prompt_academia populate resource_list
+"""
+
 
 @planning_blueprint.route('/base', methods=["POST"])
 def create_base():
@@ -23,7 +29,7 @@ def create_base():
 
     user = UserInfo.find_one({"email": email})
     if user:
-        base = base_plan(prompt)
+        base = base_plan(prompt, prompt_type)
         # create dict to store the new plan
         base_id = str(uuid4())
         newPlan = {
@@ -43,7 +49,7 @@ def create_base():
         target_user = UserInfo.find_one({"email": email})
         if target_user is None:
             return (jsonify({"email": "not found"}))
-        
+
         all_plans = target_user.get("plans", [])
         for plan in all_plans:
             history.append({
@@ -157,7 +163,7 @@ def edit_subtask():
             # update_one
             result = UserInfo.update_one(
                 filter, removeSubtask, array_filters=array_filters)
-            
+
             if result.modified_count > 0:
                 # get updated subtasks
                 updated_user = UserInfo.find_one({"email": email})
@@ -277,7 +283,7 @@ def clear_all():
         target_user = UserInfo.find_one({"email": email})
         if target_user is None:
             return (jsonify({"email": "not found"}))
-        
+
         all_plans = target_user.get("plans", [])
         for plan in all_plans:
             history.append({
