@@ -1,5 +1,6 @@
-import React, { useState, MouseEventHandler } from "react"
-import { useRouter } from "next/navigation"
+import React, { useState, MouseEventHandler, useEffect } from "react"
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import { AiFillCodeSandboxCircle } from 'react-icons/ai'
 import { ImUpload } from 'react-icons/im'
 import { FaUserAstronaut } from 'react-icons/fa'
@@ -13,8 +14,6 @@ interface UserInputProps {
 }
 
 const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData, fetchChatHistory, openChatView }) => {
-
-    const router = useRouter()
 
     // handle user input and UserInput state
     const [textInput, setTextInput] = useState('')
@@ -47,7 +46,7 @@ const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData, fetchChat
                 const data = await response.json();
                 if (data) {
                     console.log(data)
-                    setTextInput('Successfully added! You can clear this text')
+                    setTextInput('<p>successfully added</p>')
                 }
             } else {
                 console.error('Request failed with status:', response.status);
@@ -76,20 +75,15 @@ const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData, fetchChat
                 </div>
                 <div className="bg-white rounded-b-2xl p-2">
                     {isLoading ? (<>
-                        <div className="mt-2 h-52 w-full border border-gray-300 rounded-2xl text-3xl flex items-center justify-center text-teal-600">
+                        <div className="mt-2 h-64 w-full border border-gray-300 rounded-2xl text-3xl flex items-center justify-center text-teal-600">
                             <div className="flex items-center justify-center gap-2 p-12 border border-2 border-gray-300 rounded-3xl">
                                 <AiFillCodeSandboxCircle className="animate-spin" /> <span className="animate-pulse">loading...</span>
                             </div>
                         </div>
                     </>) : (<>
-                        <textarea
-                            className="h-52 w-full text-sm focus:outline-none scrollbar-hide"
-                            placeholder="Your description here..."
-                            value={textInput}
-                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                                setTextInput(e.target.value);
-                            }}
-                        ></textarea>
+                        <div className="w-full h-72 overflow-scroll scrollbar-hide">
+                                <ReactQuill theme="snow" value={textInput} onChange={setTextInput} className="h-72" />
+                        </div>
                     </>)}
                 </div>
 
