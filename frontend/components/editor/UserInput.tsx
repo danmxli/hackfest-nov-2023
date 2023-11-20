@@ -1,7 +1,6 @@
 'use client'
 import React, { useState, MouseEventHandler, ChangeEvent } from "react"
 import 'react-quill/dist/quill.snow.css';
-import { AiFillCodeSandboxCircle } from 'react-icons/ai'
 import { ImUpload } from 'react-icons/im'
 
 interface UserInputProps {
@@ -65,23 +64,23 @@ const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData, fetchChat
 
     return (
         <div className="mt-2 p-4 border border-gray-300 text-sm text rounded-2xl shadow">
-            <div className="w-full border border-gray-300 bg-gray-50 rounded-2xl">
-                <div className="rounded-t-2xl border-b border-gray-300 p-2 grid grid-cols-5 items-center gap-2 overflow-x-scroll scrollbar-hide">
+            <div className="w-full border border-teal-600 bg-teal-100 rounded-2xl">
+                <div className="rounded-t-2xl border-b border-teal-600 p-2 grid grid-cols-5 items-center gap-2 overflow-x-scroll scrollbar-hide">
                     <div className="col-span-4">
                         <input
-                            className="w-full focus:outline-none p-2 border border-gray-300 rounded-xl"
+                            className="w-full focus:outline-none border border-teal-600 p-2 rounded-xl "
                             placeholder="Your subtask title"
                             value={subtitle}
                             onChange={handleTitleChange}
                         ></input>
                     </div>
                     {openChatView ? (
-                        <div className="bg-gray-200 text-center rounded-xl p-2 text-gray-500">
+                        <div className="bg-white text-center border border-teal-600 rounded-xl p-2 text-teal-500">
                             Insights
                         </div>
                     ) : (
                         <button
-                            className="bg-gray-200 rounded-xl p-2 text-gray-500 hover:text-black"
+                            className="bg-white border border-teal-600 rounded-xl p-2 text-teal-600 hover:text-black"
                             onClick={handleOpenChat}
                         >
                             Insights
@@ -91,11 +90,6 @@ const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData, fetchChat
                 </div>
                 <div className="bg-white rounded-b-2xl p-2">
                     {isLoading ? (<>
-                        <div className="mt-2 h-64 w-full border border-gray-300 rounded-2xl text-3xl flex items-center justify-center text-teal-600">
-                            <div className="flex items-center justify-center gap-2 p-12 border border-2 border-gray-300 rounded-3xl">
-                                <AiFillCodeSandboxCircle className="animate-spin" /> <span className="animate-pulse">loading...</span>
-                            </div>
-                        </div>
                     </>) : (<>
                         <div className="w-full h-72 overflow-scroll scrollbar-hide">
                             <ReactQuill theme="snow" value={textInput} onChange={setTextInput} className="h-72" />
@@ -104,7 +98,7 @@ const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData, fetchChat
                 </div>
 
             </div>
-            <button className="mt-2 p-2 pl-4 pr-4 bg-teal-100/50 hover:bg-teal-100 text-teal-600 rounded-xl flex items-center gap-2"
+            <button className="mt-2 p-2 pl-4 pr-4 bg-teal-100/50 border border-teal-300 hover:bg-teal-100 text-teal-600 rounded-xl flex items-center gap-2"
                 onClick={addSubtask}
             >
                 <ImUpload />Add to all subtasks
