@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { CgExtensionRemove } from 'react-icons/cg'
 import { RiNodeTree } from 'react-icons/ri'
 import { MdOutlineExpandCircleDown } from "react-icons/md";
+import './custom.scss'
 
 interface DisplaySubtasksProps {
     user: any
@@ -99,7 +100,7 @@ const DisplaySubtasks: React.FC<DisplaySubtasksProps> = ({ user, subtaskItems, p
                         </div>
                         {expandedItems.includes(item._id) && (
                             <div
-                                className="col-span-12 mt-2"
+                                className="col-span-12 customHtmlStyles"
                                 dangerouslySetInnerHTML={{ __html: item.description }}
                             />
                         )}
