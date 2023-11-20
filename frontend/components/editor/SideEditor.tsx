@@ -20,6 +20,7 @@ interface SideEditorProps {
     planId: string
     subtasklist: {
         _id: string;
+        title: string;
         description: string;
     }[]
 
@@ -40,6 +41,7 @@ const SideEditor: React.FC<SideEditorProps> = ({ user, nodeData, updateBaseData,
 
     const updateLocalSubtasks = (newLocalSubtask: {
         _id: string;
+        title: string;
         description: string;
     }[]) => {
         setLocalSubtasks(newLocalSubtask)

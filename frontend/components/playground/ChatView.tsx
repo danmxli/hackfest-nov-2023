@@ -118,7 +118,7 @@ const ChatView: React.FC<ChatViewProps> = ({ user, openChatView, updateChatView,
     return (
         <>
             {openChatView ? (
-                <div className="fixed bottom-0 right-1/3 w-1/4 h-5/6 p-2 m-2 bg-white border rounded-3xl border-gray-400">
+                <div className="fixed bottom-0 right-1/3 w-1/4 h-5/6 p-2 m-2 bg-white border rounded-3xl border-gray-400 overflow-scroll scrollbar-hide">
                     <div className="h-full grid grid-rows-6">
                         <div ref={chatContainerRef} className="row-span-5 overflow-scroll scrollbar-hide">
                             {historyCopy.length > 0 ? (<>

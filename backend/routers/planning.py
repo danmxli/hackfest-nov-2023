@@ -71,7 +71,7 @@ def create_base():
 
 
 """
-for "action": "add" specify "subtask": "example string"
+for "action": "add" specify "subtask": "<html>" "subtitle": "name of subtask"
 for "action": "remove" specify "subtaskId": "example-id-21331"
 """
 
@@ -123,12 +123,14 @@ def edit_subtask():
         # action to add subtask
         if action == 'add':
             subtask = data.get('subtask')
+            taskTitle = data.get("subtitle")
             subtaskId = str(uuid4())
 
             addSubtask = {
                 "$push": {
                     "plans.$[plan].base_tasks.$[task].sub_tasks": {
                         "_id": subtaskId,
+                        "title": taskTitle,
                         "description": subtask
                     }
                 }

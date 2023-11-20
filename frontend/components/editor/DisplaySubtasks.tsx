@@ -1,18 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { CgExtensionRemove } from 'react-icons/cg'
 import { RiNodeTree } from 'react-icons/ri'
+import { MdOutlineExpandCircleDown } from "react-icons/md";
 
 interface DisplaySubtasksProps {
     user: any
     subtaskItems: {
         _id: string;
+        title: string;
         description: string;
     }[]
     planId: string
     nodeData: any
     updateLocalSubtasks: (newLocalSubtask: {
         _id: string;
+        title: string;
         description: string;
     }[]) => void
 }
@@ -20,6 +23,17 @@ interface DisplaySubtasksProps {
 const DisplaySubtasks: React.FC<DisplaySubtasksProps> = ({ user, subtaskItems, planId, nodeData, updateLocalSubtasks }) => {
 
     const router = useRouter()
+    // toggle expanded description
+    const [expandedItems, setExpandedItems] = useState<string[]>([]);
+    const toggleExpand = (itemId: string) => {
+        setExpandedItems((prevExpandedItems) => {
+            if (prevExpandedItems.includes(itemId)) {
+                return prevExpandedItems.filter((id) => id !== itemId);
+            } else {
+                return [...prevExpandedItems, itemId];
+            }
+        });
+    };
 
     const removeSubtask = async (id: string) => {
         const requestBody = {
@@ -56,19 +70,39 @@ const DisplaySubtasks: React.FC<DisplaySubtasksProps> = ({ user, subtaskItems, p
     return (
         <div className="mt-2 p-4 overflow-scroll scrollbar-hide border border-gray-300 shadow rounded-2xl font-light grid gap-2">
             {subtaskItems.length > 0 ? (<>
-                {subtaskItems.map(item => (
-                    <div key={item._id}
-                        className="p-2 grid grid-cols-12 border border-gray-300 hover:border-gray-400 rounded-xl text-sm">
-                        <div className="col-span-11">
-                            {item.description}
-                        </div>
-                        <div className="flex justify-end">
-                            <button className="text-gray-400 hover:text-red-300"
+                {subtaskItems.map((item) => (
+                    <div
+                        key={item._id}
+                        className="p-2 grid grid-cols-12 border border-gray-300 hover:border-gray-400 rounded-xl text-sm"
+                    >
+                        <button
+                            className="flex items-center justify-start gap-1 col-span-11"
+                            onClick={() => toggleExpand(item._id)}
+                        >
+                            <>
+                                <MdOutlineExpandCircleDown
+                                    className={`text-teal-600 ${expandedItems.includes(item._id) ? 'rotate-180' : ''
+                                        }`}
+                                />
+                                {item.title}
+                            </>
+                        </button>
+                        <div className="flex justify-end gap-1">
+                            <button
+                                className="text-gray-400 hover:text-red-300"
                                 onClick={() => {
-                                    removeSubtask(item._id)
+                                    removeSubtask(item._id);
                                 }}
-                            ><CgExtensionRemove /></button>
+                            >
+                                <CgExtensionRemove />
+                            </button>
                         </div>
+                        {expandedItems.includes(item._id) && (
+                            <div
+                                className="col-span-12 mt-2"
+                                dangerouslySetInnerHTML={{ __html: item.description }}
+                            />
+                        )}
                     </div>
                 ))}
             </>) : (<>

@@ -1,9 +1,8 @@
-import React, { useState, MouseEventHandler, useEffect } from "react"
-import ReactQuill from 'react-quill';
+'use client'
+import React, { useState, MouseEventHandler, ChangeEvent } from "react"
 import 'react-quill/dist/quill.snow.css';
 import { AiFillCodeSandboxCircle } from 'react-icons/ai'
 import { ImUpload } from 'react-icons/im'
-import { FaUserAstronaut } from 'react-icons/fa'
 
 interface UserInputProps {
     user: any
@@ -15,7 +14,14 @@ interface UserInputProps {
 
 const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData, fetchChatHistory, openChatView }) => {
 
+    // https://github.com/zenoamaro/react-quill/issues/122
+    const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
+
     // handle user input and UserInput state
+    const [subtitle, setSubtitle] = useState('')
+    const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setSubtitle(e.target.value)
+    }
     const [textInput, setTextInput] = useState('')
     const [isLoading, setIsLoading] = useState(false)
 
@@ -31,7 +37,8 @@ const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData, fetchChat
             planId: planId,
             taskDescription: nodeData,
             action: "add",
-            subtask: textInput
+            subtask: textInput,
+            subtitle: subtitle
         }
         console.log(requestBody)
         try {
@@ -59,19 +66,28 @@ const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData, fetchChat
     return (
         <div className="mt-2 p-4 border border-gray-300 text-sm text rounded-2xl shadow">
             <div className="w-full border border-gray-300 bg-gray-50 rounded-2xl">
-                <div className="rounded-t-2xl border-b border-gray-300 p-2">
+                <div className="rounded-t-2xl border-b border-gray-300 p-2 grid grid-cols-5 items-center gap-2 overflow-x-scroll scrollbar-hide">
+                    <div className="col-span-4">
+                        <input
+                            className="w-full focus:outline-none p-2 border border-gray-300 rounded-xl"
+                            placeholder="Your subtask title"
+                            value={subtitle}
+                            onChange={handleTitleChange}
+                        ></input>
+                    </div>
                     {openChatView ? (
-                        <div className="flex items-center gap-2 text-gray-400">
-                            <FaUserAstronaut />AI help and insights
+                        <div className="bg-gray-200 text-center rounded-xl p-2 text-gray-500">
+                            Insights
                         </div>
                     ) : (
                         <button
-                            className="flex items-center gap-2 text-gray-400 hover:text-black"
+                            className="bg-gray-200 rounded-xl p-2 text-gray-500 hover:text-black"
                             onClick={handleOpenChat}
                         >
-                            <FaUserAstronaut />AI help and insights
+                            Insights
                         </button>
                     )}
+
                 </div>
                 <div className="bg-white rounded-b-2xl p-2">
                     {isLoading ? (<>
@@ -82,13 +98,13 @@ const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData, fetchChat
                         </div>
                     </>) : (<>
                         <div className="w-full h-72 overflow-scroll scrollbar-hide">
-                                <ReactQuill theme="snow" value={textInput} onChange={setTextInput} className="h-72" />
+                            <ReactQuill theme="snow" value={textInput} onChange={setTextInput} className="h-72" />
                         </div>
                     </>)}
                 </div>
 
             </div>
-            <button className="mt-2 p-2 pl-4 pr-4 bg-teal-800 hover:bg-teal-600 text-teal-200 rounded-xl flex items-center gap-2"
+            <button className="mt-2 p-2 pl-4 pr-4 bg-teal-100/50 hover:bg-teal-100 text-teal-600 rounded-xl flex items-center gap-2"
                 onClick={addSubtask}
             >
                 <ImUpload />Add to all subtasks
