@@ -1,21 +1,29 @@
-import React, { useState } from "react"
+import React, { useState, MouseEventHandler } from "react"
 import { useRouter } from "next/navigation"
 import { AiFillCodeSandboxCircle } from 'react-icons/ai'
 import { ImUpload } from 'react-icons/im'
+import { FaUserAstronaut } from 'react-icons/fa'
 
 interface UserInputProps {
     user: any
     planId: string,
     nodeData: any
+    fetchChatHistory: () => Promise<void>
+    openChatView: boolean
 }
 
-const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData }) => {
+const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData, fetchChatHistory, openChatView }) => {
 
     const router = useRouter()
 
     // handle user input and UserInput state
     const [textInput, setTextInput] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+
+    // open chat view
+    const handleOpenChat: MouseEventHandler<HTMLButtonElement> = () => {
+        fetchChatHistory()
+    }
 
     // handle adding subtask
     const addSubtask = async () => {
@@ -46,32 +54,51 @@ const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData }) => {
             }
         } catch (error) {
             console.error('Fetch request error:', error);
-        } 
+        }
     }
 
     return (
-        <div className="mt-2 p-4 border border-teal-600 text-sm text rounded-2xl">
-            <button className="p-2 pl-4 pr-4 bg-teal-800 text-teal-200 rounded-xl flex items-center gap-2"
+        <div className="mt-2 p-4 border border-gray-300 text-sm text rounded-2xl shadow">
+            <div className="w-full border border-gray-300 bg-gray-50 rounded-2xl">
+                <div className="rounded-t-2xl border-b border-gray-300 p-2">
+                    {openChatView ? (
+                        <div className="flex items-center gap-2 text-gray-400">
+                            <FaUserAstronaut />AI help and insights
+                        </div>
+                    ) : (
+                        <button
+                            className="flex items-center gap-2 text-gray-400 hover:text-black"
+                            onClick={handleOpenChat}
+                        >
+                            <FaUserAstronaut />AI help and insights
+                        </button>
+                    )}
+                </div>
+                <div className="bg-white rounded-b-2xl p-2">
+                    {isLoading ? (<>
+                        <div className="mt-2 h-52 w-full border border-gray-300 rounded-2xl text-3xl flex items-center justify-center text-teal-600">
+                            <div className="flex items-center justify-center gap-2 p-12 border border-2 border-gray-300 rounded-3xl">
+                                <AiFillCodeSandboxCircle className="animate-spin" /> <span className="animate-pulse">loading...</span>
+                            </div>
+                        </div>
+                    </>) : (<>
+                        <textarea
+                            className="h-52 w-full text-sm focus:outline-none scrollbar-hide"
+                            placeholder="Your description here..."
+                            value={textInput}
+                            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                                setTextInput(e.target.value);
+                            }}
+                        ></textarea>
+                    </>)}
+                </div>
+
+            </div>
+            <button className="mt-2 p-2 pl-4 pr-4 bg-teal-800 hover:bg-teal-600 text-teal-200 rounded-xl flex items-center gap-2"
                 onClick={addSubtask}
             >
                 <ImUpload />Add to all subtasks
             </button>
-            {isLoading ? (<>
-                <div className="mt-2 h-52 w-full border border-gray-300 rounded-2xl text-3xl flex items-center justify-center text-teal-600">
-                    <div className="flex items-center justify-center gap-2 p-12 border border-2 border-gray-300 rounded-3xl">
-                        <AiFillCodeSandboxCircle className="animate-spin" /> <span className="animate-pulse">loading...</span>
-                    </div>
-                </div>
-            </>) : (<>
-                <textarea
-                    className="mt-2 p-2 h-52 w-full text-sm rounded-2xl border border-gray-300 focus:outline-none scrollbar-hide"
-                    placeholder="Your description here..."
-                    value={textInput}
-                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                        setTextInput(e.target.value);
-                    }}
-                ></textarea>
-            </>)}
         </div>
     )
 }
