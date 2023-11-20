@@ -56,7 +56,7 @@ def create_subtask():
             {"task.description": taskDescription}
         ]
 
-        response = base_chat_generate(prompt)
+        response = base_chat_generate(prompt, taskDescription)
 
         updateChatHistory = {
             "$push": {

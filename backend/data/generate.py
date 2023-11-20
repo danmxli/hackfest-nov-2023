@@ -67,25 +67,31 @@ prompt_academia populate resource_list
 """
 
 
-def base_chat_generate(prompt):
-    # response = co.chat(
-    #     model='command-nightly',
-    #     message=f"here is my main task: {prompt}. Generate one subtask.",
-    #     temperature=0.7,
-    #     chat_history=[
-    #         {
-    #             "role": "USER", "message": "I need you to generate one subtask based on the main task I will provide you with."
-    #         },
-    #         {
-    #             "role": "CHATBOT", "message": "Sure, provide me with your main task, and my job is to generate one subtask based on the main task."
-    #         }
-    #     ],
-    # )
-    # raw_response = response.text
+def base_chat_generate(prompt, taskDescription):
+    if call_api:
+        ...
+        if co is None:
+            return ("key not found")
 
-    mock = mockdata()
-    raw_response = mock["chat_response"]
-    time.sleep(3)
+        response = co.chat(
+            model='command-nightly',
+            message=prompt,
+            temperature=0.7,
+            chat_history=[
+                {
+                    "role": "USER", "message": f"Here is my base task description: {taskDescription}. You are a helpful assistant whose role is to answer anything from me that is related to the task description."
+                },
+                {
+                    "role": "CHATBOT", "message": "Yes, I understand. I am ready to help you with anything you say."
+                }
+            ],
+        )
+        raw_response = response.text
+    else:
+        ...
+        mock = mockdata()
+        raw_response = mock["chat_response"]
+        time.sleep(3)
 
     return raw_response
 
