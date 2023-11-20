@@ -3,6 +3,7 @@ import React, { useState, useEffect, MouseEventHandler } from "react";
 import UserInput from "./UserInput";
 import DisplaySubtasks from "./DisplaySubtasks";
 import ChatView from "../playground/ChatView";
+import { RiNodeTree } from "react-icons/ri";
 
 interface Task {
     description: string;
@@ -181,7 +182,7 @@ const SideEditor: React.FC<SideEditorProps> = ({ user, nodeData, updateBaseData,
                 </div>
                 <ChatView user={user} openChatView={openChatView} updateChatView={updateChatView} chatHistory={chatHistory} addMessage={addMessage} planId={planId} taskDescription={nodeData} clearChatHistory={clearChatHistory} />
             </>) : (
-                <h1 className="p-4 border-2 border-black bg-gray-200 rounded-3xl inline-flex"><code>Select a node to add a subtask to.</code></h1>
+                <h1 className="p-4 border-2 border-gray-300 bg-gray-50 rounded-3xl inline-flex items-center gap-2"><RiNodeTree /> Select a node to add a subtask to.</h1>
             )}
         </div>
     )
