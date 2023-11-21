@@ -15,7 +15,6 @@ const NewPlan: React.FC<NewPlanProps> = ({ updatePhase, updatePlanPrompt, prompt
     const handleUserInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserInput(e.target.value);
     };
-
     const userAction = () => {
         updatePlanPrompt(userInput)
         updatePhase('LoadingPlan')

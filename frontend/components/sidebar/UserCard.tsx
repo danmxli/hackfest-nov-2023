@@ -5,6 +5,7 @@ import { BiLogOutCircle } from "react-icons/bi"
 import { AiOutlineClear } from "react-icons/ai"
 import { CiSettings } from "react-icons/ci";
 import { BsNodePlusFill } from "react-icons/bs"
+import { RiTokenSwapLine } from "react-icons/ri";
 import Image from 'next/image';
 
 
@@ -14,9 +15,10 @@ interface UserCardProps {
     updatePlanHistory: (newHistory: Array<{ _id: string, description: string, prompt_type: string }>) => void;
     updatePhase: (newPhase: string) => void;
     updateCurrItem: (newItem: string) => void;
+    displayTokenCount: number
 }
 
-const UserCard: React.FC<UserCardProps> = ({ user, info, updatePlanHistory, updatePhase, updateCurrItem }) => {
+const UserCard: React.FC<UserCardProps> = ({ user, info, updatePlanHistory, updatePhase, updateCurrItem, displayTokenCount }) => {
 
     const router = useRouter()
 
@@ -50,7 +52,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, info, updatePlanHistory, upda
         <div className="relative">
             <div className="w-full text-teal-200 items-center">
                 <div className="flex items-center justify-center p-4 pb-0 m-2 mb-0">
-                    
+
                     {user.picture ? (
                         <Image
                             src={user.picture}
@@ -74,8 +76,13 @@ const UserCard: React.FC<UserCardProps> = ({ user, info, updatePlanHistory, upda
                     <h2 className="text-xs text-teal-500">{user.email}</h2>
                 </div>
                 <div className="bg-teal-950 m-2 p-3 rounded-3xl">
-                    <button
+                    <h1
                         className="w-full flex items-center gap-1 text-sm p-0.5 hover:text-white"
+                    >
+                        <RiTokenSwapLine /> {displayTokenCount} tokens
+                    </h1>
+                    <button
+                        className="w-full mt-1 flex items-center gap-1 text-sm p-0.5 hover:text-white"
                         onClick={actionClear}
                     >
                         <AiOutlineClear /> Clear all plans
@@ -86,19 +93,19 @@ const UserCard: React.FC<UserCardProps> = ({ user, info, updatePlanHistory, upda
                     >
                         <BiLogOutCircle /> Logout
                     </a>
-                    <button 
-                    className="w-full mt-1 flex items-center gap-1 text-sm p-0.5 hover:text-white"
-                    onClick={() => {
-                        router.push('/user')
-                    }}
+                    <button
+                        className="w-full mt-1 flex items-center gap-1 text-sm p-0.5 hover:text-white"
+                        onClick={() => {
+                            router.push('/user')
+                        }}
                     >
                         <CiSettings /> User info
                     </button>
                     <button className="w-full mt-1 flex items-center justify-center gap-1 text-sm p-1.5 bg-teal-900 rounded-xl hover:text-white"
-                    onClick={() => {
-                        updateCurrItem('')
-                        updatePhase('NewPlan')
-                    }}
+                        onClick={() => {
+                            updateCurrItem('')
+                            updatePhase('NewPlan')
+                        }}
                     >
                         <BsNodePlusFill /> New plan
                     </button>

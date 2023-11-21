@@ -51,7 +51,7 @@ const TopProfile: React.FC<TopProfileProps> = ({ user, tokenCount }) => {
     }
 
     return (
-        <div className="flex justify-center gap-3">
+        <div className="flex justify-center gap-3 mt-3">
             <div className="p-8 border border-gray-300 shadow rounded-3xl grid items-center justify-center">
                 <div className="p-4 bg-gray-100 rounded-2xl flex items-center gap-3">
                     <div>

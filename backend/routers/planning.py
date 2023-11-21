@@ -39,7 +39,6 @@ def create_base():
     user = UserInfo.find_one({"email": email})
     if user:
         # check for enough tokens
-        print(user["tokens"])
         if user["tokens"] - tokens_to_subtract < 0:
             ...
             return (jsonify({
@@ -62,7 +61,7 @@ def create_base():
         }
         UserInfo.update_one(user, updateBasePlan)
 
-        # subtract 10 from tokens
+        # subtract from tokens
         subtractToken = {
             "$inc": {"tokens": -int(tokens_to_subtract)}
         }
@@ -90,7 +89,7 @@ def create_base():
             "type": "Generate base plan",
             "details": f"Created base plan of type {prompt_type} for prompt: \"{prompt}\"",
             "tokens_used": tokens_to_subtract
-        } 
+        }
         updateTokenHistory = {
             "$push": {'token_history': token_log}
         }
@@ -99,14 +98,23 @@ def create_base():
                 "email": email
             }, updateTokenHistory)
 
-        return (jsonify({
-            "email": email,
-            "base_plan": base["task_list"],
-            "base_id": base_id,
-            "history": history,
-            "resources": base["resource_list"],
-            "message": "succesfully called"
-        }))
+        # obtain updated tokens
+        rem_tokens = 0
+        updated_info = UserInfo.find_one({"email": email})
+        if updated_info is not None:
+            rem_tokens = updated_info["tokens"]
+            return (jsonify({
+                "email": email,
+                "tokens": rem_tokens,
+                "base_plan": base["task_list"],
+                "base_id": base_id,
+                "history": history,
+                "resources": base["resource_list"],
+                "message": "succesfully called"
+            }))
+
+        else:
+            return (jsonify({"email": email, "message": "error finding document"}))
 
     else:
         return (jsonify({"email": "not found"}))

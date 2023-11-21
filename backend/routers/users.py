@@ -31,7 +31,8 @@ def find():
             })
         return (jsonify({
             "username": match["name"],
-            "history": history
+            "history": history,
+            "tokens": match["tokens"]
         }))
     else:
         return (jsonify({"username": "not found"}))
@@ -104,7 +105,7 @@ def access():
         "time_created": int(datetime.datetime.now().timestamp()),
         "name": name,
         "email": email,
-        "tokens": 50,
+        "tokens": 100,
         "token_history": [],
         "plans": []
     }

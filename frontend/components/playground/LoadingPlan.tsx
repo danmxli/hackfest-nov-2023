@@ -23,10 +23,11 @@ interface LoadingPlanProps {
     updateBaseData: (newData: Task[]) => void;
     updatePlanId: (newId: string) => void;
     updateBaseResources: (newResource: Doc[]) => void;
+    updateTokenCount: (newCount: number) => void;
 }
 
 
-const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt, promptType, updatePlanHistory, updateBaseData, updatePlanId, updateBaseResources }) => {
+const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt, promptType, updatePlanHistory, updateBaseData, updatePlanId, updateBaseResources, updateTokenCount }) => {
     const router = useRouter()
     const fetchExecuted = useRef(false)
     useEffect(() => {
@@ -48,12 +49,18 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt
                 if (response.ok) {
                     const data = await response.json();
                     if (data) {
-                        console.log(data)
-                        updateBaseData(data["base_plan"])
-                        updateBaseResources(data["resources"])
-                        updatePlanId(data["base_id"])
-                        updatePlanHistory(data["history"])
-                        updatePhase('EditPlan')
+                        if (data["message"] === "not enough tokens") {
+                            updatePhase('OutOfTokens')
+                        }
+                        else {
+                            updateBaseData(data["base_plan"])
+                            updateBaseResources(data["resources"])
+                            updatePlanId(data["base_id"])
+                            updatePlanHistory(data["history"])
+                            updateTokenCount(data["tokens"])
+                            updatePhase('EditPlan')
+                        }
+
                     }
                 } else {
                     console.error('Request failed with status:', response.status);

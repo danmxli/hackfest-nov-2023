@@ -23,9 +23,10 @@ interface SidebarProps {
     updateBaseData: (newData: Task[]) => void;
     planId: string;
     updateBaseResources: (newResource: Doc[]) => void;
+    displayTokenCount: number;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ user, info, history, updatePhase, updatePlanId, updatePlanHistory, updateBaseData, planId, updateBaseResources }) => {
+const Sidebar: React.FC<SidebarProps> = ({ user, info, history, updatePhase, updatePlanId, updatePlanHistory, updateBaseData, planId, updateBaseResources, displayTokenCount }) => {
     const [currItem, setCurrItem] = useState('')
     const updateCurrItem = (newItem: string) => {
         setCurrItem(newItem)
@@ -70,7 +71,7 @@ const Sidebar: React.FC<SidebarProps> = ({ user, info, history, updatePhase, upd
 
     return (
         <div className="flex flex-col h-screen bg-teal-900 w-48">
-            <UserCard user={user} info={info} updatePlanHistory={updatePlanHistory} updatePhase={updatePhase} updateCurrItem={updateCurrItem} />
+            <UserCard user={user} info={info} updatePlanHistory={updatePlanHistory} updatePhase={updatePhase} updateCurrItem={updateCurrItem} displayTokenCount={displayTokenCount} />
             <div className="flex-grow max-h-fit overflow-scroll scrollbar-hide">
                 {history.slice().reverse().map((item, index) => (
                     <div

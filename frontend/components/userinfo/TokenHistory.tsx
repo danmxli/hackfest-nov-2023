@@ -11,8 +11,8 @@ interface TokenHistoryProps {
 
 const TokenHistory: React.FC<TokenHistoryProps> = ({ tokenLogs }) => {
     return (
-        <div className="p-8 ml-4 mr-4 border border-gray-300 shadow rounded-3xl">
-            <h1 className="text-2xl mb-4">Token usage logs</h1>
+        <div className="p-8 ml-4 mr-4 mb-4 border border-gray-300 shadow rounded-3xl">
+            <h1 className="text-2xl mb-4 p-4 bg-gray-100 inline-flex rounded-3xl">Token logs</h1>
             {tokenLogs.length > 0 ? (
                 <table className="table-auto">
                     <thead className="">
@@ -24,7 +24,7 @@ const TokenHistory: React.FC<TokenHistoryProps> = ({ tokenLogs }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {tokenLogs.map((item, index) => (
+                        {tokenLogs.slice().reverse().map((item, index) => (
                             <tr key={index} className="border-b">
                                 <td className="py-2 px-4">{item.time_called}</td>
                                 <td className="py-2 px-4">{item.type}</td>

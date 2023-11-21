@@ -5,6 +5,7 @@ import Sidebar from "@/components/Sidebar"
 import NewPlan from "@/components/playground/NewPlan"
 import LoadingPlan from "@/components/playground/LoadingPlan"
 import EditPlan from "@/components/playground/EditPlan"
+import OutOfTokens from "@/components/OutOfTokens"
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
 export default withPageAuthRequired(function Home({ user }) {
@@ -17,8 +18,9 @@ export default withPageAuthRequired(function Home({ user }) {
     const [planPrompt, setPlanPrompt] = useState('')
     const [promptType, setPromptType] = useState('prompt_quickstart')
     const [planId, setPlanId] = useState('')
+    const [displayTokenCount, setDisplayTokenCount] = useState(0)
 
-    // update phase and prompt and planId
+    // update phase and prompt and planId and token count display
     const updatePhase = (newPhase: string) => {
         setPhase(newPhase)
     }
@@ -30,6 +32,9 @@ export default withPageAuthRequired(function Home({ user }) {
     }
     const updatePlanId = (newId: string) => {
         setPlanId(newId)
+    }
+    const updateTokenCount = (newCount: number) => {
+        setDisplayTokenCount(newCount)
     }
 
     // plan history
@@ -84,6 +89,7 @@ export default withPageAuthRequired(function Home({ user }) {
                         console.log(data)
                         setUserInfo(data["username"])
                         setPlanHistory(data["history"])
+                        setDisplayTokenCount(data["tokens"])
                         setIsAuthenticated(true)
                     }
                 } else {
@@ -104,16 +110,17 @@ export default withPageAuthRequired(function Home({ user }) {
     // define object of phases
     const playground: PlanPhases = {
         NewPlan: <NewPlan updatePhase={updatePhase} updatePlanPrompt={updatePlanPrompt} promptType={promptType} updatePromptType={updatePromptType} />,
-        LoadingPlan: <LoadingPlan user={user} updatePhase={updatePhase} planPrompt={planPrompt} promptType={promptType} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} updateBaseResources={updateBaseResources} />,
+        LoadingPlan: <LoadingPlan user={user} updatePhase={updatePhase} planPrompt={planPrompt} promptType={promptType} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} updateBaseResources={updateBaseResources} updateTokenCount={updateTokenCount} />,
         RederingPlan: <></>,
-        EditPlan: <EditPlan user={user} baseData={baseData} updateBaseData={updateBaseData} planId={planId} baseResources={baseResources} />
+        EditPlan: <EditPlan user={user} baseData={baseData} updateBaseData={updateBaseData} planId={planId} baseResources={baseResources} />,
+        OutOfTokens: <OutOfTokens />
     }
 
     return (
         <>
             {isAuthenticated ? (
                 <div className="flex">
-                    <Sidebar user={user} info={userInfo} history={planHistory} updatePhase={updatePhase} updatePlanId={updatePlanId} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} planId={planId} updateBaseResources={updateBaseResources} />
+                    <Sidebar user={user} info={userInfo} history={planHistory} updatePhase={updatePhase} updatePlanId={updatePlanId} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} planId={planId} updateBaseResources={updateBaseResources} displayTokenCount={displayTokenCount} />
                     <main className="flex-1">
                         {playground[phase]}
                     </main>

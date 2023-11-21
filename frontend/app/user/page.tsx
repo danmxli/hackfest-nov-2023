@@ -59,7 +59,7 @@ export default withPageAuthRequired(function User({ user }) {
             {isLoading ? (
                 <Loading />
             ) : (
-                <div className="grid items-center justify-center w-screen h-screen">
+                <div className="grid items-center justify-center w-screen h-screen overflow-y-scroll gap-3">
                     <TopProfile user={user} tokenCount={tokenCount} />
                     <TokenHistory tokenLogs={tokenLogs} />
                 </div >
