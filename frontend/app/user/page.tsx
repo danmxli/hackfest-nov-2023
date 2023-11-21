@@ -10,6 +10,14 @@ export default withPageAuthRequired(function User({ user }) {
     const [isLoading, setIsLoading] = useState(false)
     const [tokenCount, setTokenCount] = useState(0)
 
+    interface logContents {
+        details: string,
+        time_called: string
+        tokens_used: number,
+        type: string
+    }
+    const [tokenLogs, setTokenLogs] = useState<logContents[]>([])
+
     const test = async () => {
         if (user) {
             const requestBody = {
@@ -28,6 +36,7 @@ export default withPageAuthRequired(function User({ user }) {
                 if (response.ok) {
                     const data = await response.json();
                     if (data) {
+                        setTokenLogs(data.token_history)
                         setTokenCount(data.tokens)
                         setIsLoading(false)
                     }
@@ -52,7 +61,7 @@ export default withPageAuthRequired(function User({ user }) {
             ) : (
                 <div className="grid items-center justify-center w-screen h-screen">
                     <TopProfile user={user} tokenCount={tokenCount} />
-                    <TokenHistory />
+                    <TokenHistory tokenLogs={tokenLogs} />
                 </div >
             )}
         </>

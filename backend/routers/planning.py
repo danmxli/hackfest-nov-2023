@@ -4,6 +4,7 @@ import os
 from uuid import uuid4
 from flask import Blueprint, jsonify, request
 from data.generate import base_plan
+import datetime
 
 load_dotenv('.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
@@ -16,6 +17,7 @@ planning_blueprint = Blueprint('planning', __name__)
 prompt_quickstart empty resource_list
 prompt_developer populate resource_list
 prompt_academia populate resource_list
+call to base method subtracts 8 tokens for quickstart, 12 for developer or academia
 """
 
 
@@ -27,8 +29,24 @@ def create_base():
     prompt = data.get("prompt")
     prompt_type = data.get("prompt_type")
 
+    if prompt_type == "prompt_quickstart":
+        tokens_to_subtract = 8
+    elif prompt_type == "prompt_developer" or prompt_type == "prompt_academia":
+        tokens_to_subtract = 12
+    else:
+        tokens_to_subtract = 0
+
     user = UserInfo.find_one({"email": email})
     if user:
+        # check for enough tokens
+        print(user["tokens"])
+        if user["tokens"] - tokens_to_subtract < 0:
+            ...
+            return (jsonify({
+                "email": email,
+                "message": "not enough tokens"
+            }))
+
         base = base_plan(prompt, prompt_type)
         # create dict to store the new plan
         base_id = str(uuid4())
@@ -40,9 +58,17 @@ def create_base():
             "resources": base["resource_list"]
         }
         updateBasePlan = {
-            "$push": {"plans": newPlan}
+            "$push": {'plans': newPlan}
         }
         UserInfo.update_one(user, updateBasePlan)
+
+        # subtract 10 from tokens
+        subtractToken = {
+            "$inc": {"tokens": -int(tokens_to_subtract)}
+        }
+        UserInfo.update_one(
+            {"email": email},
+            subtractToken)
 
         # get updated plan history
         history = []
@@ -58,12 +84,28 @@ def create_base():
                 "prompt_type": plan["prompt_type"],
             })
 
+        # update token_history with logs
+        token_log = {
+            "time_called": str(datetime.datetime.now()),
+            "type": "Generate base plan",
+            "details": f"Created base plan of type {prompt_type} for prompt: \"{prompt}\"",
+            "tokens_used": tokens_to_subtract
+        } 
+        updateTokenHistory = {
+            "$push": {'token_history': token_log}
+        }
+        UserInfo.update_one(
+            {
+                "email": email
+            }, updateTokenHistory)
+
         return (jsonify({
             "email": email,
             "base_plan": base["task_list"],
             "base_id": base_id,
             "history": history,
-            "resources": base["resource_list"]
+            "resources": base["resource_list"],
+            "message": "succesfully called"
         }))
 
     else:
