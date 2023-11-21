@@ -2,8 +2,12 @@
 
 import { motion } from "framer-motion";
 import CountingNumbers from "./CountAnimation";
+import React from "react";
+interface tokenCountProps {
+    num: number
+}
 
-export default function TokenCount() {
+const TokenCount: React.FC<tokenCountProps> = ({ num }) => {
     return (
         <div className="relative">
             <motion.svg
@@ -30,10 +34,12 @@ export default function TokenCount() {
                 />
             </motion.svg>
             <CountingNumbers
-                value={50}
+                value={num}
                 duration={2500}
                 className="absolute inset-0 mx-auto flex items-center justify-center font-display text-5xl text-teal-600"
             />
         </div>
     );
 }
+
+export default TokenCount

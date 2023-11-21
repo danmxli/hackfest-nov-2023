@@ -5,9 +5,10 @@ import TokenCount from "./insights/TokenCount";
 
 interface TopProfileProps {
     user: any
+    tokenCount: number
 }
 
-const TopProfile: React.FC<TopProfileProps> = ({ user }) => {
+const TopProfile: React.FC<TopProfileProps> = ({ user, tokenCount }) => {
 
     const router = useRouter()
     const [fetchingUser, setFetchingUser] = useState(false)
@@ -94,7 +95,7 @@ const TopProfile: React.FC<TopProfileProps> = ({ user }) => {
             <div className="p-8 border border-gray-300 shadow rounded-3xl flex gap-3">
                 <div className="p-4 border border-gray-300 rounded-2xl">
                     <div>
-                        <TokenCount />
+                        <TokenCount num={tokenCount} />
                     </div>
                     <h1 className="mt-2 p-2 pl-8 pr-8 text-teal-800 bg-teal-100/50 rounded-xl">
                         tokens left

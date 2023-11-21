@@ -37,6 +37,9 @@ def find():
         return (jsonify({"username": "not found"}))
 
 
+"""deprecated routes /signup and /signin"""
+
+
 @users_blueprint.route('/signup', methods=["POST"])
 def signup():
     data = request.get_json()
@@ -101,6 +104,8 @@ def access():
         "time_created": int(datetime.datetime.now().timestamp()),
         "name": name,
         "email": email,
+        "tokens": 50,
+        "token_history": [],
         "plans": []
     }
     result = UserInfo.insert_one(doc)
