@@ -80,9 +80,14 @@ const UserPortal = () => {
 
                     <h1 className='text-2xl text-center text-teal-400'>Welcome, {user.name}</h1>
                     <div className='mt-4 grid grid-cols-2 gap-2'>
-                        <div className='border border-teal-900 hover:border-teal-200 p-3 rounded-3xl text-center flex items-center justify-center'>
-                            User data
-                        </div>
+                        <button 
+                        className='border border-teal-900 hover:border-teal-200 p-3 rounded-3xl text-center flex items-center justify-center'
+                        onClick={() => {
+                            router.push('/user')
+                        }}
+                        >
+                            User info
+                        </button>
                         <button>
                             {fetchingUser ? (
                                 <div className='border border-teal-900 p-3 rounded-3xl text-center flex items-center justify-center gap-2'>

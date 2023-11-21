@@ -1,7 +1,9 @@
 import React from "react"
 import { useState } from "react"
-import { BiLogOut, BiCodeAlt } from "react-icons/bi"
+import { useRouter } from 'next/navigation';
+import { BiLogOutCircle } from "react-icons/bi"
 import { AiOutlineClear } from "react-icons/ai"
+import { CiSettings } from "react-icons/ci";
 import { BsNodePlusFill } from "react-icons/bs"
 import Image from 'next/image';
 
@@ -15,6 +17,8 @@ interface UserCardProps {
 }
 
 const UserCard: React.FC<UserCardProps> = ({ user, info, updatePlanHistory, updatePhase, updateCurrItem }) => {
+
+    const router = useRouter()
 
     const actionClear = async () => {
         const requestBody = {
@@ -74,16 +78,21 @@ const UserCard: React.FC<UserCardProps> = ({ user, info, updatePlanHistory, upda
                         className="w-full flex items-center gap-1 text-sm p-0.5 hover:text-white"
                         onClick={actionClear}
                     >
-                        <AiOutlineClear /> clear all plans
+                        <AiOutlineClear /> Clear all plans
                     </button>
                     <a
                         className="w-full mt-1 flex items-center gap-1 text-sm p-0.5 hover:text-white"
                         href="/api/auth/logout"
                     >
-                        <BiLogOut /> logout
+                        <BiLogOutCircle /> Logout
                     </a>
-                    <button className="w-full mt-1 flex items-center gap-1 text-sm p-0.5 hover:text-white">
-                        <BiCodeAlt /> info
+                    <button 
+                    className="w-full mt-1 flex items-center gap-1 text-sm p-0.5 hover:text-white"
+                    onClick={() => {
+                        router.push('/user')
+                    }}
+                    >
+                        <CiSettings /> User info
                     </button>
                     <button className="w-full mt-1 flex items-center justify-center gap-1 text-sm p-1.5 bg-teal-900 rounded-xl hover:text-white"
                     onClick={() => {
@@ -91,7 +100,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, info, updatePlanHistory, upda
                         updatePhase('NewPlan')
                     }}
                     >
-                        <BsNodePlusFill /> new plan
+                        <BsNodePlusFill /> New plan
                     </button>
                 </div>
 
