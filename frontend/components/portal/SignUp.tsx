@@ -31,7 +31,7 @@ const SignUp: React.FC<SignUpProps> = ({ updatePhase }) => {
         }
         setIsFetchingUsers(true)
         try {
-            fetch('http://127.0.0.1:3000/users/signup', {
+            fetch('https://seepickle.vercel.app/users/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

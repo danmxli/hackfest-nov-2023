@@ -27,7 +27,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, info, updatePlanHistory, upda
             email: user.email
         }
         try {
-            const response = await fetch('http://127.0.0.1:3000/planning/clear', {
+            const response = await fetch('https://seepickle.vercel.app/planning/clear', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

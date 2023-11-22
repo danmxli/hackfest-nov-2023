@@ -23,7 +23,7 @@ const TopProfile: React.FC<TopProfileProps> = ({ user, tokenCount, phase, update
             }
             setFetchingUser(true)
             try {
-                fetch('http://127.0.0.1:3000/users/access', {
+                fetch('https://seepickle.vercel.app/users/access', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

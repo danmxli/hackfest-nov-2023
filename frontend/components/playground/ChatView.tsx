@@ -69,7 +69,7 @@ const ChatView: React.FC<ChatViewProps> = ({ user, openChatView, updateChatView,
         addMessage({ message: userInput, role: 'user' })
         setIsLoading(true)
         try {
-            const response = await fetch('http://127.0.0.1:3000/chat/', {
+            const response = await fetch('https://seepickle.vercel.app/chat/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ const ChatView: React.FC<ChatViewProps> = ({ user, openChatView, updateChatView,
             action: "clear"
         }
         try {
-            const response = await fetch('http://127.0.0.1:3000/chat/history', {
+            const response = await fetch('https://seepickle.vercel.app/chat/history', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -43,7 +43,7 @@ const Sidebar: React.FC<SidebarProps> = ({ user, info, history, updatePhase, upd
         }
         updatePhase('RenderingPlan')
         try {
-            const response = await fetch('http://127.0.0.1:3000/planning/load_one', {
+            const response = await fetch('https://seepickle.vercel.app/planning/load_one', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

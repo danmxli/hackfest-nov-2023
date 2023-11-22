@@ -23,7 +23,7 @@ const UserPortal = () => {
             }
             setFetchingUser(true)
             try {
-                fetch('http://127.0.0.1:3000/users/access', {
+                fetch('https://seepickle.vercel.app/users/access', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -80,11 +80,11 @@ const UserPortal = () => {
 
                     <h1 className='text-2xl text-center text-teal-400'>Welcome, {user.name}</h1>
                     <div className='mt-4 grid grid-cols-2 gap-2'>
-                        <button 
-                        className='border border-teal-900 hover:border-teal-200 p-3 rounded-3xl text-center flex items-center justify-center'
-                        onClick={() => {
-                            router.push('/user')
-                        }}
+                        <button
+                            className='border border-teal-900 hover:border-teal-200 p-3 rounded-3xl text-center flex items-center justify-center'
+                            onClick={() => {
+                                router.push('/user')
+                            }}
                         >
                             User info
                         </button>

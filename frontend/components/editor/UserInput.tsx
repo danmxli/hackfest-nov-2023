@@ -41,7 +41,7 @@ const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData, fetchChat
         }
         console.log(requestBody)
         try {
-            const response = await fetch('http://127.0.0.1:3000/planning/edit_subtask', {
+            const response = await fetch('https://seepickle.vercel.app/planning/edit_subtask', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

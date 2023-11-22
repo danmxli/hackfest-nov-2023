@@ -39,7 +39,7 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt
                 prompt_type: promptType
             }
             try {
-                const response = await fetch('http://127.0.0.1:3000/planning/base', {
+                const response = await fetch('https://seepickle.vercel.app/planning/base', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
