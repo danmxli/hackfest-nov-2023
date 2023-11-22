@@ -1,4 +1,6 @@
 import UserPortal from "@/components/UserPortal"
+import { FaGithub } from "react-icons/fa";
+import { CiCircleInfo } from "react-icons/ci";
 
 export default function Landing() {
   return (
@@ -11,6 +13,14 @@ export default function Landing() {
         <div className='p-8 bg-teal-50/60 rounded-3xl shadow-lg m-4 mr-0'>
           <h1 className='text-5xl mb-1'>Introducing <span className='text-teal-600'>see</span><span className='text-teal-800'>Pickle</span>.</h1>
           <code>your personal achievement visualization tool.</code>
+          <div className="mt-2 border border-blue-300 p-2 rounded-xl">
+            <h1 className="text-sm mb-1 flex items-center gap-1 text-blue-600">
+              <CiCircleInfo />seePickle is in beta testing.
+            </h1>
+            <a href="https://github.com/danmxli/seePickle" className="inline-flex items-center gap-1 bg-blue-100 hover:bg-blue-200 p-1 pl-4 pr-4 rounded-xl">
+              <FaGithub />Repository
+            </a>
+          </div>
         </div>
         <div className="">
           <div className='p-6 m-4 border border-2 border-teal-800 rounded-3xl'>
