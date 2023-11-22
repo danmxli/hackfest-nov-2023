@@ -7,7 +7,7 @@ from data.filter import filter_text, filter_documents
 load_dotenv('.env')
 
 # True to call cohere api, False to send mockdata
-call_api = False
+call_api = True
 
 cohere_key = os.getenv('COHERE_KEY')
 if cohere_key is not None and cohere_key != '':
