@@ -1,7 +1,7 @@
 import os
 from multiprocessing import cpu_count
 
-workers = (2 * cpu_count()) + 1
+workers = int(os.environ.get('GUNICORN_PROCESSES', '4'))
 
 threads = int(os.environ.get('GUNICORN_THREADS', '4'))
 
