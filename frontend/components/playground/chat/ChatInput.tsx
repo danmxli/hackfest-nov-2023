@@ -42,7 +42,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ inputValue, updateInputValue, fet
                     <AiOutlineSend />
                 </button>
             )}
-
         </div>
     );
 };

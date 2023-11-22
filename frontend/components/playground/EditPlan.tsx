@@ -19,9 +19,10 @@ interface EditPlanProps {
     updateBaseData: (newData: Task[]) => void;
     planId: string
     baseResources: Doc[]
+    updateTokenCount: (newCount: number) => void;
 }
 
-const EditPlan: React.FC<EditPlanProps> = ({ user, baseData, updateBaseData, planId, baseResources }) => {
+const EditPlan: React.FC<EditPlanProps> = ({ user, baseData, updateBaseData, planId, baseResources, updateTokenCount }) => {
 
     // editor open state
     const [openEditor, setOpenEditor] = useState(false)
@@ -71,7 +72,7 @@ const EditPlan: React.FC<EditPlanProps> = ({ user, baseData, updateBaseData, pla
         <div className="h-screen overflow-scroll scrollbar-hide flex flex-col items-center">
             <Graph baseData={baseData} updateOpenEditor={updateOpenEditor} />
             <ResourceView baseResources={baseResources} />
-            <SideEditor user={user} nodeData={nodeData} updateBaseData={updateBaseData} openEditor={openEditor} updateOpenEditor={updateOpenEditor} planId={planId} subtasklist={subtasks} />
+            <SideEditor user={user} nodeData={nodeData} updateBaseData={updateBaseData} openEditor={openEditor} updateOpenEditor={updateOpenEditor} planId={planId} subtasklist={subtasks} updateTokenCount={updateTokenCount} />
         </div>
     )
 }

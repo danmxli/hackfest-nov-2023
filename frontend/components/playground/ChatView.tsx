@@ -17,9 +17,10 @@ interface ChatViewProps {
     planId: string
     taskDescription: string
     clearChatHistory: () => void
+    updateTokenCount: (newCount: number) => void;
 }
 
-const ChatView: React.FC<ChatViewProps> = ({ user, openChatView, updateChatView, chatHistory, addMessage, planId, taskDescription, clearChatHistory }) => {
+const ChatView: React.FC<ChatViewProps> = ({ user, openChatView, updateChatView, chatHistory, addMessage, planId, taskDescription, clearChatHistory, updateTokenCount }) => {
 
     const router = useRouter()
 
@@ -77,6 +78,7 @@ const ChatView: React.FC<ChatViewProps> = ({ user, openChatView, updateChatView,
                 if (data) {
                     console.log(data["chat_logs"])
                     addMessage(data["chat_logs"][1])
+                    updateTokenCount(data["tokens"])
                     setIsLoading(false)
                 }
             } else {

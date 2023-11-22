@@ -112,7 +112,7 @@ export default withPageAuthRequired(function Home({ user }) {
         NewPlan: <NewPlan updatePhase={updatePhase} updatePlanPrompt={updatePlanPrompt} promptType={promptType} updatePromptType={updatePromptType} />,
         LoadingPlan: <LoadingPlan user={user} updatePhase={updatePhase} planPrompt={planPrompt} promptType={promptType} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} updateBaseResources={updateBaseResources} updateTokenCount={updateTokenCount} />,
         RederingPlan: <></>,
-        EditPlan: <EditPlan user={user} baseData={baseData} updateBaseData={updateBaseData} planId={planId} baseResources={baseResources} />,
+        EditPlan: <EditPlan user={user} baseData={baseData} updateBaseData={updateBaseData} planId={planId} baseResources={baseResources} updateTokenCount={updateTokenCount} />,
         OutOfTokens: <OutOfTokens />
     }
 
