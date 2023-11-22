@@ -31,6 +31,9 @@ const ChatView: React.FC<ChatViewProps> = ({ user, openChatView, updateChatView,
         setHistoryCopy([...chatHistory])
     }, [chatHistory])
 
+    // no more tokens state
+    const [noMoreTokens, setNoMoreTokens] = useState(false)
+
     // ref to scroll to bottom whenever historyCopy value updates
     const chatContainerRef = useRef<HTMLDivElement | null>(null);
     useEffect(() => {
@@ -76,9 +79,15 @@ const ChatView: React.FC<ChatViewProps> = ({ user, openChatView, updateChatView,
             if (response.ok) {
                 const data = await response.json();
                 if (data) {
-                    console.log(data["chat_logs"])
-                    addMessage(data["chat_logs"][1])
-                    updateTokenCount(data["tokens"])
+                    console.log(data["status"])
+                    if (data["status"] === "not enough tokens") {
+                        setNoMoreTokens(true)
+                    }
+                    else {
+                        console.log(data["chat_logs"])
+                        addMessage(data["chat_logs"][1])
+                        updateTokenCount(data["tokens"])
+                    }
                     setIsLoading(false)
                 }
             } else {
@@ -149,6 +158,9 @@ const ChatView: React.FC<ChatViewProps> = ({ user, openChatView, updateChatView,
                             <ChatInput inputValue={inputValue} updateInputValue={updateInputValue} fetchResponse={fetchResponse} isLoading={isLoading} />
 
                         </div>
+                        {noMoreTokens ? (<div className="border border-orange-300 bg-orange-50 text-orange-600 text-center text-xs p-2 mb-1 rounded-3xl">
+                            No more tokens left.
+                        </div>) : (<></>)}
                         <div className="flex items-center justify-center gap-2">
                             <button
                                 className="p-2 pl-8 pr-8 bg-gray-300 hover:bg-gray-400 text-black font-semibold rounded-2xl text-xs"

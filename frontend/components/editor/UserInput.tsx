@@ -75,12 +75,12 @@ const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData, fetchChat
                         ></input>
                     </div>
                     {openChatView ? (
-                        <div className="bg-white text-center border border-teal-600 rounded-xl p-2 text-teal-500">
+                        <div className="bg-white text-center border border-teal-600 rounded-xl p-2 text-teal-500 break-words">
                             Insights
                         </div>
                     ) : (
                         <button
-                            className="bg-white border border-teal-600 rounded-xl p-2 text-teal-600 hover:text-black"
+                            className="bg-white border border-teal-600 rounded-xl p-2 text-teal-600 hover:text-black break-words"
                             onClick={handleOpenChat}
                         >
                             Insights

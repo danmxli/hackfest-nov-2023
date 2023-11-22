@@ -129,7 +129,8 @@ def create_subtask():
                             "message": response
                         }
                     ],
-                    "tokens": rem_tokens
+                    "tokens": rem_tokens,
+                    "status": "successfully updated chat logs"
                 }))
             else:
                 return (jsonify({"email": email, "status": "error finding document"}))
