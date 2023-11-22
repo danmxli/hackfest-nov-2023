@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import TopProfile from "@/components/userinfo/TopProfile";
 import TokenHistory from "@/components/userinfo/TokenHistory";
@@ -9,6 +9,11 @@ export default withPageAuthRequired(function User({ user }) {
     const fetchExecuted = useRef(false)
     const [isLoading, setIsLoading] = useState(false)
     const [tokenCount, setTokenCount] = useState(0)
+    // phases are Logs, Insights, Buy
+    const [phase, setPhase] = useState('Logs')
+    const updatePhase = (newPhase: string) => {
+        setPhase(newPhase)
+    }
 
     interface logContents {
         details: string,
@@ -18,7 +23,7 @@ export default withPageAuthRequired(function User({ user }) {
     }
     const [tokenLogs, setTokenLogs] = useState<logContents[]>([])
 
-    const test = async () => {
+    const userAccess = async () => {
         if (user) {
             const requestBody = {
                 name: user.name,
@@ -51,17 +56,27 @@ export default withPageAuthRequired(function User({ user }) {
     useEffect(() => {
         if (!fetchExecuted.current) {
             fetchExecuted.current = true
-            test()
+            userAccess()
         }
     })
+
+    // user dashboard phases
+    interface DashboardPhases {
+        [key: string]: React.ReactNode;
+    }
+    const manageUser: DashboardPhases = {
+        Logs: <TokenHistory tokenLogs={tokenLogs} />,
+        Insights: <></>,
+        Buy: <></>
+    }
     return (
         <>
             {isLoading ? (
                 <Loading />
             ) : (
                 <div className="grid items-center justify-center w-screen h-screen overflow-y-scroll gap-3">
-                    <TopProfile user={user} tokenCount={tokenCount} />
-                    <TokenHistory tokenLogs={tokenLogs} />
+                    <TopProfile user={user} tokenCount={tokenCount} phase={phase} updatePhase={updatePhase} />
+                    {manageUser[phase]}
                 </div >
             )}
         </>

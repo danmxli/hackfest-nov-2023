@@ -11,16 +11,15 @@ interface TokenHistoryProps {
 
 const TokenHistory: React.FC<TokenHistoryProps> = ({ tokenLogs }) => {
     return (
-        <div className="p-8 ml-4 mr-4 mb-4 border border-gray-300 shadow rounded-3xl">
-            <h1 className="text-2xl mb-4 p-4 bg-gray-100 inline-flex rounded-3xl">Token logs</h1>
+        <div className="p-8 ml-4 mr-4 mb-4 border border-gray-300 shadow rounded-3xl max-h-96 overflow-scroll scrollbar-hide relative">
             {tokenLogs.length > 0 ? (
                 <table className="table-auto">
-                    <thead className="">
+                    <thead className="sticky top-0 bg-white">
                         <tr className="border-b">
-                            <th className="py-2 px-4">Time Called</th>
-                            <th className="py-2 px-4">Type</th>
-                            <th className="py-2 px-4">Details</th>
-                            <th className="py-2 px-4">Tokens Used</th>
+                            <th className="py-2 px-4"><h1 className="bg-gray-100 p-2 rounded-2xl font-medium">Time called</h1></th>
+                            <th className="py-2 px-4"><h1 className="bg-gray-100 p-2 rounded-2xl font-medium">Type</h1></th>
+                            <th className="py-2 px-4"><h1 className="bg-gray-100 p-2 rounded-2xl font-medium">Details</h1></th>
+                            <th className="py-2 px-4"><h1 className="bg-gray-100 p-2 rounded-2xl font-medium">Tokens used</h1></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,6 +37,7 @@ const TokenHistory: React.FC<TokenHistoryProps> = ({ tokenLogs }) => {
                 <p>No logs available.</p>
             )}
         </div>
+
 
     )
 }

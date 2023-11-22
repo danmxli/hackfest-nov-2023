@@ -6,9 +6,11 @@ import TokenCount from "./insights/TokenCount";
 interface TopProfileProps {
     user: any
     tokenCount: number
+    phase: string
+    updatePhase: (newPhase: string) => void
 }
 
-const TopProfile: React.FC<TopProfileProps> = ({ user, tokenCount }) => {
+const TopProfile: React.FC<TopProfileProps> = ({ user, tokenCount, phase, updatePhase }) => {
 
     const router = useRouter()
     const [fetchingUser, setFetchingUser] = useState(false)
@@ -51,7 +53,7 @@ const TopProfile: React.FC<TopProfileProps> = ({ user, tokenCount }) => {
     }
 
     return (
-        <div className="flex justify-center gap-3 mt-3">
+        <div className="flex justify-center gap-6 mt-3">
             <div className="p-8 border border-gray-300 shadow rounded-3xl grid items-center justify-center">
                 <div className="p-4 bg-gray-100 rounded-2xl flex items-center gap-3">
                     <div>
@@ -92,7 +94,7 @@ const TopProfile: React.FC<TopProfileProps> = ({ user, tokenCount }) => {
 
 
             </div>
-            <div className="p-8 border border-gray-300 shadow rounded-3xl flex gap-3">
+            <div className="p-8 border border-gray-300 shadow rounded-3xl flex gap-6">
                 <div className="p-4 border border-gray-300 rounded-2xl">
                     <div>
                         <TokenCount num={tokenCount} />
@@ -101,11 +103,28 @@ const TopProfile: React.FC<TopProfileProps> = ({ user, tokenCount }) => {
                         tokens left
                     </h1>
                 </div>
-                <div className="">
-                    <div>
-                        View token usage
-                    </div>
-                    <div>Buy more tokens</div>
+                <div className="grid items-center">
+                    <button className={`p-2 pl-4 pr-4 border border-gray-300 ${phase == 'Logs' ? 'bg-gray-100' : 'bg-white'} hover:bg-gray-100 rounded-xl`}
+                        onClick={() => {
+                            updatePhase('Logs')
+                        }}
+                    >
+                        Usage logs
+                    </button>
+                    <button className={`p-2 pl-4 pr-4 border border-gray-300 ${phase == 'Insights' ? 'bg-gray-100' : 'bg-white'} hover:bg-gray-100 rounded-xl`}
+                        onClick={() => {
+                            updatePhase('Insights')
+                        }}
+                    >
+                        Insights
+                    </button>
+                    <button className={`p-2 pl-4 pr-4 border border-gray-300 ${phase == 'Buy' ? 'bg-gray-100' : 'bg-white'} hover:bg-gray-100 rounded-xl`}
+                        onClick={() => {
+                            updatePhase('Buy')
+                        }}
+                    >
+                        Buy more tokens
+                    </button>
                 </div>
             </div>
         </div>
