@@ -47,7 +47,7 @@ const DisplaySubtasks: React.FC<DisplaySubtasksProps> = ({ user, subtaskItems, p
         console.log(requestBody)
 
         try {
-            const response = await fetch('https://seepickle.vercel.app/planning/edit_subtask', {
+            const response = await fetch('https://seepickle-production.up.railway.app/planning/edit_subtask', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

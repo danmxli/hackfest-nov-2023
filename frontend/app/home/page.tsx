@@ -76,7 +76,7 @@ export default withPageAuthRequired(function Home({ user }) {
                 email: user.email
             }
             try {
-                const response = await fetch('https://seepickle.vercel.app/users/', {
+                const response = await fetch('https://seepickle-production.up.railway.app/users/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

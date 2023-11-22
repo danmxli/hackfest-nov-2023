@@ -26,7 +26,7 @@ const SignIn: React.FC<SignInProps> = ({ updatePhase }) => {
         }
         setIsFetchingUsers(true)
         try {
-            fetch('https://seepickle.vercel.app/users/signin', {
+            fetch('https://seepickle-production.up.railway.app/users/signin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

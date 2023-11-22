@@ -42,7 +42,7 @@ const EditPlan: React.FC<EditPlanProps> = ({ user, baseData, updateBaseData, pla
         }
         else {
             try {
-                const response = await fetch('https://seepickle.vercel.app/planning/all_subtasks', {
+                const response = await fetch('https://seepickle-production.up.railway.app/planning/all_subtasks', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

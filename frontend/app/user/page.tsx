@@ -31,7 +31,7 @@ export default withPageAuthRequired(function User({ user }) {
             }
             setIsLoading(true)
             try {
-                const response = await fetch('https://seepickle.vercel.app/users/access', {
+                const response = await fetch('https://seepickle-production.up.railway.app/users/access', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

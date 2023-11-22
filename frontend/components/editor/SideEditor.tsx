@@ -90,7 +90,7 @@ const SideEditor: React.FC<SideEditorProps> = ({ user, nodeData, updateBaseData,
         console.log(requestBody)
 
         try {
-            const response = await fetch('https://seepickle.vercel.app/planning/all_subtasks', {
+            const response = await fetch('https://seepickle-production.up.railway.app/planning/all_subtasks', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ const SideEditor: React.FC<SideEditorProps> = ({ user, nodeData, updateBaseData,
             action: "view"
         }
         try {
-            const response = await fetch('https://seepickle.vercel.app/chat/history', {
+            const response = await fetch('https://seepickle-production.up.railway.app/chat/history', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
