@@ -106,14 +106,14 @@ def prompt_quickstart(input):
 
     response = co.chat(
         model='command-nightly',
-        message=f"here is my main task: {input}. Generate one subtask.",
+        message=f"here is my description: {input}. Generate a numbered list of instructions to achieve my goal.",
         temperature=0.7,
         chat_history=[
             {
-                "role": "USER", "message": "I need you to generate one subtask based on the main task I will provide you with."
+                "role": "USER", "message": "I need you to generate a numbered list of instructions to achieve my goal."
             },
             {
-                "role": "CHATBOT", "message": "Sure, provide me with your main task, and my job is to generate one subtask based on the main task."
+                "role": "CHATBOT", "message": "Sure, provide me with your goal, and my task is to create a numbered list of instructions."
             }
         ],
     )
