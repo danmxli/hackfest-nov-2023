@@ -123,7 +123,7 @@ const TopProfile: React.FC<TopProfileProps> = ({ user, tokenCount, phase, update
                             updatePhase('Buy')
                         }}
                     >
-                        Buy more tokens
+                        API keys
                     </button>
                 </div>
             </div>
