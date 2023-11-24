@@ -62,14 +62,14 @@ const Loading = () => {
                         );
                     })}
             </motion.div>
-            <div className="m-4 border border-2 border-teal-300 rounded-3xl w-72 shadow-lg shadow-teal-300">
-                <div className="p-4 m-4 bg-teal-600 text-teal-100 border border-2 border-teal-500 rounded-3xl">
+            <div className="m-4 w-72">
+                <div className="p-4 m-4 bg-teal-800 text-teal-100 rounded-3xl">
                     Loading...
                 </div>
-                <div className="p-4 m-4 border border-2 border-teal-500 rounded-3xl">
+                <div className="p-4 m-4 border border-2 border-teal-600 rounded-3xl">
                     <h1 className="italic">The base plan serves as the stem from which your ideas sprout.</h1>
                 </div>
-                <div className="p-4 m-4 border border-2 border-teal-500 rounded-3xl">
+                <div className="p-4 m-4 border border-2 border-teal-600 rounded-3xl">
                     <h1 className="italic">Subtasks can be added to each node of the stem to alleviate the complexity of each task.</h1>
                 </div>
             </div>

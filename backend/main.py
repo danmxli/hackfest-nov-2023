@@ -6,6 +6,7 @@ from flask_cors import CORS
 from routers.users import users_blueprint
 from routers.planning import planning_blueprint
 from routers.chat import chat_blueprint
+from routers.loading import loading_blueprint
 import time
 
 load_dotenv('.env')
@@ -17,6 +18,7 @@ CORS(app)
 app.register_blueprint(users_blueprint, url_prefix='/users')
 app.register_blueprint(planning_blueprint, url_prefix='/planning')
 app.register_blueprint(chat_blueprint, url_prefix='/chat')
+app.register_blueprint(loading_blueprint, url_prefix='/loading')
 
 
 @app.route('/', methods=["GET"])

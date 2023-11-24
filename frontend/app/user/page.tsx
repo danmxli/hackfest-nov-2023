@@ -5,7 +5,7 @@ import TopProfile from "@/components/userinfo/TopProfile";
 import TokenHistory from "@/components/userinfo/TokenHistory";
 import EnterApiKey from "@/components/userinfo/EnterApiKey";
 import UserInsights from "@/components/userinfo/UserInsights";
-import Loading from "@/components/Loading";
+import Loading from "@/components/playground/load/Loading";
 
 export default withPageAuthRequired(function User({ user }) {
     const fetchExecuted = useRef(false)

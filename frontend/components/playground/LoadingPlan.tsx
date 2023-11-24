@@ -1,7 +1,8 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import Loading from "../Loading";
+import Loading from "./load/Loading";
+import MakeChanges from "./load/MakeChanges";
 
 // base data object structure
 interface Task {
@@ -30,6 +31,19 @@ interface LoadingPlanProps {
 const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt, promptType, updatePlanHistory, updateBaseData, updatePlanId, updateBaseResources, updateTokenCount }) => {
     const router = useRouter()
     const fetchExecuted = useRef(false)
+
+    // Load, MakeChanges
+    const [planCreationState, setPlanCreationState] = useState('Load')
+    const [rawResponse, setRawResponse] = useState('')
+    const [baseTasks, setBaseTasks] = useState<Task[]>([])
+    const [resources, setResources] = useState<Doc[]>([])
+
+
+    // LoadPhases
+    interface LoadPhases {
+        [key: string]: React.ReactNode;
+    }
+
     useEffect(() => {
         // async function to fetch baseplan endpoint
         const createBasePlan = async () => {
@@ -39,7 +53,7 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt
                 prompt_type: promptType
             }
             try {
-                const response = await fetch('https://seepickle-production.up.railway.app/planning/base', {
+                const response = await fetch('https://seepickle-production.up.railway.app/loading/base', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -53,12 +67,11 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt
                             updatePhase('OutOfTokens')
                         }
                         else {
-                            updateBaseData(data["base_plan"])
-                            updateBaseResources(data["resources"])
-                            updatePlanId(data["base_id"])
-                            updatePlanHistory(data["history"])
-                            updateTokenCount(data["tokens"])
-                            updatePhase('EditPlan')
+                            console.log(data)
+                            setRawResponse(data["raw_text"])
+                            setBaseTasks(data["base_tasks"])
+                            setResources(data["resources"])
+                            setPlanCreationState('MakeChanges')
                         }
 
                     }
@@ -75,10 +88,22 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt
             createBasePlan()
         }
     }, [user.email, planPrompt, promptType, updatePhase, router, updatePlanHistory, updateBaseData, updateBaseResources, updatePlanId, updateTokenCount])
+    /*
+    updateBaseData(data["base_plan"])
+    updateBaseResources(data["resources"])
+    updatePlanId(data["base_id"])
+    updatePlanHistory(data["history"])
+    updateTokenCount(data["tokens"])
+    updatePhase('EditPlan')
+    */
 
+    const phases: LoadPhases = {
+        Load: <Loading />,
+        MakeChanges: <MakeChanges user={user} planPrompt={planPrompt} promptType={promptType} rawResponse={rawResponse} baseTasks={baseTasks} resources={resources} updatePhase={updatePhase} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} updateBaseResources={updateBaseResources} updateTokenCount={updateTokenCount} />
+    }
 
     return (
-        <Loading />
+        phases[planCreationState]
     )
 }
 

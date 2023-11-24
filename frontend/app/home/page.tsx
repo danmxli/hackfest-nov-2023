@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useRef } from "react"
-import Loading from "@/components/Loading"
+import Loading from "@/components/playground/load/Loading"
 import Sidebar from "@/components/Sidebar"
 import NewPlan from "@/components/playground/NewPlan"
 import LoadingPlan from "@/components/playground/LoadingPlan"
@@ -119,7 +119,7 @@ export default withPageAuthRequired(function Home({ user }) {
     return (
         <>
             {isAuthenticated ? (
-                <div className="flex">
+                <div className="flex h-screen">
                     <Sidebar user={user} info={userInfo} history={planHistory} updatePhase={updatePhase} updatePlanId={updatePlanId} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} planId={planId} updateBaseResources={updateBaseResources} displayTokenCount={displayTokenCount} />
                     <main className="flex-1">
                         {playground[phase]}

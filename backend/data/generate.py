@@ -25,6 +25,7 @@ def base_plan(userPrompt, prompt_type):
         if prompt_type == 'prompt_quickstart':
             response = prompt_quickstart(userPrompt)
             raw_text = response.text  # type: ignore
+            base_details["raw"] = raw_text
             base_details["task_list"] = filter_text(raw_text)
             base_details["resource_list"] = []
 
@@ -32,6 +33,7 @@ def base_plan(userPrompt, prompt_type):
             response = prompt_developer(userPrompt)
             raw_text = response.text  # type: ignore
             raw_resources = response.documents  # type: ignore
+            base_details["raw"] = raw_text
             base_details["task_list"] = filter_text(raw_text)
             base_details["resource_list"] = filter_documents(raw_resources)
 
@@ -39,6 +41,7 @@ def base_plan(userPrompt, prompt_type):
             response = prompt_academia(userPrompt)
             raw_text = response.text  # type: ignore
             raw_resources = response.documents  # type: ignore
+            base_details["raw"] = raw_text
             base_details["task_list"] = filter_text(raw_text)
             base_details["resource_list"] = filter_documents(raw_resources)
 
@@ -50,6 +53,7 @@ def base_plan(userPrompt, prompt_type):
         mock = mockdata()
         time.sleep(3)
 
+        base_details["raw"] = mock["raw_text"]
         base_details["task_list"] = filter_text(mock["raw_text"])
         if prompt_type == 'prompt_quickstart':
             base_details["resource_list"] = []

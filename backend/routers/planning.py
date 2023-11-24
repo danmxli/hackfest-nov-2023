@@ -3,7 +3,7 @@ from pymongo.mongo_client import MongoClient
 import os
 from uuid import uuid4
 from flask import Blueprint, jsonify, request
-from data.generate import base_plan
+# from data.generate import base_plan
 import datetime
 
 load_dotenv('.env')
@@ -28,6 +28,14 @@ def create_base():
     email = data.get("email")
     prompt = data.get("prompt")
     prompt_type = data.get("prompt_type")
+    task_list = data.get("task_list")
+    resource_list = data.get("resource_list")
+    
+    # parse request
+    if task_list is None:
+        task_list = []
+    if resource_list is None:
+        resource_list = []
 
     if prompt_type == "prompt_quickstart":
         tokens_to_subtract = 8
@@ -46,16 +54,17 @@ def create_base():
                 "message": "not enough tokens"
             }))
 
-        base = base_plan(prompt, prompt_type)
         # create dict to store the new plan
         base_id = str(uuid4())
         newPlan = {
             "_id": base_id,
             "description": prompt,
             "prompt_type": prompt_type,
-            "base_tasks": base["task_list"],
-            "resources": base["resource_list"]
+            "base_tasks": task_list,
+            "resources": resource_list
         }
+
+        print(newPlan)
         updateBasePlan = {
             "$push": {'plans': newPlan}
         }
@@ -106,10 +115,10 @@ def create_base():
             return (jsonify({
                 "email": email,
                 "tokens": rem_tokens,
-                "base_plan": base["task_list"],
+                "base_plan": task_list,
                 "base_id": base_id,
                 "history": history,
-                "resources": base["resource_list"],
+                "resources": resource_list,
                 "message": "succesfully called"
             }))
 
