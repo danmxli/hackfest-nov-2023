@@ -81,21 +81,21 @@ const MakeChanges: React.FC<LoadingPlanProps> = ({ user, planPrompt, promptType,
     return (
         <div className="h-full overflow-scroll scrollbar-hide">
             <div className="p-8 pt-0 m-4 border border-2 border-teal-800 rounded-3xl h-full overflow-scroll scrollbar-hide">
-                <div className="sticky top-0 pt-6 bg-white border-b border-gray-300">
-                    <h1 className="text-xl">Creating blueprint for &#34;{planPrompt}&#34;</h1>
+                <div className="sticky top-0 pt-6 bg-white border-b border-gray-300 flex items-center gap-3">
+                    <h1 className="p-2 pl-8 pr-8 bg-teal-900 text-teal-200 max-w-2xl overflow-scroll scrollbar-hide rounded-xl">&#34;{planPrompt}&#34;</h1>
                     <button
                         className="p-2 pl-8 pr-8 border border-gray-300 hover:bg-gray-100 rounded-xl mt-3 mb-3"
                         onClick={() => {
                             createBasePlan()
                         }}
                     >
-                        Create Base Plan
+                        Create Plan
                     </button>
                 </div>
 
                 <div className="mt-3 grid grid-cols-2 gap-8">
                     <div>
-                        <div className="p-4 bg-gray-300 rounded-3xl">
+                        <div className="p-12 bg-gray-100 rounded-3xl">
                             {baseTasks.length > 0 ? (
                                 <>
                                     <ChangeBaseTasks baseTasks={baseTasks} updateTasks={updateTasks} editTask={editTask} />
@@ -103,7 +103,7 @@ const MakeChanges: React.FC<LoadingPlanProps> = ({ user, planPrompt, promptType,
 
                             ) : (<></>)}
                             {resources.length > 0 ? (
-                                <div className="mt-3 space-y-3 p-3 border border-gray-600 bg-white rounded-xl">
+                                <div className="mt-3 space-y-3 p-3 bg-white rounded-xl shadow-lg">
                                     {resources.map((resource, index) => (
                                         <div key={index} >
                                             <a href={resource.url} className="text-sm">
@@ -119,7 +119,7 @@ const MakeChanges: React.FC<LoadingPlanProps> = ({ user, planPrompt, promptType,
                     </div>
 
                     <div>
-                        <div className="p-4 border border-gray-300 rounded-3xl">
+                        <div className="p-12 border border-gray-300 rounded-3xl h-96 overflow-scroll scrollbar-hide sticky top-36">
                             <p className="whitespace-break-spaces font-light">
                                 {rawResponse}
                             </p>

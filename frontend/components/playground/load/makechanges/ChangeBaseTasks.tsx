@@ -48,12 +48,9 @@ const ChangeBaseTasks: React.FC<ChangeBaseTasksProps> = ({ baseTasks, updateTask
                             <button>
                                 <TbEdit />
                             </button>
-                            <button>
-                                <CgExtensionRemove />
-                            </button>
                         </div>
                         {expandedTasks.includes(index) && (
-                            <div className="p-3 mt-3 border border-gray-600 font-light rounded-xl">
+                            <div className="p-3 mt-3 border border-teal-600 font-light rounded-xl">
                                 {item.description}
                             </div>
                         )}
