@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MdOutlineExpandCircleDown } from "react-icons/md";
+import { MdExpandMore, MdExpandLess } from "react-icons/md";
 import { TbEdit } from "react-icons/tb";
 import { CgExtensionAdd, CgExtensionRemove } from 'react-icons/cg'
 
@@ -12,14 +12,11 @@ interface Task {
 
 interface ChangeBaseTasksProps {
     baseTasks: Task[];
-
-    // function to update baseTasks
+    updateTasks: (newTasks: Task[]) => void;
     editTask: (selectedTask: Task) => void;
-    removeTask: (selectedTask: Task) => void;
-    addTask: (newTask: Task, placeHolder: Task, position: number) => void;
 }
 
-const ChangeBaseTasks: React.FC<ChangeBaseTasksProps> = ({ baseTasks, editTask, removeTask, addTask }) => {
+const ChangeBaseTasks: React.FC<ChangeBaseTasksProps> = ({ baseTasks, updateTasks, editTask}) => {
 
     // 
     const [expandedTasks, setExpandedTasks] = useState<number[]>([]);
@@ -44,8 +41,9 @@ const ChangeBaseTasks: React.FC<ChangeBaseTasksProps> = ({ baseTasks, editTask, 
                         </p>
                         <div className="mt-3 text-3xl inline-flex items-center gap-3 bg-teal-200 rounded-3xl p-1 pl-6 pr-6">
                             <button onClick={() => toggleExpand(index)}>
-                                <MdOutlineExpandCircleDown className={`${expandedTasks.includes(index) ? 'rotate-180' : ''
-                                        }`}/>
+                                {
+                                    expandedTasks.includes(index) ? (<MdExpandLess className="hover:text-teal-800" />) : (<MdExpandMore className="hover:text-teal-800" />)
+                                }
                             </button>
                             <button>
                                 <TbEdit />

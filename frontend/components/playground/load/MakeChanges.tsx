@@ -24,9 +24,8 @@ interface LoadingPlanProps {
     resources: Doc[];
 
     // function to update baseTasks
+    updateTasks: (newTasks: Task[]) => void;
     editTask: (selectedTask: Task) => void;
-    removeTask: (selectedTask: Task) => void;
-    addTask: (newTask: Task, placeHolder: Task, position: number) => void;
 
     // update functions
     updatePhase: (newPhase: string) => void;
@@ -37,7 +36,7 @@ interface LoadingPlanProps {
     updateTokenCount: (newCount: number) => void;
 }
 
-const MakeChanges: React.FC<LoadingPlanProps> = ({ user, planPrompt, promptType, rawResponse, baseTasks, resources, editTask, removeTask, addTask, updatePhase, updatePlanHistory, updateBaseData, updatePlanId, updateBaseResources, updateTokenCount }) => {
+const MakeChanges: React.FC<LoadingPlanProps> = ({ user, planPrompt, promptType, rawResponse, baseTasks, resources, updateTasks, editTask, updatePhase, updatePlanHistory, updateBaseData, updatePlanId, updateBaseResources, updateTokenCount }) => {
 
     const createBasePlan = async () => {
         const requestBody = {
@@ -99,7 +98,7 @@ const MakeChanges: React.FC<LoadingPlanProps> = ({ user, planPrompt, promptType,
                         <div className="p-4 bg-gray-300 rounded-3xl">
                             {baseTasks.length > 0 ? (
                                 <>
-                                    <ChangeBaseTasks baseTasks={baseTasks} editTask={editTask} removeTask={removeTask} addTask={addTask} />
+                                    <ChangeBaseTasks baseTasks={baseTasks} updateTasks={updateTasks} editTask={editTask} />
                                 </>
 
                             ) : (<></>)}

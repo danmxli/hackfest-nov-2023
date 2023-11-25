@@ -39,13 +39,10 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt
     const [resources, setResources] = useState<Doc[]>([])
 
     // function to update baseTasks
+    const updateTasks = (newTasks: Task[]) => {
+        setBaseTasks(newTasks)
+    }
     const editTask = (selectedTask: Task) => {
-
-    }
-    const removeTask = (selectedTask: Task) => {
-
-    }
-    const addTask = (newTask: Task, placeHolder: Task, position: number) => {
 
     }
 
@@ -102,7 +99,7 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt
 
     const phases: LoadPhases = {
         Load: <Loading />,
-        MakeChanges: <MakeChanges user={user} planPrompt={planPrompt} promptType={promptType} rawResponse={rawResponse} baseTasks={baseTasks} resources={resources} editTask={editTask} removeTask={removeTask} addTask={addTask} updatePhase={updatePhase} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} updateBaseResources={updateBaseResources} updateTokenCount={updateTokenCount} />
+        MakeChanges: <MakeChanges user={user} planPrompt={planPrompt} promptType={promptType} rawResponse={rawResponse} baseTasks={baseTasks} resources={resources} updateTasks={updateTasks} editTask={editTask} updatePhase={updatePhase} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} updateBaseResources={updateBaseResources} updateTokenCount={updateTokenCount} />
     }
 
     return (
