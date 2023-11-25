@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import ChangeBaseTasks from "./makechanges/ChangeBaseTasks";
 import { IoLink } from "react-icons/io5";
 
 // base data object structure
@@ -22,6 +23,11 @@ interface LoadingPlanProps {
     baseTasks: Task[];
     resources: Doc[];
 
+    // function to update baseTasks
+    editTask: (selectedTask: Task) => void;
+    removeTask: (selectedTask: Task) => void;
+    addTask: (newTask: Task, placeHolder: Task, position: number) => void;
+
     // update functions
     updatePhase: (newPhase: string) => void;
     updatePlanHistory: (newHistory: Array<{ _id: string, description: string, prompt_type: string }>) => void;
@@ -31,7 +37,7 @@ interface LoadingPlanProps {
     updateTokenCount: (newCount: number) => void;
 }
 
-const MakeChanges: React.FC<LoadingPlanProps> = ({ user, planPrompt, promptType, rawResponse, baseTasks, resources, updatePhase, updatePlanHistory, updateBaseData, updatePlanId, updateBaseResources, updateTokenCount }) => {
+const MakeChanges: React.FC<LoadingPlanProps> = ({ user, planPrompt, promptType, rawResponse, baseTasks, resources, editTask, removeTask, addTask, updatePhase, updatePlanHistory, updateBaseData, updatePlanId, updateBaseResources, updateTokenCount }) => {
 
     const createBasePlan = async () => {
         const requestBody = {
@@ -75,29 +81,29 @@ const MakeChanges: React.FC<LoadingPlanProps> = ({ user, planPrompt, promptType,
 
     return (
         <div className="h-full overflow-scroll scrollbar-hide">
-            <div className="p-8 m-4 border border-2 border-teal-800 rounded-3xl">
-                <h1 className="text-xl">Creating blueprint for {planPrompt}</h1>
-                <button
-                    className="p-2 pl-8 pr-8 border border-gray-300 hover:bg-gray-100 rounded-xl mb-3"
-                    onClick={() => {
-                        createBasePlan()
-                    }}
-                >
-                    Create Base Plan
-                </button>
-                <div className="grid grid-cols-2 gap-8">
-                    <div className="p-4 bg-teal-100 rounded-3xl">
+            <div className="p-8 pt-0 m-4 border border-2 border-teal-800 rounded-3xl h-full overflow-scroll scrollbar-hide">
+                <div className="sticky top-0 pt-6 bg-white border-b border-gray-300">
+                    <h1 className="text-xl">Creating blueprint for &#34;{planPrompt}&#34;</h1>
+                    <button
+                        className="p-2 pl-8 pr-8 border border-gray-300 hover:bg-gray-100 rounded-xl mt-3 mb-3"
+                        onClick={() => {
+                            createBasePlan()
+                        }}
+                    >
+                        Create Base Plan
+                    </button>
+                </div>
+
+                <div className="mt-3 grid grid-cols-2 gap-8">
+                    <div className="p-4 bg-gray-300 rounded-3xl">
                         {baseTasks.length > 0 ? (
-                            <div className="space-y-3">
-                                {baseTasks.map((item, index) => (
-                                    <div key={index} className="p-3 border border-teal-600 bg-white rounded-xl">
-                                        <p className="whitespace-break-spaces font-light">{item.description}</p>
-                                    </div>
-                                ))}
-                            </div>
+                            <>
+                                <ChangeBaseTasks baseTasks={baseTasks} editTask={editTask} removeTask={removeTask} addTask={addTask} />
+                            </>
+
                         ) : (<></>)}
                         {resources.length > 0 ? (
-                            <div className="mt-3 space-y-3 p-3 border border-teal-600 bg-white rounded-xl">
+                            <div className="mt-3 space-y-3 p-3 border border-gray-600 bg-white rounded-xl">
                                 {resources.map((resource, index) => (
                                     <div key={index} >
                                         <a href={resource.url} className="text-sm">
@@ -110,11 +116,14 @@ const MakeChanges: React.FC<LoadingPlanProps> = ({ user, planPrompt, promptType,
                                 ))}
                             </div>) : (<></>)}
                     </div>
-                    <div className="p-4 border border-gray-300 shadow rounded-3xl">
-                        <p className="whitespace-break-spaces font-light">
-                            {rawResponse}
-                        </p>
+                    <div>
+                        <div className="p-4 border border-gray-300 rounded-3xl">
+                            <p className="whitespace-break-spaces font-light">
+                                {rawResponse}
+                            </p>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>

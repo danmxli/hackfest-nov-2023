@@ -38,6 +38,17 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt
     const [baseTasks, setBaseTasks] = useState<Task[]>([])
     const [resources, setResources] = useState<Doc[]>([])
 
+    // function to update baseTasks
+    const editTask = (selectedTask: Task) => {
+
+    }
+    const removeTask = (selectedTask: Task) => {
+
+    }
+    const addTask = (newTask: Task, placeHolder: Task, position: number) => {
+
+    }
+
 
     // LoadPhases
     interface LoadPhases {
@@ -88,18 +99,10 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt
             createBasePlan()
         }
     }, [user.email, planPrompt, promptType, updatePhase, router, updatePlanHistory, updateBaseData, updateBaseResources, updatePlanId, updateTokenCount])
-    /*
-    updateBaseData(data["base_plan"])
-    updateBaseResources(data["resources"])
-    updatePlanId(data["base_id"])
-    updatePlanHistory(data["history"])
-    updateTokenCount(data["tokens"])
-    updatePhase('EditPlan')
-    */
 
     const phases: LoadPhases = {
         Load: <Loading />,
-        MakeChanges: <MakeChanges user={user} planPrompt={planPrompt} promptType={promptType} rawResponse={rawResponse} baseTasks={baseTasks} resources={resources} updatePhase={updatePhase} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} updateBaseResources={updateBaseResources} updateTokenCount={updateTokenCount} />
+        MakeChanges: <MakeChanges user={user} planPrompt={planPrompt} promptType={promptType} rawResponse={rawResponse} baseTasks={baseTasks} resources={resources} editTask={editTask} removeTask={removeTask} addTask={addTask} updatePhase={updatePhase} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} updateBaseResources={updateBaseResources} updateTokenCount={updateTokenCount} />
     }
 
     return (
