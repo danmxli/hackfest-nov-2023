@@ -38,9 +38,20 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt
     const [baseTasks, setBaseTasks] = useState<Task[]>([])
     const [resources, setResources] = useState<Doc[]>([])
 
-    // function to update baseTasks
-    const updateTasks = (newTasks: Task[]) => {
+    // function to update planCreationState
+    const updatePlanCreationState = (newState: string) => {
+        setPlanCreationState(newState)
+    }
+
+    // function to update local baseTasks, resources, rawResponse
+    const updateLocalRawResponse = (newRawResponse: string) => {
+        setRawResponse(newRawResponse)
+    }
+    const updateLocalTasks = (newTasks: Task[]) => {
         setBaseTasks(newTasks)
+    }
+    const updateLocalResources = (newResources: Doc[]) => {
+        setResources(newResources)
     }
     const editTask = (selectedTask: Task) => {
 
@@ -99,7 +110,24 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt
 
     const phases: LoadPhases = {
         Load: <Loading />,
-        MakeChanges: <MakeChanges user={user} planPrompt={planPrompt} promptType={promptType} rawResponse={rawResponse} baseTasks={baseTasks} resources={resources} updateTasks={updateTasks} editTask={editTask} updatePhase={updatePhase} updatePlanHistory={updatePlanHistory} updateBaseData={updateBaseData} updatePlanId={updatePlanId} updateBaseResources={updateBaseResources} updateTokenCount={updateTokenCount} />
+        MakeChanges: <MakeChanges
+            user={user}
+            planPrompt={planPrompt}
+            promptType={promptType}
+            rawResponse={rawResponse}
+            baseTasks={baseTasks}
+            resources={resources}
+            updatePlanCreationState={updatePlanCreationState}
+            updateLocalRawResponse={updateLocalRawResponse}
+            updateLocalTasks={updateLocalTasks}
+            updateLocalResources={updateLocalResources}
+            editTask={editTask}
+            updatePhase={updatePhase}
+            updatePlanHistory={updatePlanHistory}
+            updateBaseData={updateBaseData}
+            updatePlanId={updatePlanId}
+            updateBaseResources={updateBaseResources}
+            updateTokenCount={updateTokenCount} />
     }
 
     return (

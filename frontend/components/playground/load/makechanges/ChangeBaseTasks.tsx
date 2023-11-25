@@ -12,11 +12,11 @@ interface Task {
 
 interface ChangeBaseTasksProps {
     baseTasks: Task[];
-    updateTasks: (newTasks: Task[]) => void;
+    updateLocalTasks: (newTasks: Task[]) => void;
     editTask: (selectedTask: Task) => void;
 }
 
-const ChangeBaseTasks: React.FC<ChangeBaseTasksProps> = ({ baseTasks, updateTasks, editTask}) => {
+const ChangeBaseTasks: React.FC<ChangeBaseTasksProps> = ({ baseTasks, updateLocalTasks, editTask}) => {
 
     // 
     const [expandedTasks, setExpandedTasks] = useState<number[]>([]);
@@ -35,11 +35,11 @@ const ChangeBaseTasks: React.FC<ChangeBaseTasksProps> = ({ baseTasks, updateTask
         <div>
             <div className="space-y-3">
                 {baseTasks.map((item, index) => (
-                    <div key={index} className="p-3 bg-white rounded-xl shadow-lg">
-                        <p className="whitespace-nowrap overflow-hidden overflow-ellipsis font-light">
+                    <div key={index} className="p-3 bg-teal-50 rounded-xl shadow-lg">
+                        <p className="whitespace-nowrap overflow-hidden overflow-ellipsis">
                             {item.order}. {item.description}
                         </p>
-                        <div className="mt-3 text-3xl inline-flex items-center gap-3 bg-teal-200 rounded-3xl p-1 pl-6 pr-6">
+                        <div className="mt-3 text-2xl inline-flex items-center gap-1">
                             <button onClick={() => toggleExpand(index)}>
                                 {
                                     expandedTasks.includes(index) ? (<MdExpandLess className="hover:text-teal-800" />) : (<MdExpandMore className="hover:text-teal-800" />)
@@ -50,7 +50,7 @@ const ChangeBaseTasks: React.FC<ChangeBaseTasksProps> = ({ baseTasks, updateTask
                             </button>
                         </div>
                         {expandedTasks.includes(index) && (
-                            <div className="p-3 mt-3 border border-teal-600 font-light rounded-xl">
+                            <div className="p-3 border border-teal-600 bg-white font-light rounded-xl">
                                 {item.description}
                             </div>
                         )}
