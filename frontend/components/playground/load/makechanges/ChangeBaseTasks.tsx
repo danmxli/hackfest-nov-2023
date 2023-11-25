@@ -21,14 +21,15 @@ interface ChangeBaseTasksProps {
 
 const ChangeBaseTasks: React.FC<ChangeBaseTasksProps> = ({ baseTasks, editTask, removeTask, addTask }) => {
 
-    // toggle expanded description
-    const [expandedItems, setExpandedItems] = useState<string[]>([]);
-    const toggleExpand = (itemId: string) => {
-        setExpandedItems((prevExpandedItems) => {
-            if (prevExpandedItems.includes(itemId)) {
-                return prevExpandedItems.filter((id) => id !== itemId);
+    // 
+    const [expandedTasks, setExpandedTasks] = useState<number[]>([]);
+
+    const toggleExpand = (index: number) => {
+        setExpandedTasks((prevExpandedTasks) => {
+            if (prevExpandedTasks.includes(index)) {
+                return prevExpandedTasks.filter((i) => i !== index);
             } else {
-                return [...prevExpandedItems, itemId];
+                return [...prevExpandedTasks, index];
             }
         });
     };
@@ -37,11 +38,14 @@ const ChangeBaseTasks: React.FC<ChangeBaseTasksProps> = ({ baseTasks, editTask, 
         <div>
             <div className="space-y-3">
                 {baseTasks.map((item, index) => (
-                    <div key={index} className="p-3 border border-gray-600 bg-white rounded-xl">
-                        <p className="whitespace-break-spaces font-light">{item.order}. {item.description}</p>
+                    <div key={index} className="p-3 bg-white rounded-xl shadow-lg">
+                        <p className="whitespace-nowrap overflow-hidden overflow-ellipsis font-light">
+                            {item.order}. {item.description}
+                        </p>
                         <div className="mt-3 text-3xl inline-flex items-center gap-3 bg-teal-200 rounded-3xl p-1 pl-6 pr-6">
-                            <button>
-                                <MdOutlineExpandCircleDown />
+                            <button onClick={() => toggleExpand(index)}>
+                                <MdOutlineExpandCircleDown className={`${expandedTasks.includes(index) ? 'rotate-180' : ''
+                                        }`}/>
                             </button>
                             <button>
                                 <TbEdit />
@@ -50,6 +54,11 @@ const ChangeBaseTasks: React.FC<ChangeBaseTasksProps> = ({ baseTasks, editTask, 
                                 <CgExtensionRemove />
                             </button>
                         </div>
+                        {expandedTasks.includes(index) && (
+                            <div className="p-3 mt-3 border border-gray-600 font-light rounded-xl">
+                                {item.description}
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>

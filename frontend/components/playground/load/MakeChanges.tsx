@@ -95,27 +95,30 @@ const MakeChanges: React.FC<LoadingPlanProps> = ({ user, planPrompt, promptType,
                 </div>
 
                 <div className="mt-3 grid grid-cols-2 gap-8">
-                    <div className="p-4 bg-gray-300 rounded-3xl">
-                        {baseTasks.length > 0 ? (
-                            <>
-                                <ChangeBaseTasks baseTasks={baseTasks} editTask={editTask} removeTask={removeTask} addTask={addTask} />
-                            </>
+                    <div>
+                        <div className="p-4 bg-gray-300 rounded-3xl">
+                            {baseTasks.length > 0 ? (
+                                <>
+                                    <ChangeBaseTasks baseTasks={baseTasks} editTask={editTask} removeTask={removeTask} addTask={addTask} />
+                                </>
 
-                        ) : (<></>)}
-                        {resources.length > 0 ? (
-                            <div className="mt-3 space-y-3 p-3 border border-gray-600 bg-white rounded-xl">
-                                {resources.map((resource, index) => (
-                                    <div key={index} >
-                                        <a href={resource.url} className="text-sm">
+                            ) : (<></>)}
+                            {resources.length > 0 ? (
+                                <div className="mt-3 space-y-3 p-3 border border-gray-600 bg-white rounded-xl">
+                                    {resources.map((resource, index) => (
+                                        <div key={index} >
+                                            <a href={resource.url} className="text-sm">
 
-                                            <div className="border text-gray-500 hover:border-teal-400 hover:text-black p-2 rounded-xl break-words">
-                                                <IoLink />{resource.title}
-                                            </div>
-                                        </a>
-                                    </div>
-                                ))}
-                            </div>) : (<></>)}
+                                                <div className="border text-gray-500 hover:border-teal-400 hover:text-black p-2 rounded-xl break-words">
+                                                    <IoLink />{resource.title}
+                                                </div>
+                                            </a>
+                                        </div>
+                                    ))}
+                                </div>) : (<></>)}
+                        </div>
                     </div>
+
                     <div>
                         <div className="p-4 border border-gray-300 rounded-3xl">
                             <p className="whitespace-break-spaces font-light">
