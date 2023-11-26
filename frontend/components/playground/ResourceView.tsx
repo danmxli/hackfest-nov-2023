@@ -43,7 +43,7 @@ const ResourceView: React.FC<ResourceViewProps> = ({ baseResources }) => {
                                 </div>
                             </div>
                         ) : (
-                            <button className="p-4 text-2xl border border-2 border-teal-800 hover:text-teal-600 rounded-full bg-white"
+                            <button className="p-4 text-2xl border border-gray-400 hover:text-teal-600 rounded-full bg-white"
                                 onClick={toggleView}
                             >
                                 <IoLibrarySharp />

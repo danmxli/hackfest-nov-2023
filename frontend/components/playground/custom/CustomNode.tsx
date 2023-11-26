@@ -18,8 +18,8 @@ const CustomNode = memo(({ data }: NodeProps<CustomNodeData>) => {
         <div className="p-6 bg-white border border-gray-300 shadow-lg rounded-3xl">
             <div className="w-80 p-6 bg-white border border-teal-600 rounded-3xl ">
                 {data.label}
-                <Handle type="target" position={Position.Left} className="!bg-teal-600" />
-                <Handle type="source" position={Position.Right} className="!bg-teal-600" />
+                <Handle type="target" position={Position.Left} className="!invisible" />
+                <Handle type="source" position={Position.Right} className="!invisible" />
             </div>
             <button
                 onClick={handleButtonClick}

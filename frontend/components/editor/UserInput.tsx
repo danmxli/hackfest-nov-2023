@@ -65,11 +65,11 @@ const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData, fetchChat
 
     return (
         <div className="mt-2 p-4 border border-gray-300 text-sm text rounded-2xl shadow">
-            <div className="w-full border border-teal-600 bg-teal-100 rounded-2xl">
+            <div className="w-full border border-teal-600 rounded-2xl">
                 <div className="rounded-t-2xl border-b border-teal-600 p-2 grid grid-cols-5 items-center gap-2 overflow-x-scroll scrollbar-hide">
                     <div className="col-span-4">
                         <input
-                            className="w-full focus:outline-none border border-teal-600 p-2 rounded-xl "
+                            className="w-full focus:outline-none border-b border-teal-600 p-2"
                             placeholder="Your subtask title"
                             value={subtitle}
                             onChange={handleTitleChange}

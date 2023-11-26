@@ -150,7 +150,7 @@ const SideEditor: React.FC<SideEditorProps> = ({ user, nodeData, updateBaseData,
     }
 
     return (
-        <div className={`${openEditor ? 'h-screen' : 'h-fit rounded-tl-3xl border-t-2'} overflow-scroll scrollbar-hide fixed bottom-0 right-0 p-2 bg-white border-l-2 border-teal-800 w-1/3`}>
+        <div className={`${openEditor ? 'h-screen' : 'h-fit rounded-tl-3xl border-t'} overflow-scroll scrollbar-hide fixed bottom-0 right-0 p-2 bg-white border-l border-gray-400 w-1/3`}>
             {openEditor ? (<>
                 <button
                     className="p-2 pl-8 pr-8 bg-gray-300 hover:bg-gray-400 text-black font-semibold rounded-2xl text-xs"
