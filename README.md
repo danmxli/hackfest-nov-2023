@@ -21,6 +21,8 @@
 
 [seePickle uses the Cohere API for response generation.](https://cohere.com/)
 
+[seePickle uses Auth0 for user identity management.](https://auth0.com/)
+
 ## What's next for seePickle
 
-[⚡](https://emojipedia.org/high-voltage)Integration with third party applications
+⚡ Integration with third party applications
