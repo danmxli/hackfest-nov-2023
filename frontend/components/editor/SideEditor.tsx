@@ -184,7 +184,7 @@ const SideEditor: React.FC<SideEditorProps> = ({ user, nodeData, updateBaseData,
                 </div>
                 <ChatView user={user} openChatView={openChatView} updateChatView={updateChatView} chatHistory={chatHistory} addMessage={addMessage} planId={planId} taskDescription={nodeData} clearChatHistory={clearChatHistory} updateTokenCount={updateTokenCount} />
             </>) : (
-                <h1 className="p-4 border-2 border-gray-300 bg-gray-50 rounded-3xl inline-flex items-center gap-2"><RiNodeTree /> Select a node to add a subtask to.</h1>
+                <h1 className="p-4 border border-gray-300 shadow-lg rounded-3xl inline-flex items-center gap-2"><RiNodeTree /> Select a node to add a subtask to.</h1>
             )}
         </div>
     )

@@ -1,5 +1,6 @@
 import React, { memo, ReactNode, MouseEventHandler } from "react";
 import { Handle, NodeProps, Position } from 'reactflow';
+import { RiNodeTree } from "react-icons/ri";
 
 export type CustomNodeData = {
     label: string
@@ -14,16 +15,16 @@ const CustomNode = memo(({ data }: NodeProps<CustomNodeData>) => {
     };
 
     return (
-        <div className="p-4 bg-teal-50/30 border border-2 border-teal-400 rounded-3xl">
-            <div className="w-80 p-4 bg-white border border-teal-600 rounded-3xl ">
+        <div className="p-6 bg-white border border-gray-300 shadow-lg rounded-3xl">
+            <div className="w-80 p-6 bg-white border border-teal-600 rounded-3xl ">
                 {data.label}
-                <Handle type="target" position={Position.Left} className="!bg-teal-400" />
-                <Handle type="source" position={Position.Right} className="!bg-teal-400" />
+                <Handle type="target" position={Position.Left} className="!bg-teal-600" />
+                <Handle type="source" position={Position.Right} className="!bg-teal-600" />
             </div>
             <button
                 onClick={handleButtonClick}
-                className="mt-4 p-4 bg-teal-800 hover:bg-teal-700 text-teal-200 rounded-3xl">
-                Subtasks
+                className="mt-6 p-2 pl-6 pr-6 bg-gray-200 hover:bg-teal-100 flex items-center gap-2 rounded-3xl">
+                <RiNodeTree />Subtasks
             </button>
         </div>
     )
