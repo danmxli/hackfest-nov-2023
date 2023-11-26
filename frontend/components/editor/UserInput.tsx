@@ -2,6 +2,7 @@
 import React, { useState, MouseEventHandler, ChangeEvent } from "react"
 import 'react-quill/dist/quill.snow.css';
 import { ImUpload } from 'react-icons/im'
+import { FaUserAstronaut } from "react-icons/fa";
 
 interface UserInputProps {
     user: any
@@ -75,15 +76,15 @@ const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData, fetchChat
                         ></input>
                     </div>
                     {openChatView ? (
-                        <div className="bg-white text-center border border-teal-600 rounded-xl p-2 text-teal-500 break-words">
-                            Insights
+                        <div className="bg-white flex justify-center text-xl border border-teal-600 rounded-xl p-2 text-teal-500 break-words">
+                            <FaUserAstronaut />
                         </div>
                     ) : (
                         <button
-                            className="bg-white border border-teal-600 rounded-xl p-2 text-teal-600 hover:text-black break-words"
+                            className="bg-white flex justify-center text-xl border border-teal-600 rounded-xl p-2 text-teal-600 hover:text-black break-words"
                             onClick={handleOpenChat}
                         >
-                            Insights
+                            <FaUserAstronaut />
                         </button>
                     )}
 
@@ -98,11 +99,19 @@ const UserInput: React.FC<UserInputProps> = ({ user, planId, nodeData, fetchChat
                 </div>
 
             </div>
-            <button className="mt-2 p-2 pl-4 pr-4 bg-teal-100/50 border border-teal-300 hover:bg-teal-100 text-teal-600 rounded-xl flex items-center gap-2"
-                onClick={addSubtask}
-            >
-                <ImUpload />Add to all subtasks
-            </button>
+            {subtitle !== '' ? (
+                <button className="mt-2 p-2 pl-4 pr-4 bg-teal-100/50 border border-teal-300 hover:bg-teal-100 text-teal-600 rounded-xl flex items-center gap-2"
+                    onClick={addSubtask}
+                >
+                    <ImUpload />Add to all subtasks
+                </button>
+            ) : (
+                <div className="mt-2 p-2 pl-4 pr-4 border border-gray-300 text-gray-300 inline-flex rounded-xl flex items-center gap-2"
+                >
+                    <ImUpload />Add to all subtasks
+                </div>
+            )}
+
         </div>
     )
 }

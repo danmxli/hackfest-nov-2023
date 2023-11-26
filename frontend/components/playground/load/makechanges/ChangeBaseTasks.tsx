@@ -72,14 +72,21 @@ const ChangeBaseTasks: React.FC<ChangeBaseTasksProps> = ({ baseTasks, updateLoca
                                             className="w-full focus:outline-none h-36 font-light"
                                         />
                                         <div className="flex gap-3">
-                                            <button
-                                                className="p-0.5 pl-6 pr-6 border border-gray-300 hover:bg-gray-100 rounded-xl"
-                                                onClick={() => {
-                                                    handleSaveEdit(index, newDescription)
-                                                }}
-                                            >
-                                                Save
-                                            </button>
+                                            {newDescription !== '' ? (
+                                                <button
+                                                    className="p-0.5 pl-6 pr-6 border border-gray-300 hover:bg-gray-100 rounded-xl"
+                                                    onClick={() => {
+                                                        handleSaveEdit(index, newDescription)
+                                                    }}
+                                                >
+                                                    Save
+                                                </button>
+                                            ) : (
+                                                <div className="p-0.5 pl-6 pr-6 border border-gray-300 text-gray-300 rounded-xl">
+                                                    Save
+                                                </div>
+                                            )}
+
                                             <button
                                                 className="p-0.5 pl-6 pr-6 border border-gray-300 hover:bg-gray-100 rounded-xl"
                                                 onClick={() => {

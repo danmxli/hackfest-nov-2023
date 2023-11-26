@@ -64,12 +64,21 @@ const NewPlan: React.FC<NewPlanProps> = ({ updatePhase, updatePlanPrompt, prompt
                     value={userInput}
                     onChange={handleUserInput}
                 />
-                <button
-                    className="mt-4 p-2 pl-4 pr-4 border border-2 border-teal-800 hover:text-teal-600 rounded-3xl"
-                    onClick={userAction}
-                >
-                    Generate base plan
-                </button>
+                {userInput !== '' ? (
+                    <button
+                        className="mt-4 p-2 pl-4 pr-4 border border-2 border-teal-800 hover:text-teal-600 rounded-3xl"
+                        onClick={userAction}
+                    >
+                        Generate base plan
+                    </button>
+                ) : (
+                        <div
+                            className="mt-4 p-2 pl-4 pr-4 inline-flex border border-2 border-gray-300 text-gray-300 rounded-3xl"
+                        >
+                            Generate base plan
+                        </div>
+                )}
+
             </div>
 
         </div>

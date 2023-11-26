@@ -163,7 +163,7 @@ const SideEditor: React.FC<SideEditorProps> = ({ user, nodeData, updateBaseData,
                         <div className="p-4 max-h-52 font-light overflow-scroll scrollbar-hide">
                             {nodeData}
                         </div>
-                        <div className="flex gap-1 ml-2 mr-2 mb-2">
+                        <div className="flex gap-2 ml-4 mb-4">
                             <button
                                 className={`p-2 pl-4 pr-4 hover:bg-gray-400 text-gray-100 rounded-xl text-sm ${editorPhase === 'ViewSubtask' ? 'bg-gray-400' : 'bg-gray-500'}`}
                                 onClick={viewSubtask}
