@@ -64,7 +64,7 @@ const ChangeBaseTasks: React.FC<ChangeBaseTasksProps> = ({ baseTasks, updateLoca
                     <div key={index} className="p-3 bg-white rounded-xl shadow-lg">
                         {editingIndex === index ? (
                             <>
-                                <div className="mt-3">
+                                <div className="">
                                     <div className="p-3 bg-white border border-teal-600 rounded-xl">
                                         <textarea
                                             value={newDescription}

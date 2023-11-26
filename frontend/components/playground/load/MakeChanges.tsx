@@ -1,6 +1,7 @@
-import React, { useState, MouseEventHandler } from "react"
+import React from "react"
 import ChangeBaseTasks from "./makechanges/ChangeBaseTasks";
 import { IoLink } from "react-icons/io5";
+import { FaUserAstronaut } from "react-icons/fa"
 
 // base data object structure
 interface Task {
@@ -163,18 +164,18 @@ const MakeChanges: React.FC<LoadingPlanProps> = ({ user, planPrompt, promptType,
                     </div>
 
                     <div>
-                        <div className="sticky top-36">
-                            <div className="p-12 border border-gray-300 rounded-3xl h-96 overflow-scroll scrollbar-hide ">
+                        <div className="sticky top-32 p-12 border border-gray-300 rounded-3xl shadow-lg ">
+                            <div className="h-96 overflow-scroll scrollbar-hide">
                                 <p className="whitespace-break-spaces font-light">
                                     {rawResponse}
                                 </p>
                             </div>
-                            <button className="mt-3 p-2 pl-8 pr-8 border border-gray-300 hover:bg-gray-100 rounded-xl"
+                            <button className="mt-12 p-2 pl-8 pr-8 flex items-center gap-3 border border-gray-300 hover:bg-gray-100 rounded-xl"
                                 onClick={() => {
                                     regeneratePlan()
                                 }}
                             >
-                                Regenerate Response
+                                <FaUserAstronaut />Regenerate Response
                             </button>
                         </div>
                     </div>
