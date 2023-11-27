@@ -91,7 +91,7 @@ def base_chat_generate(prompt, taskDescription, conversation_history):
             model='command-nightly',
             message=prompt,
             temperature=0.7,
-            chat_history=conversation_history,
+            chat_history=base_history,
         )
         raw_response = response.text
     else:
