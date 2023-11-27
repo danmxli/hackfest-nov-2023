@@ -66,7 +66,7 @@ const ChatView: React.FC<ChatViewProps> = ({ user, openChatView, updateChatView,
             taskDescription: taskDescription,
             prompt: userInput
         }
-        addMessage({ message: userInput, role: 'user' })
+        addMessage({ message: userInput, role: 'USER' })
         setIsLoading(true)
         try {
             const response = await fetch('https://seepickle-production.up.railway.app/chat/', {
@@ -136,15 +136,15 @@ const ChatView: React.FC<ChatViewProps> = ({ user, openChatView, updateChatView,
                                 {historyCopy.map((message, index) => (
                                     <div
                                         key={index}
-                                        className={`${message.role === 'user' ? 'justify-end' : 'justify-start'
+                                        className={`${message.role === 'USER' ? 'justify-end' : 'justify-start'
                                             } flex mb-1`
                                         }
                                     >
                                         <div
-                                            className={`border ${message.role === 'user' ? 'bg-teal-100 border-teal-300' : 'bg-gray-50/50 border-gray-300'
+                                            className={`border ${message.role === 'USER' ? 'bg-teal-100 border-teal-300' : 'bg-gray-50/50 border-gray-300'
                                                 } rounded-2xl max-w-3/4 p-3`}
                                         >
-                                            <p className="text-sm font-light">{message.message}</p>
+                                            <p className="text-sm font-light whitespace-pre-line">{message.message}</p>
                                         </div>
                                     </div>
                                 ))}

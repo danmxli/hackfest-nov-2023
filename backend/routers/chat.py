@@ -66,18 +66,21 @@ def create_subtask():
             {"task.description": taskDescription}
         ]
 
-        response = base_chat_generate(prompt, taskDescription)
+        # get chat_history of corresponding base_task
+        conversation_history = base_task["chat_history"]
+
+        response = base_chat_generate(prompt, taskDescription, conversation_history)
 
         updateChatHistory = {
             "$push": {
                 "plans.$[plan].base_tasks.$[task].chat_history": {
                     "$each": [
                         {
-                            "role": "user",
+                            "role": "USER",
                             "message": prompt
                         },
                         {
-                            "role": "bot",
+                            "role": "CHATBOT",
                             "message": response
                         }
                     ]
@@ -121,11 +124,11 @@ def create_subtask():
                     "email": email,
                     "chat_logs": [
                         {
-                            "role": "user",
+                            "role": "USER",
                             "message": prompt
                         },
                         {
-                            "role": "bot",
+                            "role": "CHATBOT",
                             "message": response
                         }
                     ],
