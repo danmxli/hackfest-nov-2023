@@ -72,7 +72,6 @@ const MakeChanges: React.FC<LoadingPlanProps> = ({ user, planPrompt, promptType,
                         updateBaseResources(data["resources"])
                         updatePlanId(data["base_id"])
                         updatePlanHistory(data["history"])
-                        updateTokenCount(data["tokens"])
                         updatePhase('EditPlan')
                     }
                 }
@@ -111,6 +110,7 @@ const MakeChanges: React.FC<LoadingPlanProps> = ({ user, planPrompt, promptType,
                         updateLocalRawResponse(data["raw_text"])
                         updateLocalTasks(data["base_tasks"])
                         updateLocalResources(data["resources"])
+                        updateTokenCount(data["tokens"])
                         updatePlanCreationState('MakeChanges')
                     }
 

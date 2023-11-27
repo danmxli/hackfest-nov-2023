@@ -90,6 +90,7 @@ const LoadingPlan: React.FC<LoadingPlanProps> = ({ user, updatePhase, planPrompt
                             setRawResponse(data["raw_text"])
                             setBaseTasks(data["base_tasks"])
                             setResources(data["resources"])
+                            updateTokenCount(data["tokens"])
                             setPlanCreationState('MakeChanges')
                         }
 
