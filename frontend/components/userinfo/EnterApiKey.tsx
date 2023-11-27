@@ -12,7 +12,7 @@ const EnterApiKey: React.FC<EnterApiKeyProps> = ({ user }) => {
                 <h1 className="mb-2">Currently no API keys registered.</h1>
                 <button>
                     <div className="p-2 pl-8 pr-8 border border-gray-300 hover:bg-gray-100 rounded-xl flex items-center gap-2">
-                        <FaKey />Register your key
+                        <FaKey />Register your key <span className="text-xs bg-orange-200 text-orange-800 p-1 pl-4 pr-4 rounded-xl"><code>BETA</code></span>
                     </div>
                 </button>
             </div>

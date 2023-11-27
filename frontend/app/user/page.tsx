@@ -4,7 +4,7 @@ import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import TopProfile from "@/components/userinfo/TopProfile";
 import TokenHistory from "@/components/userinfo/TokenHistory";
 import EnterApiKey from "@/components/userinfo/EnterApiKey";
-import UserInsights from "@/components/userinfo/UserInsights";
+import Integrations from "@/components/userinfo/Integrations";
 import Loading from "@/components/playground/load/Loading";
 
 export default withPageAuthRequired(function User({ user }) {
@@ -68,7 +68,7 @@ export default withPageAuthRequired(function User({ user }) {
     }
     const manageUser: DashboardPhases = {
         Logs: <TokenHistory tokenLogs={tokenLogs} />,
-        Insights: <UserInsights />,
+        Integrations: <Integrations />,
         Buy: <EnterApiKey user={user} />
     }
     return (

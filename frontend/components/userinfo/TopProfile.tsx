@@ -111,12 +111,12 @@ const TopProfile: React.FC<TopProfileProps> = ({ user, tokenCount, phase, update
                     >
                         Usage logs
                     </button>
-                    <button className={`p-2 pl-4 pr-4 border border-gray-300 ${phase == 'Insights' ? 'bg-gray-100' : 'bg-white'} hover:bg-gray-100 rounded-xl`}
+                    <button className={`p-2 pl-4 pr-4 border border-gray-300 ${phase == 'Integrations' ? 'bg-gray-100' : 'bg-white'} hover:bg-gray-100 rounded-xl`}
                         onClick={() => {
-                            updatePhase('Insights')
+                            updatePhase('Integrations')
                         }}
                     >
-                        Insights
+                        Integrations
                     </button>
                     <button className={`p-2 pl-4 pr-4 border border-gray-300 ${phase == 'Buy' ? 'bg-gray-100' : 'bg-white'} hover:bg-gray-100 rounded-xl`}
                         onClick={() => {
