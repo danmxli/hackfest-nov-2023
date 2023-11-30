@@ -8,12 +8,12 @@
 
 🥝 "Node" based plan generation
 
-- Prompt seePickle the objective of your plan, and it will create a plotted approach for accomplishing your goal(s).![1701031315609](image/README/1701031315609.png)
-- For the "Developer" and "Academia" plan types, seePickle can fetch online resources for you to follow along.![1701031431150](image/README/1701031431150.png)
+- Prompt seePickle the objective of your plan, and it will create a plotted approach for accomplishing your goal(s).
+- For the "Developer" and "Academia" plan types, seePickle can fetch online resources for you to follow along.
 
 👥 Plan assistance
 
-- For each task, seePickle's assistant can help you with things such as managing costs to generating additional subtasks.![1701031875595](image/README/1701031875595.png)
+- For each task, seePickle's assistant can help you with things such as managing costs to generating additional subtasks.
 
 ## Technology
 
