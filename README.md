@@ -1,3 +1,7 @@
+# seePickle
+
+Your personal achievement visualization tool.
+
 ## Inspiration
 
 🌱 As humans, our ability to solve problems calls for a plan that grows in complexity as the task does. Most importantly, a plan must be envisioned for it to become scalable and successful.
