@@ -7,7 +7,7 @@ from flask import Blueprint, jsonify, request
 from data.generate import base_chat_generate
 import datetime
 
-load_dotenv('.env')
+load_dotenv('.env') 
 client = MongoClient(os.getenv("MONGODB_URI"))
 db = client['AppData']
 UserInfo = db['UserInfo']
